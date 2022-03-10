@@ -1,0 +1,67 @@
+
+<!-- 
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Verify</ion-title>
+  </ion-toolbar>
+</ion-header>
+-->
+
+<!--- Form  header -->
+<ion-content class="bag-ver">
+  <section class = "logos-container">
+    <div class="row logos1">
+      <div class="col-4">
+      </div>
+      <div class="col-4 tittle">
+        <img src="assets/img/logo.png" />
+        <h1>التحقق</h1>
+        <p> الرجاء إدخال رمز التحقق المرسل إلى رقم هاتفك</p>
+      </div>
+      <div class="col-4">
+      </div>
+    </div>
+<!--- End Form  header -->
+
+<!--- Code Form  -->
+    <section class="verify-form">
+      <ion-row>
+        <ion-col size="12" size-md>
+          <ion-input> </ion-input>
+        </ion-col>
+        <ion-col size="12" size-md>
+          <ion-input> </ion-input>
+        </ion-col>
+        <ion-col size="12" size-md>
+          <ion-input> </ion-input>
+        </ion-col>
+        <ion-col size="12" size-md>
+          <ion-input> </ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-item>
+          <!---  send new code  -->
+        <ion-label slot="end"> طلب رمز جديد</ion-label>
+         <!---  code Time  -->
+        <ion-label slot="start"> صالح ل 29 ثانية</ion-label>
+      </ion-item>
+    
+<!---End Code Form  -->
+             <!---  Regester button  -->
+             <ion-col size="12">
+              <ion-button expand="block" (click)="Verify()" class="continue-button">
+              تاكيد
+              </ion-button>
+            </ion-col>
+        
+            <!---  End  Regester  button  -->
+    </section>
+  
+
+          
+       
+
+    <!--- End Form   -->
+  
+
+<ion-content>

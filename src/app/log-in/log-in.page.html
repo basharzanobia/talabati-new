@@ -1,0 +1,80 @@
+
+<!--
+<ion-header>
+  <ion-toolbar>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header>
+-->
+
+<!--- Form  header -->
+<ion-content class="bag-login">
+  <section class = "logos-container">
+    <div class="row logos">
+      <div class="col-4">
+      </div>
+      <div class="col-4 tittle">
+        <img src="assets/img/logo.png" />
+        <h1>تسجيل الدخول</h1>
+        <p> مرحبا بعودتك!<br>ليس لديك حساب؟  </p>
+
+        <!--- New Ccount -->
+        <ion-label slot="end">
+         حساب جديد 
+        </ion-label>
+      </div>
+      <div class="col-4">
+      </div>
+    </div>
+<!--- End Form  header -->
+
+<!---  Form  -->
+    <ion-row class="login-form">
+      <ion-col>
+        <ion-list lines="none" >
+          <ion-item>
+            <ion-label slot="end">
+              <ion-icon name="phone-portrait-outline" ></ion-icon>
+            </ion-label>
+            <ion-input
+              [(ngModel)]="PhoneNumber"
+              placeholder="رقم الهاتف"
+              type="tel"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label slot="end">
+              <ion-icon name="key-outline"></ion-icon>
+            </ion-label>
+            <ion-input
+              [(ngModel)]="password"
+              placeholder="كلمة المرور"
+              type="password">
+            </ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label slot="end">
+              <ion-icon name="key-outline"></ion-icon> نسيان كلمة المرور
+            </ion-label>
+          </ion-item>
+          <ion-item class="custom-ion-toggle">
+            <ion-label>تذكرني</ion-label>
+            <ion-toggle slot="start" color="secondary"></ion-toggle>
+        </ion-item>
+        </ion-list>
+
+       
+         <!---  log in button  -->
+         <ion-col size="12">
+          <ion-button expand="block" (click)="logIn()" class="continue-button">
+          تسجيل الدخول
+          </ion-button>
+        </ion-col>
+    
+        <!---  End log in button  -->
+      </ion-col>
+    </ion-row>
+    <!--- End Form   -->
+  </section>
+
+<ion-content>

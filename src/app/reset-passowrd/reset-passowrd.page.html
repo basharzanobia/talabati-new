@@ -1,0 +1,60 @@
+<!--
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Reset-password</ion-title>
+  </ion-toolbar>
+</ion-header>
+--->
+
+<!---  Form  header -->
+<ion-content class="bag-Reset">
+  <section class = "logos-container">
+    <div class="row logos">
+      <div class="col-4">
+      </div>
+      <div class="col-4 tittle">
+        <img src="assets/img/logo.png" />
+        <h1> تعيين كلمة مرور جديدة</h1>
+        <p> يرجى تعيين كلمة مرور جديدة وقوية</p>
+      </div>
+      <div class="col-4">
+      </div>
+    </div>
+<!--- End Form  header -->
+
+<!---  Form  -->
+    <ion-row class="Resat-form">
+      <ion-col>
+        <ion-list >
+          <ion-item>
+            <ion-label slot="end">
+              <ion-icon name="key-outline"></ion-icon>
+            </ion-label>
+            <ion-input
+              [(ngModel)]="password"
+              placeholder="كلمة المرور"
+              type="password"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label slot="end">
+              <ion-icon name="key-outline"></ion-icon>
+            </ion-label>
+            <ion-input
+              [(ngModel)]="confirmPassword"
+              placeholder="تاكيد كلمة المرور"
+              type="password"
+            ></ion-input>
+          </ion-item>
+        </ion-list>
+        <div class="align-items-center">
+          <button ion-button (click)="ResetPassowrd()" class="continue-button">
+            تأكيد
+          </button>
+        </div>
+      </ion-col>
+    </ion-row>
+    <!--- End Form   -->
+  
+
+<ion-content>

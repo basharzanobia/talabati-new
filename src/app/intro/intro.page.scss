@@ -1,0 +1,40 @@
+
+.ion-content {
+    background-image: url('/img/rectangel.png');
+    background-size:cover;
+    background-repeat:no-repeat
+}
+ 
+/*  Form  header Title */
+
+.logos {
+    text-align: center;
+ }
+
+.intro {
+    text-align: center;
+    padding: 0% 15%;
+    
+  
+}
+
+ion-icon {
+    text-align: center;
+    font-size: 50px;
+    color: #292562;
+}
+
+
+.intro-item {
+    border: #292562;
+    border-style: solid;
+    border-radius: 20px;
+    margin-top: 5%;
+    padding-top: 10%;
+    padding-bottom: 10%;
+
+}
+
+h2 {
+    font-weight: 700;
+}

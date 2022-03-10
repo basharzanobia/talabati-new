@@ -1,0 +1,59 @@
+.ion-content {
+    padding: 6%;
+
+}
+
+
+/*  Form  header Title */
+
+.logos {
+    text-align: center;
+}
+
+
+.tittle {
+    margin: 2%;
+}
+
+h1 {
+    color: #292562;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+
+/*  Form  */
+.login-form {
+    border: #ededed;
+    border-style: solid;
+    border-radius: 23px 1px 10px 20px;
+    margin: 6%;
+}
+
+ion-label {
+    color: #292562!important;
+}
+
+/*  Form Feild */ 
+.item-input {
+    padding-bottom: 6%;
+    padding-top: 6%;
+    font-size: 18px;
+}
+
+
+/*  login Button  */
+.continue-button {
+    align-items: center;
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+    margin-top: 10%;
+    margin-bottom: 5%;
+}
+
+
+ .login-icon {
+    font-size: 50px;
+    color: #292562;
+}

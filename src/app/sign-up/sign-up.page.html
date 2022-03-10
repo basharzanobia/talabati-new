@@ -1,0 +1,85 @@
+<!---   header -->
+<!---
+<ion-header>    
+  <ion-toolbar>
+    <ion-title>register</ion-title>
+  </ion-toolbar>
+</ion-header>
+-->
+<!---  End  header -->
+
+<!---  Form  header -->
+<ion-content class="bag-reg">
+  <section class = "logos-container">
+    <div class="row logos">
+      <div class="col-4">
+      </div>
+      <div class="col-4 tittle">
+        <img src="assets/img/logo.png" />
+        <h1>انشاء حساب</h1>
+        <p> الرجاء إدخال البيانات الخاصة  بك لإنشاء حساب.</p>
+      </div>
+      <div class="col-4">
+      </div>
+    </div>
+<!--- End Form  header -->
+
+<!---  Form  -->
+    <ion-row class="account-form">
+      <ion-col>
+        <ion-list >
+          <ion-item>
+            <ion-label slot="end"> 
+              <ion-icon  name="person" ></ion-icon>
+            </ion-label>
+            <ion-input
+              [(ngModel)]="name"
+              placeholder="الاسم الكامل"
+              type="text"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label slot="end">
+              <ion-icon name="phone-portrait-outline"></ion-icon>
+            </ion-label>
+            <ion-input
+              [(ngModel)]="PhoneNumber"
+              placeholder="رقم الهاتف"
+              type="tel"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label slot="end">
+              <ion-icon name="key-outline"></ion-icon>
+            </ion-label>
+            <ion-input
+              [(ngModel)]="password"
+              placeholder="كلمة المرور"
+              type="password"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label slot="end">
+              <ion-icon name="key-outline"></ion-icon>
+            </ion-label>
+            <ion-input
+              [(ngModel)]="confirmPassword"
+              placeholder="تاكيد كلمة المرور"
+              type="password"
+            ></ion-input>
+          </ion-item>
+        </ion-list>
+            <!---  Regester button  -->
+            <ion-col size="12">
+              <ion-button expand="block" (click)="logIn()" class="continue-button">
+              تسجيل الدخول
+              </ion-button>
+            </ion-col>
+        
+            <!---  End  Regester  button  -->
+      </ion-col>
+    </ion-row>
+    <!--- End Form   -->
+  
+
+<ion-content>
