@@ -1,17 +1,31 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 3
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-row class="user-bar">
+    <ion-col size="2" class="logo-head" routerLink="/tabs/tab1">       
+      <img src="assets/img/logo.png">
+</ion-col>
+    <ion-col size="8" class="page-head">
+      <ion-lable class="rest-title"> الاشعارات</ion-lable>   
+    </ion-col>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+    <ion-col size="2" class="page-head">
+      <ion-buttons>  
+        <ion-menu-button></ion-menu-button>   
+      </ion-buttons>  
+    </ion-col>
+
+
+  </ion-row>
+
+  <ion-row class="noti" >
+    <ion-col size="3" class="noti-photo" >
+      <img src="assets/img/noti.png" />
+    </ion-col>
+    <ion-col size="9" class="noti-detile">
+      <ion-label class="noti-id">عروض مميزة قادمة </ion-label>
+      <p class="noti-descrip"> مجموعة من العروض المميزة من المطاعم في طريقها اليك  </p>
+    </ion-col>
+</ion-row>
+
+
 </ion-content>

@@ -1,0 +1,85 @@
+.user-bar {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+
+
+.page-head {
+  font-size: 20px;
+  font-weight: 700;
+
+}
+
+
+
+  .track {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px; 
+    text-align: center;
+  }
+
+  .track-head {
+      font-size: 20px;
+      padding: 10px;
+      font-weight: 600;
+  }
+
+.order-cutomer {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px; 
+  }
+  
+    .item-photo {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      border-radius: 10px;
+    }
+
+    .item-detile {
+
+        text-align: center;
+        padding: 2%;
+        
+          }
+  
+    .item-id {
+      color: rgb(255, 145, 0);
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+
+    .range-knob {
+        --background-color: rgb(0, 33, 99)!important;
+
+    }
+
+    .add-call {
+        color: aliceblue;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .cancel-item {
+        color: aliceblue;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .call-button {
+        background-color: rgb(0, 7, 71);
+        border-radius: 10px;
+        color: aliceblue;
+        padding: 10px;
+      }
+    
+      .order-cancel {
+        color: aliceblue;
+        background-color: #e20000;
+        border-radius: 10px;
+        padding: 10px;
+      }

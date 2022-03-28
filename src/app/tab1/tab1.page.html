@@ -1,86 +1,188 @@
-<!--  
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
--->
-
-
-<ion-content>
+<ion-content [fullscreen]="true">
   <ion-row class="user-bar">
-    <ion-col size="2" class="logo-head">       
+    <ion-col size="2" class="logo-head" routerLink="/tabs/tab1">       
       <img src="assets/img/logo.png">
 </ion-col>
     <ion-col size="8" class="page-head">
-      <h2> المطاعم</h2>       
- 
+      <ion-lable class="rest-title"> المطاعم والكافيهات</ion-lable>   
     </ion-col>
-    <ion-col size="2" class="back-head">       
-      <ion-icon name="arrow-forward-outline"></ion-icon>
+
+    <ion-col size="2" class="page-head">
+      <ion-buttons>  
+        <ion-menu-button></ion-menu-button>   
+      </ion-buttons>  
     </ion-col>
   </ion-row>
 
+  <div class="gate-bar">
+    <ion-row>
+      <ion-col size="2">
+        <button ion-button round color="light" class="scroll-click">
+          <ion-icon name="fast-food-sharp" class="scroll-item selectable-icon"></ion-icon>
+          <ion-label class="rest-id">مطاعم</ion-label>
+        </button>
+      </ion-col>
+      <ion-col size="2">
+        <button ion-button round color="light" class="scroll-click">
+          <ion-icon name="cafe"  class="scroll-item selectable-icon"></ion-icon>
+          <ion-label class="rest-id">كفيتيريا</ion-label>
+        </button>
+      </ion-col>
+      <ion-col size="2">
+        <button ion-button round color="light" class="scroll-click">
+          <ion-icon name="pizza" class="scroll-item selectable-icon"></ion-icon>
+          <ion-label class="rest-id">معجنات</ion-label>
+        </button>
+      </ion-col>
+      <ion-col size="2">
+        <button ion-button round color="light" class="scroll-click">
+          <ion-icon name="aperture-sharp" class="scroll-item selectable-icon"></ion-icon>
+          <ion-label class="rest-id">حلويات</ion-label>
+        </button>
+      </ion-col>
+      <ion-col size="2">
+        <button ion-button round color="light" class="scroll-click">
+          <ion-icon name="ice-cream" class="scroll-item selectable-icon"></ion-icon>
+          <ion-label class="rest-id">ايس كريم</ion-label>
+        </button>
+      </ion-col>
+      <ion-col size="2">
+        <button ion-button round color="light" class="scroll-click">
+          <ion-icon name="gift" class="scroll-item selectable-icon"></ion-icon>
+          <ion-label class="rest-id">عروض</ion-label>
+        </button>
+      </ion-col>
+ 
+    </ion-row>`
+  </div>
 
-  <div class="scroll-bar">
-  <ion-row>
-    <ion-item lines="none">
-      <ion-scroll scrollX="true">
-        <ion-icon name="fast-food-outline"  class="scroll-item selectable-icon"></ion-icon>
-        <ion-label class="rest-id">مطاعم</ion-label>
-      </ion-scroll> 
-    </ion-item>
-  </ion-row>`
-</div>
-
-<ion-row class="tool-bar">
-  <ion-col size="10" class="search-item">       
-<ion-searchbar animated></ion-searchbar>
-  </ion-col>
-  <ion-col size="2" class="filter-item"> 
-    <ion-icon name="options-outline" color="primary"></ion-icon>
-  </ion-col>
-</ion-row>
 
 
 
-  <ion-grid>
+
+  <ion-grid class="main">
+    <ion-row class="tool-bar">
+      <ion-col size="10" class="search-item">       
+    <ion-searchbar animated></ion-searchbar>
+      </ion-col>
+      <ion-col size="2" class="filter-item"> 
+        <ion-icon name="options-outline" color="primary"></ion-icon>
+      </ion-col>
+    </ion-row>
+
+    <!---  card -->
     <ion-row class="intro">
       <ion-col size="6" class="intro-item">
-            <ion-row class="rst-card">
+            <ion-row class="rst-card" routerLink="/resturant">
               <ion-col size="12" class="rest-item">
             <img src="assets/img/Istanbul-Restaurant-17.jpg" />
-            <ion-label class="rest-name" color="primary">    مطعم ايوان   </ion-label>
               </ion-col>
+            </ion-row>
+            <ion-row>   
+              <ion-col size="6" class="rest-location">
+                <ion-icon name="diamond-sharp" class="rest-map" color="primary"></ion-icon>
+                <ion-label class="rest-name" color="primary">  ايوان   </ion-label>
+                    </ion-col>
+                    <ion-col size="6" class="rest-location">
+                      <ion-icon name="fast-food-sharp"  class="rest-kind" color="primary"></ion-icon>
+                      <ion-label class="rest-address" color="tertiary">    مطاعم    </ion-label>
+                    </ion-col>
+            </ion-row>
+            <ion-row>
                 <ion-col size="6" class="rest-location">
-            <ion-icon name="location-outline" class="rest-map" color="primary"></ion-icon>
-            <ion-label class="rest-address" color="tertiary">    اكسراي    </ion-label>
+            <ion-icon name="location-sharp" class="rest-map" color="primary"></ion-icon>
+            <ion-label class="rest-address" >    اكسراي    </ion-label>
                 </ion-col>
                   <ion-col size="6" class="rest-work">
-            <ion-icon name="storefront-outline" class="rest-ico" color="primary"></ion-icon>
+            <ion-icon name="storefront-sharp" class="rest-ico" color="primary"></ion-icon>
             <ion-label class="rest-statu" color="success" >    مفتوح    </ion-label> 
                   </ion-col>
-                </ion-row> 
-      </ion-col>
-      <ion-col size="6" class="intro-item">
-        <ion-row class="rst-card">
+            </ion-row> 
+       </ion-col>
+
+       <ion-col size="6" class="intro-item">
+        <ion-row class="rst-card" routerLink="/resturant">
           <ion-col size="12" class="rest-item">
         <img src="assets/img/Istanbul-Restaurant-17.jpg" />
-        <ion-label class="rest-name" color="primary">    مطعم ايوان   </ion-label>
           </ion-col>
+        </ion-row>
+        <ion-row>   
+          <ion-col size="6" class="rest-location">
+            <ion-icon name="diamond-sharp" class="rest-map" color="primary"></ion-icon>
+            <ion-label class="rest-name" color="primary">  ايوان   </ion-label>
+                </ion-col>
+                <ion-col size="6" class="rest-location">
+                  <ion-icon name="cafe-sharp" class="rest-kind" color="primary"></ion-icon>
+                  <ion-label class="rest-address" color="tertiary">  كفيتيريا    </ion-label>
+                </ion-col>
+        </ion-row>
+        <ion-row>
             <ion-col size="6" class="rest-location">
-        <ion-icon name="location-outline" class="rest-map" color="primary"></ion-icon>
-        <ion-label class="rest-address" color="tertiary">    اكسراي    </ion-label>
+        <ion-icon name="location-sharp" class="rest-map" color="primary"></ion-icon>
+        <ion-label class="rest-address" >    اكسراي    </ion-label>
             </ion-col>
               <ion-col size="6" class="rest-work">
-        <ion-icon name="storefront-outline" class="rest-ico" color="primary"></ion-icon>
-        <ion-label class="rest-statu" color="danger" >    مغلق   </ion-label> 
+        <ion-icon name="storefront-sharp" class="rest-ico" color="primary"></ion-icon>
+        <ion-label class="rest-statu" color="success" >    مفتوح    </ion-label> 
               </ion-col>
-            </ion-row> 
-  </ion-col>
+        </ion-row> 
+   </ion-col>
 
+   <ion-col size="6" class="intro-item">
+    <ion-row class="rst-card" routerLink="/resturant">
+      <ion-col size="12" class="rest-item">
+    <img src="assets/img/Istanbul-Restaurant-17.jpg" />
+      </ion-col>
+    </ion-row>
+    <ion-row>   
+      <ion-col size="6" class="rest-location">
+        <ion-icon name="diamond-sharp" class="rest-map" color="primary"></ion-icon>
+        <ion-label class="rest-name" color="primary">  ايوان   </ion-label>
+            </ion-col>
+            <ion-col size="6" class="rest-location" >
+              <ion-icon name="fast-food-sharp" class="rest-kind" color="primary"></ion-icon>
+              <ion-label class="rest-address" color="tertiary">    مطاعم    </ion-label>
+            </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col size="6" class="rest-location">
+    <ion-icon name="location-sharp" class="rest-map" color="primary"></ion-icon>
+    <ion-label class="rest-address" >    اكسراي    </ion-label>
+        </ion-col>
+          <ion-col size="6" class="rest-work">
+    <ion-icon name="storefront-sharp" class="rest-ico" color="primary"></ion-icon>
+    <ion-label class="rest-statu" color="danger" >    مغلق    </ion-label> 
+          </ion-col>
+    </ion-row> 
+</ion-col>
+
+<ion-col size="6" class="intro-item">
+<ion-row class="rst-card" routerLink="/resturant">
+  <ion-col size="12" class="rest-item">
+<img src="assets/img/Istanbul-Restaurant-17.jpg" />
+  </ion-col>
+</ion-row>
+<ion-row>   
+  <ion-col size="6" class="rest-location">
+    <ion-icon name="diamond-sharp" class="rest-map" color="primary"></ion-icon>
+    <ion-label class="rest-name" color="primary">  ايوان   </ion-label>
+        </ion-col>
+        <ion-col size="6" class="rest-location">
+          <ion-icon name="cafe-sharp" class="rest-kind" color="primary"></ion-icon>
+          <ion-label class="rest-address" color="tertiary">  كفيتيريا    </ion-label>
+        </ion-col>
+</ion-row>
+<ion-row>
+    <ion-col size="6" class="rest-location">
+<ion-icon name="location-sharp" class="rest-map" color="primary"></ion-icon>
+<ion-label class="rest-address">    اكسراي    </ion-label>
+    </ion-col>
+      <ion-col size="6" class="rest-work">
+<ion-icon name="storefront-sharp" class="rest-ico" color="primary"></ion-icon>
+<ion-label class="rest-statu" color="success" >    مفتوح    </ion-label> 
+      </ion-col>
+</ion-row> 
+</ion-col>
     </ion-row>
   </ion-grid>
 

@@ -1,0 +1,80 @@
+<ion-content [fullscreen]="true">
+  <ion-row class="user-bar">
+    <ion-col size="2" class="logo-head" routerLink="/tabs/tab1">       
+      <img src="assets/img/logo.png">
+</ion-col>
+    <ion-col size="8" class="page-head">
+      <ion-lable class="rest-title"> قائمة الطلبات</ion-lable>   
+    </ion-col>
+
+    <ion-col size="2" class="page-head">
+      <ion-buttons>  
+        <ion-menu-button></ion-menu-button>   
+      </ion-buttons>  
+    </ion-col>
+  </ion-row>
+
+
+    <ion-grid class="ion-margin table">
+      <ion-row class="table-head" >
+        <ion-col>البيانات</ion-col>
+        <ion-col>السعر</ion-col>
+        <ion-col>الكمية</ion-col>
+        <ion-col>ملاحظات</ion-col>
+      </ion-row>
+      <ion-row class="table-count" >
+        <ion-col> سلة بحريات </ion-col>
+        <ion-col>15 $</ion-col>
+        <ion-col>
+          <ion-icon name="remove-circle-outline" color="danger"></ion-icon>
+          01
+          <ion-icon name="add-circle-outline" color="success"></ion-icon>
+        </ion-col>
+        <ion-col>لا يوجد</ion-col>
+       <ion-icon name="trash-outline" color="danger"></ion-icon>
+      </ion-row>
+      <ion-row class="order-cost" >
+        <ion-col size="6">اجور التوصيل</ion-col>
+        <ion-col size="6">00 </ion-col>
+      </ion-row>
+
+      <ion-row class="order-discount" >
+        <ion-col size="6">العروض والخصومات</ion-col>
+        <ion-col size="6">00 </ion-col>
+      </ion-row>
+  
+      <ion-row class="order-total" >
+        <ion-col size="6">الاجمالي</ion-col>
+        <ion-col size="6">15  </ion-col>
+      </ion-row>
+  
+      <ion-row class="order-addres" >
+        <ion-col size="12"> 
+          <ion-lable> عنوان التسليم</ion-lable>
+        </ion-col>
+        <ion-col size="12"> 
+          <ion-input type="text" placeholder="ادخل العنوان من فضلك ..."> </ion-input> 
+          <br> <br>
+           </ion-col>
+      </ion-row>
+
+      <ion-row class="order-add" >
+        <ion-col size="6" class="order-cancel"> 
+          <ion-icon name="trash-sharp"></ion-icon>
+          <ion-lable> حذف </ion-lable>
+        </ion-col>
+        <ion-col size="6" class="item-order" routerLink="/invoice"> 
+          <a button icon-start ion-button full class="order-button">
+            <ion-icon name="basket"></ion-icon>
+            <ion-label class="add-item" > التالي  </ion-label>
+          </a>
+           </ion-col>
+      </ion-row>
+      
+      <br> <br>
+    </ion-grid>
+
+
+    
+
+</ion-content>

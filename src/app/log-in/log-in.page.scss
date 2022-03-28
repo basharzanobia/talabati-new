@@ -1,5 +1,5 @@
-.ion-content {
-    padding: 6%;
+.scroll-y {
+    --overflow-y: hidden!important;
 
 }
 
@@ -8,11 +8,12 @@
 
 .logos {
     text-align: center;
+    margin-top: 30px;
 }
 
 
 .tittle {
-    margin: 2%;
+    margin-top: 30px;
 }
 
 h1 {
@@ -26,7 +27,7 @@ h1 {
 .login-form {
     border: #ededed;
     border-style: solid;
-    border-radius: 23px 1px 10px 20px;
+    border-radius:20px;
     margin: 6%;
 }
 
@@ -36,8 +37,8 @@ ion-label {
 
 /*  Form Feild */ 
 .item-input {
-    padding-bottom: 6%;
-    padding-top: 6%;
+    padding-bottom: 20px;
+    padding-top: 20px;
     font-size: 18px;
 }
 
@@ -48,7 +49,7 @@ ion-label {
     color: white;
     font-weight: 600;
     font-size: 18px;
-    margin-top: 10%;
+    margin-top: 10px;
     margin-bottom: 5%;
 }
 
@@ -56,4 +57,15 @@ ion-label {
  .login-icon {
     font-size: 50px;
     color: #292562;
+}
+
+
+.new-account {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.forget {
+    font-size: 16px;
+    font-weight: 600;
 }

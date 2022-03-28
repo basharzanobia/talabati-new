@@ -19,7 +19,7 @@
         <p> مرحبا بعودتك!<br>ليس لديك حساب؟  </p>
 
         <!--- New Ccount -->
-        <ion-label slot="end">
+        <ion-label slot="end" class="new-account" routerLink="/sign-up">
          حساب جديد 
         </ion-label>
       </div>
@@ -53,7 +53,7 @@
             </ion-input>
           </ion-item>
           <ion-item>
-            <ion-label slot="end">
+            <ion-label slot="end" class="forget" routerLink="/new-password">
               <ion-icon name="key-outline"></ion-icon> نسيان كلمة المرور
             </ion-label>
           </ion-item>
@@ -65,7 +65,7 @@
 
        
          <!---  log in button  -->
-         <ion-col size="12">
+         <ion-col size="12" routerLink="/intro">
           <ion-button expand="block" (click)="logIn()" class="continue-button">
           تسجيل الدخول
           </ion-button>

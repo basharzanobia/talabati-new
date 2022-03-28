@@ -1,3 +1,39 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-app>  
+    <ion-menu menuId="first" contentId="content">  
+      <ion-header>  
+        <ion-toolbar color="success">  
+          <ion-title>القائمة</ion-title>  
+        </ion-toolbar>   
+      </ion-header>  
+      <ion-content>  
+  
+        <ion-list >  
+          <ion-menu-toggle auto-hide="true"> 
+           <ion-item routerLink="/tabs/tab1" routerDirection="root">  
+             <ion-icon name="reader-outline"></ion-icon> 
+               <ion-label> الرئيسية</ion-label>  
+           </ion-item>  
+            <ion-item routerLink="/profile" routerDirection="root">  
+             <ion-icon name="person-outline"></ion-icon>
+                <ion-label> الملف الشخصي </ion-label>  
+            </ion-item> 
+            <ion-item routerLink="/tabs/tab3" routerDirection="root">  
+             <ion-icon name="notifications-outline"></ion-icon>  
+               <ion-label> الاشعارات </ion-label>  
+           </ion-item> 
+            <ion-item routerLink="/settings" routerDirection="root">  
+             <ion-icon name="settings-outline"></ion-icon>
+               <ion-label> الاعدادات </ion-label>  
+           </ion-item> 
+           <ion-item routerLink="/support" routerDirection="root">  
+             <ion-icon name="help-buoy-outline"></ion-icon>
+               <ion-label> الدعم </ion-label>  
+           </ion-item>  
+          </ion-menu-toggle>  
+        </ion-list>  
+      </ion-content>   
+    </ion-menu>  
+    <ion-router-outlet Id="content"></ion-router-outlet>  
+  </ion-app>
 </ion-app>

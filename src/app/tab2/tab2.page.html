@@ -1,17 +1,101 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 2
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-content [fullscreen]="true">
+    <ion-row class="user-bar">
+      <ion-col size="2" class="logo-head" routerLink="/tabs/tab1">       
+        <img src="assets/img/logo.png">
+  </ion-col>
+      <ion-col size="8" class="page-head">
+        <ion-lable class="rest-title"> طلباتي</ion-lable>   
+      </ion-col>
+  
+      <ion-col size="2" class="page-head">
+        <ion-buttons>  
+          <ion-menu-button></ion-menu-button>   
+        </ion-buttons>  
+      </ion-col>
+    </ion-row>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+  <ion-grid class="ion-margin track">
+
+    <ion-row class="track-head" >
+      <ion-lable class="track-title"></ion-lable>
+      <ion-col size="12">طلبات جارية </ion-col>
+    </ion-row>
+
+    <ion-row class="track-head" >
+      <ion-lable class="track-title"></ion-lable>
+      <ion-col size="6">رقم الطلب :</ion-col>
+      <ion-col size="6">24545456 </ion-col>
+    </ion-row>
+
+    <ion-row class="order-cutomer" >
+        <ion-col size="4" class="item-photo" routerLink="/product">
+          <img src="assets/img/seafood.jpg" />
+        </ion-col>
+        <ion-col size="8" class="item-detile">
+          <ion-label class="item-id">سلة بحريات </ion-label>
+          <p class="item-descrip"> تشكيلة واسعة من ثمار البحر </p>
+        </ion-col>
+    </ion-row>
+    <ion-row class="table-head" >
+      <ion-col size="12" class="item-statu">
+        <ion-range min="0" max="100" step="20" snaps="true" [pinFormatter]="customFormatter" [pin]="true" color="tertiary"></ion-range>
+        <p class="item-hint"> جاري تحضير الطلب </p>
+      </ion-col>
+      
+    </ion-row>
+   
+    <br>
+    <ion-row class="order-action" >
+      <ion-col size="6" class="order-cancel" routerLink="/tracking"> 
+        <a button icon-start ion-button full class="order-track">
+          <ion-label class="cancel-item" > التفاصيل</ion-label>
+        </a>
+         </ion-col>
+         <ion-col size="6" class="call-button" routerLink="/tabs/tab1"> 
+          <a button icon-start ion-button full>
+            <ion-label class="add-call" > الاتصال  </ion-label>
+          </a>
+           </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid class="ion-margin track">
+  <ion-row class="track-head" >
+    <ion-lable class="track-title"></ion-lable>
+    <ion-col size="12">طلبات مكتملة</ion-col>
+  </ion-row>
+
+  <ion-row class="track-head" >
+    <ion-lable class="track-title"></ion-lable>
+    <ion-col size="6">رقم الطلب :</ion-col>
+    <ion-col size="6">24545456 </ion-col>
+  </ion-row>
+
+  <ion-row class="order-cutomer" >
+      <ion-col size="4" class="item-photo" routerLink="/product">
+        <img src="assets/img/seafood.jpg" />
+      </ion-col>
+      <ion-col size="8" class="item-detile">
+        <ion-label class="item-id">سلة بحريات </ion-label>
+        <p class="item-descrip"> تشكيلة واسعة من ثمار البحر </p>
+      </ion-col>
+  </ion-row>
+  <ion-row class="table-head" >
+    <ion-col size="12" class="item-statu">
+      <ion-range min="0" max="100" step="20" snaps="true" [pinFormatter]="customFormatter" [pin]="true" color="tertiary"></ion-range>
+      <p class="item-hint"> تم التوصيل  </p>
+    </ion-col>
+    
+  </ion-row>
+ 
+  <br>
+  <ion-row class="order-action" >
+       <ion-col size="12" class="call-button" routerLink="/product"> 
+        <a button icon-start ion-button full>
+          <ion-label class="add-call" >تكرار الطلب   </ion-label>
+        </a>
+         </ion-col>
+  </ion-row>
+</ion-grid>
+
 </ion-content>

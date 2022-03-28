@@ -1,0 +1,77 @@
+<ion-content [fullscreen]="true">
+  <ion-row class="user-bar">
+    <ion-col size="2" class="logo-head" routerLink="/tabs/tab1">       
+      <img src="assets/img/logo.png">
+</ion-col>
+    <ion-col size="8" class="page-head">
+      <ion-lable class="rest-title"> الفاتورة</ion-lable>   
+    </ion-col>
+
+    <ion-col size="2" class="page-head">
+      <ion-buttons>  
+        <ion-menu-button></ion-menu-button>   
+      </ion-buttons>  
+    </ion-col>
+  </ion-row>
+
+  <ion-grid class="ion-margin table">
+    <ion-row class="order-head" >
+      <ion-col size="3">المطعم:</ion-col>
+      <ion-col size="3">حضرموت </ion-col>
+      <ion-col size="3">رقم الطلب: </ion-col>
+      <ion-col size="3">066566</ion-col>
+    </ion-row>
+
+    <ion-row class="order-cutomer" >
+      <ion-col size="3">العميل:</ion-col>
+      <ion-col size="3">خالد حمد </ion-col>
+      <ion-col size="3">التاريخ:</ion-col>
+      <ion-col size="3">01/01/2020 </ion-col>
+    </ion-row>
+    <ion-row class="table-head" >
+      <ion-col>البيانات</ion-col>
+      <ion-col>السعر</ion-col>
+      <ion-col>الكمية</ion-col>
+      <ion-col>الاجمالي</ion-col>
+    </ion-row>
+    <ion-row class="table-count" >
+      <ion-col> سلة بحريات </ion-col>
+      <ion-col>15 $</ion-col>
+      <ion-col>
+        01
+      </ion-col>
+      <ion-col>15 $</ion-col>
+    </ion-row>
+
+    <ion-row class="order-total" >
+      <ion-col size="6"> اجمالي قيمة الفاتورة:</ion-col>
+      <ion-col size="6">15 $ </ion-col>
+    </ion-row>
+
+    <br> 
+
+    <ion-row class="order-pay" >
+      
+      <ion-col size="12" class="pay-title">
+        <ion-lable> طريقة الدفع</ion-lable>
+      </ion-col>
+      <br> <br> 
+      <ion-col size="6" class="item-pay"> <ion-checkbox color="primary"></ion-checkbox>
+        <ion-lable> الدفع عند الاستلام</ion-lable>
+      </ion-col>
+      <ion-col size="6" class="item-pay"><ion-checkbox color="primary"> </ion-checkbox> 
+        <ion-lable> الدفع عبر حوالة بنكية</ion-lable>
+      </ion-col>
+    </ion-row>
+    <br>
+    <ion-row class="order-add" >
+      <ion-col size="12" class="item-order" routerLink="/order-confirmed"> 
+        <a button icon-start ion-button full class="order-button">
+          <ion-icon name="basket"></ion-icon>
+          <ion-label class="add-item" > تأكيد الطلب  </ion-label>
+        </a>
+         </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

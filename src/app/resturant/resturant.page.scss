@@ -1,26 +1,20 @@
 
+.user-bar {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-.logo-head {
-    max-width: 10%;
-  }
-  
-  .user-bar {
+}
 
- 
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    border-radius: 10px;
-   
-  
-  }
-  
-  .back-head {
-    display: flex;
-  flex-wrap: wrap;
-  align-content: space-around;
-  justify-content: space-between;
-  font-size: 25px;
-  
-  }
+
+
+.page-head {
+  font-size: 20px;
+  font-weight: 700;
+
+}
 
 
 
@@ -78,3 +72,61 @@ ion-scroll{
           padding-left: 2px;
       }
   }
+
+.products {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 10px; 
+}
+
+  .item-photo {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
+  }
+
+  .item-id {
+    color: rgb(255, 145, 0);
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .item-detile {
+
+text-align: center;
+padding: 2%;
+
+  }
+
+  .item-cost {
+    font-size: 18px;
+    font-weight: 600;
+    background-color: rgb(231, 231, 231);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  }
+
+  .item-price {
+    color: rgb(255, 145, 0);
+    padding: 0px 5px;
+  }
+
+  .item-order {
+    background-color: rgb(0, 7, 71);
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .order-button {
+    color: aliceblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .add-item {
+    padding: 0px 5px;
+  }
+ 

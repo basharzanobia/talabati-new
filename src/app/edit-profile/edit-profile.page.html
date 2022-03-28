@@ -1,0 +1,112 @@
+
+<ion-content [fullscreen]="true">
+  <ion-row class="user-bar">
+    <ion-col size="2" class="logo-head" routerLink="/tabs/tab1">       
+      <img src="assets/img/logo.png">
+</ion-col>
+    <ion-col size="8" class="page-head">
+      <ion-lable class="rest-title"> تعديل الملف الشخصي</ion-lable>   
+    </ion-col>
+
+    <ion-col size="2" class="page-head">
+      <ion-buttons>  
+        <ion-menu-button></ion-menu-button>   
+      </ion-buttons>  
+    </ion-col>
+  </ion-row>
+
+  <!-- Profile Photo Picker -->
+
+  <section class = "logos-container">
+    <div class="row logos">
+      <div class="col-4">
+      </div>
+      <div class="col-4 tittle">
+        <div class="picker">
+          <img class="img" [src]="selectedImage" *ngIf="selectedImage && showPreview">
+        </div>
+        <input type="file" accept=".jpg,.png" *ngIf="usePicker" #filePicker (change)="onFileChosen($event)"/>
+        <ion-button class="image-btn" (click)="onPickImage()">
+          <ion-icon name="camera" slot="icon-only"></ion-icon>
+        </ion-button>
+      </div>
+      <div class="col-4">
+      </div>
+    </div>
+
+  <!-- Profile Photo Picker -->
+
+  <!-- Profile Information -->
+  <!---  Form  -->
+<ion-row class="account-form">
+  <ion-col>
+    <ion-list lines="none">
+      <ion-item>
+        <ion-label slot="end"> 
+          <ion-icon  name="person" ></ion-icon>
+        </ion-label>
+        <ion-input
+          [(ngModel)]="name"
+          placeholder="الاسم الكامل"
+          type="text"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label slot="end">
+          <ion-icon name="phone-portrait-outline"></ion-icon>
+        </ion-label>
+        <ion-input
+          [(ngModel)]="PhoneNumber"
+          placeholder="رقم الهاتف"
+          type="tel"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label slot="end">
+          <ion-icon name="key-outline"></ion-icon>
+        </ion-label>
+        <ion-input
+          [(ngModel)]="password"
+          placeholder=" كلمة المرور الحالية "
+          type="password">
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label slot="end">
+          <ion-icon name="key-outline"></ion-icon>
+        </ion-label>
+        <ion-input
+          [(ngModel)]="password"
+          placeholder=" كلمة المرور الجديدة"
+          type="password">
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label slot="end">
+          <ion-icon name="key-outline"></ion-icon>
+        </ion-label>
+        <ion-input
+          [(ngModel)]="password"
+          placeholder="تأكيد كلمة المرور"
+          type="password">
+        </ion-input>
+      </ion-item>
+    </ion-list>
+
+      <!--- End Form  -->
+
+      <!-- End Profile Information -->
+
+       <!--- save button  -->
+    <ion-col size="12" class="align-items-center">
+      <ion-button expand="block" (click)="save()" class="continue-button">
+       حفظ التغييرات
+      </ion-button>
+    </ion-col>
+
+    <!---  End save button  -->
+  </ion-col>
+</ion-row>
+</section>
+
+</ion-content>

@@ -1,0 +1,53 @@
+.user-bar {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+  }
+  
+  
+  .page-head {
+    font-size: 20px;
+    font-weight: 700;
+  
+  }
+  
+
+/*  Form  */
+.logos-container {
+    border: #ededed;
+    border-style: solid;
+    border-radius: 10px;
+    margin: 6%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.logos {
+    text-align: center;
+    padding-top: 50px;
+}
+
+ion-label {
+    color: rgb(0, 6, 87)!important;
+}
+
+/*  Form Feild */ 
+.item-input {
+    padding-bottom: 6%;
+    padding-top: 6%;
+    font-size: 18px;
+}
+
+
+/*  Register Button  */
+.continue-button {
+    align-items: center;
+
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+    margin-top: 10%;
+    margin-bottom: 5%;
+}

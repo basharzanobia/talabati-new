@@ -1,0 +1,98 @@
+<ion-content [fullscreen]="true">
+  <ion-row class="user-bar">
+    <ion-col size="2" class="logo-head" routerLink="/tabs/tab1">       
+      <img src="assets/img/logo.png">
+</ion-col>
+    <ion-col size="8" class="page-head">
+      <ion-lable class="rest-title"> المساعدة والدعم</ion-lable>   
+    </ion-col>
+
+    <ion-col size="2" class="page-head">
+      <ion-buttons>  
+        <ion-menu-button></ion-menu-button>   
+      </ion-buttons>  
+    </ion-col>
+  </ion-row>
+ 
+  <!-- FAQ -->
+  <ion-card>
+    <ion-card-header >
+      <img class="card-logo" src="assets/img/logo.png" />
+      <ion-card-title> الاسئلة الشائعة   </ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <ion-row>
+        <ion-col size="12">
+        <ion-accordion-group>
+          <ion-accordion toggle-icon="arrow-down-circle" color="primary">
+            <ion-item slot="header">
+              <ion-label>سؤال 1</ion-label>
+            </ion-item>
+            <ion-list slot="content">
+              <ion-item>
+                <ion-label>1</ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-accordion>
+          <ion-accordion  toggle-icon="arrow-down-circle" color="primary">
+            <ion-item slot="header">
+              <ion-label>سؤال 1</ion-label>
+            </ion-item>
+            <ion-list slot="content">
+              <ion-item>
+                <ion-label>1</ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-accordion>
+          <ion-accordion  toggle-icon="arrow-down-circle" color="primary">
+            <ion-item slot="header">
+              <ion-label>سؤال 1</ion-label>
+            </ion-item>
+            <ion-list slot="content">
+              <ion-item>
+                <ion-label>1</ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-accordion>
+          <ion-accordion  toggle-icon="arrow-down-circle" color="primary" >
+            <ion-item slot="header">
+              <ion-label>سؤال 1</ion-label>
+            </ion-item>
+            <ion-list slot="content">
+              <ion-item>
+                <ion-label>1</ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-accordion>
+          <ion-accordion  toggle-icon="arrow-down-circle" color="primary">
+            <ion-item slot="header">
+              <ion-label>سؤال 1</ion-label>
+            </ion-item>
+            <ion-list slot="content">
+              <ion-item>
+                <ion-label>1</ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-accordion>
+        </ion-accordion-group>
+      </ion-col>
+
+       <!--End  FAQ -->
+
+         <!-- Call Now -->
+      <ion-col size="12">
+        <ion-lable>   هل تحتاج مساعدة ..</ion-lable>
+        <ion-button  expand="block" (click)="call()" class="call-button" >
+          اتصل بنا 
+        </ion-button>
+      </ion-col>
+
+       <!-- End Call Now -->
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+
+ 
+
+</ion-content>
