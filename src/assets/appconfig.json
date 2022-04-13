@@ -1,0 +1,19 @@
+{
+  "remoteServiceBaseUrl": "https://localhost:44360",
+  "appBaseUrl": "http://localhost:4200",
+  "logoAssetBaseUrl": "https://localhost:44360/uploads/logos/",
+  "localeMappings": [
+    {
+      "from": "pt-BR",
+      "to": "pt"
+    },
+    {
+      "from": "zh-CN",
+      "to": "zh"
+    },
+    {
+      "from": "he-IL",
+      "to": "he"
+    }
+  ]
+}

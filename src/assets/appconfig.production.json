@@ -1,0 +1,19 @@
+{
+  "remoteServiceBaseUrl": "https://talabak-b-y.com",
+  "appBaseUrl": "https://talabak-b-y.com",
+  "logoAssetBaseUrl": "https://talabak-b-y.com/uploads/logos/",
+  "localeMappings": [
+    {
+      "from": "pt-BR",
+      "to": "pt"
+    },
+    {
+      "from": "zh-CN",
+      "to": "zh"
+    },
+    {
+      "from": "he-IL",
+      "to": "he"
+    }
+  ]
+}
