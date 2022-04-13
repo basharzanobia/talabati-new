@@ -552,6 +552,62 @@ export class UserapiServiceProxy {
         }
         return _observableOf<void>(null as any);
     }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    register(body: UserRegisterModel | undefined): Observable<StringBaseResponse> {
+        let url_ = this.baseUrl + "/api/userapi/register";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRegister(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRegister(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<StringBaseResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<StringBaseResponse>;
+        }));
+    }
+
+    protected processRegister(response: HttpResponseBase): Observable<StringBaseResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StringBaseResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StringBaseResponse>(null as any);
+    }
 }
 
 export class ApplicationRole implements IApplicationRole {
@@ -2224,6 +2280,61 @@ export enum SortByType {
     _3 = 3,
 }
 
+export class StringBaseResponse implements IStringBaseResponse {
+    success: boolean;
+    response: string | undefined;
+    data: string | undefined;
+    modelKey: string | undefined;
+
+    constructor(data?: IStringBaseResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["success"];
+            this.response = _data["response"];
+            this.data = _data["data"];
+            this.modelKey = _data["modelKey"];
+        }
+    }
+
+    static fromJS(data: any): StringBaseResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new StringBaseResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["success"] = this.success;
+        data["response"] = this.response;
+        data["data"] = this.data;
+        data["modelKey"] = this.modelKey;
+        return data;
+    }
+
+    clone(): StringBaseResponse {
+        const json = this.toJSON();
+        let result = new StringBaseResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IStringBaseResponse {
+    success: boolean;
+    response: string | undefined;
+    data: string | undefined;
+    modelKey: string | undefined;
+}
+
 export class SubCategory implements ISubCategory {
     id: number;
     tid: number;
@@ -2614,6 +2725,61 @@ export interface IUserCart {
     total: number;
     createdDate: moment.Moment;
     updatedDate: moment.Moment | undefined;
+}
+
+export class UserRegisterModel implements IUserRegisterModel {
+    email: string;
+    password: string;
+    confirmPassword: string;
+    returnUrl: string | undefined;
+
+    constructor(data?: IUserRegisterModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.email = _data["email"];
+            this.password = _data["password"];
+            this.confirmPassword = _data["confirmPassword"];
+            this.returnUrl = _data["returnUrl"];
+        }
+    }
+
+    static fromJS(data: any): UserRegisterModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserRegisterModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["email"] = this.email;
+        data["password"] = this.password;
+        data["confirmPassword"] = this.confirmPassword;
+        data["returnUrl"] = this.returnUrl;
+        return data;
+    }
+
+    clone(): UserRegisterModel {
+        const json = this.toJSON();
+        let result = new UserRegisterModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUserRegisterModel {
+    email: string;
+    password: string;
+    confirmPassword: string;
+    returnUrl: string | undefined;
 }
 
 export class Varient implements IVarient {
