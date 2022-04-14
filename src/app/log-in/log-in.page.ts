@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AppAuthService } from 'src/shared/auth/app-auth.service';
 
 @Component({
   selector: 'app-log-in',
@@ -6,10 +7,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./log-in.page.scss'],
 })
 export class LogInPage implements OnInit {
+  submitting = false;
 
-  constructor() { }
+  constructor(public authService: AppAuthService) { 
+
+  }
 
   ngOnInit() {
+  }
+
+  login(): void {
+    this.submitting = true;
+    this.authService.authenticate(() => (this.submitting = false));
   }
 
 }

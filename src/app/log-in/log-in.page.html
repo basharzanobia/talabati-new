@@ -37,9 +37,9 @@
               <ion-icon name="phone-portrait-outline" ></ion-icon>
             </ion-label>
             <ion-input
-              [(ngModel)]="PhoneNumber"
-              placeholder="رقم الهاتف"
-              type="tel"
+              [(ngModel)]="authService.authenticateModel.email"
+              placeholder="البريد الالكتروني"
+              type="email"
             ></ion-input>
           </ion-item>
           <ion-item>
@@ -47,7 +47,7 @@
               <ion-icon name="key-outline"></ion-icon>
             </ion-label>
             <ion-input
-              [(ngModel)]="password"
+              [(ngModel)]="authService.authenticateModel.password"
               placeholder="كلمة المرور"
               type="password">
             </ion-input>
@@ -65,8 +65,8 @@
 
        
          <!---  log in button  -->
-         <ion-col size="12" routerLink="/intro">
-          <ion-button expand="block" (click)="logIn()" class="continue-button">
+         <ion-col size="12">
+          <ion-button expand="block" (click)="login()" class="continue-button">
           تسجيل الدخول
           </ion-button>
         </ion-col>

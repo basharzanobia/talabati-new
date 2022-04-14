@@ -505,7 +505,7 @@ export class UserapiServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    login(body: LoginApiModel | undefined): Observable<void> {
+    login(body: LoginApiModel | undefined): Observable<LoginResponseModel> {
         let url_ = this.baseUrl + "/api/userapi/login";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -517,6 +517,7 @@ export class UserapiServiceProxy {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
             })
         };
 
@@ -527,14 +528,14 @@ export class UserapiServiceProxy {
                 try {
                     return this.processLogin(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
+                    return _observableThrow(e) as any as Observable<LoginResponseModel>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<void>;
+                return _observableThrow(response_) as any as Observable<LoginResponseModel>;
         }));
     }
 
-    protected processLogin(response: HttpResponseBase): Observable<void> {
+    protected processLogin(response: HttpResponseBase): Observable<LoginResponseModel> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -543,14 +544,17 @@ export class UserapiServiceProxy {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(null as any);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = LoginResponseModel.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<void>(null as any);
+        return _observableOf<LoginResponseModel>(null as any);
     }
 
     /**
@@ -1229,6 +1233,73 @@ export class LoginApiModel implements ILoginApiModel {
 export interface ILoginApiModel {
     email: string | undefined;
     password: string | undefined;
+}
+
+export class LoginResponseModel implements ILoginResponseModel {
+    success: boolean;
+    token: string | undefined;
+    name: string | undefined;
+    email: string | undefined;
+    role: string | undefined;
+    id: string | undefined;
+    tid: number;
+
+    constructor(data?: ILoginResponseModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["success"];
+            this.token = _data["token"];
+            this.name = _data["name"];
+            this.email = _data["email"];
+            this.role = _data["role"];
+            this.id = _data["id"];
+            this.tid = _data["tid"];
+        }
+    }
+
+    static fromJS(data: any): LoginResponseModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new LoginResponseModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["success"] = this.success;
+        data["token"] = this.token;
+        data["name"] = this.name;
+        data["email"] = this.email;
+        data["role"] = this.role;
+        data["id"] = this.id;
+        data["tid"] = this.tid;
+        return data;
+    }
+
+    clone(): LoginResponseModel {
+        const json = this.toJSON();
+        let result = new LoginResponseModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ILoginResponseModel {
+    success: boolean;
+    token: string | undefined;
+    name: string | undefined;
+    email: string | undefined;
+    role: string | undefined;
+    id: string | undefined;
+    tid: number;
 }
 
 export class Order implements IOrder {
