@@ -40,12 +40,12 @@
           </ion-item>
           <ion-item>
             <ion-label slot="end">
-              <ion-icon name="phone-portrait-outline"></ion-icon>
+              <ion-icon name="mail-outline"></ion-icon>
             </ion-label>
             <ion-input
-              [(ngModel)]="PhoneNumber"
-              placeholder="رقم الهاتف"
-              type="tel"
+              [(ngModel)]="model.email"
+              placeholder="البريد الالكتروني"
+              type="email"
             ></ion-input>
           </ion-item>
           <ion-item>
@@ -53,7 +53,7 @@
               <ion-icon name="key-outline"></ion-icon>
             </ion-label>
             <ion-input
-              [(ngModel)]="password"
+              [(ngModel)]="model.password"
               placeholder="كلمة المرور"
               type="password"
             ></ion-input>
@@ -63,15 +63,15 @@
               <ion-icon name="key-outline"></ion-icon>
             </ion-label>
             <ion-input
-              [(ngModel)]="confirmPassword"
+              [(ngModel)]="model.confirmPassword"
               placeholder="تاكيد كلمة المرور"
               type="password"
             ></ion-input>
           </ion-item>
         </ion-list>
             <!---  Regester button  -->
-            <ion-col size="12"routerLink="/log-in">
-              <ion-button expand="block" (click)="logIn()" class="continue-button" >
+            <ion-col size="12">
+              <ion-button expand="block" (click)="save()" class="continue-button" >
                 انشاء حساب
               </ion-button>
             </ion-col>
