@@ -614,6 +614,139 @@ export class UserapiServiceProxy {
     }
 }
 
+@Injectable()
+export class VendorapiServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    categories(): Observable<VendorCategory[]> {
+        let url_ = this.baseUrl + "/api/vendorapi/categories";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCategories(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCategories(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<VendorCategory[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<VendorCategory[]>;
+        }));
+    }
+
+    protected processCategories(response: HttpResponseBase): Observable<VendorCategory[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(VendorCategory.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<VendorCategory[]>(null as any);
+    }
+
+    /**
+     * @param catId (optional) 
+     * @return Success
+     */
+    subcategories(catId: number | undefined): Observable<VendorSubCategory[]> {
+        let url_ = this.baseUrl + "/api/vendorapi/subcategories?";
+        if (catId === null)
+            throw new Error("The parameter 'catId' cannot be null.");
+        else if (catId !== undefined)
+            url_ += "catId=" + encodeURIComponent("" + catId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSubcategories(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSubcategories(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<VendorSubCategory[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<VendorSubCategory[]>;
+        }));
+    }
+
+    protected processSubcategories(response: HttpResponseBase): Observable<VendorSubCategory[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(VendorSubCategory.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<VendorSubCategory[]>(null as any);
+    }
+}
+
 export class ApplicationRole implements IApplicationRole {
     id: string | undefined;
     name: string | undefined;
@@ -699,12 +832,14 @@ export class ApplicationUser implements IApplicationUser {
     accessFailedCount: number;
     userRoles: ApplicationUserRole[] | undefined;
     name: string | undefined;
+    vendorCategoryId: number | undefined;
     tid: number;
     createdDate: moment.Moment | undefined;
     createdBy: string | undefined;
     isActive: boolean;
     review: Review[] | undefined;
     order: Order[] | undefined;
+    userSubCategories: UserVendorSubCategory[] | undefined;
     readonly isActiveMarge: boolean;
     notificationToken: string | undefined;
 
@@ -740,6 +875,7 @@ export class ApplicationUser implements IApplicationUser {
                     this.userRoles.push(ApplicationUserRole.fromJS(item));
             }
             this.name = _data["name"];
+            this.vendorCategoryId = _data["vendorCategoryId"];
             this.tid = _data["tid"];
             this.createdDate = _data["createdDate"] ? moment(_data["createdDate"].toString()) : <any>undefined;
             this.createdBy = _data["createdBy"];
@@ -753,6 +889,11 @@ export class ApplicationUser implements IApplicationUser {
                 this.order = [] as any;
                 for (let item of _data["order"])
                     this.order.push(Order.fromJS(item));
+            }
+            if (Array.isArray(_data["userSubCategories"])) {
+                this.userSubCategories = [] as any;
+                for (let item of _data["userSubCategories"])
+                    this.userSubCategories.push(UserVendorSubCategory.fromJS(item));
             }
             (<any>this).isActiveMarge = _data["isActiveMarge"];
             this.notificationToken = _data["notificationToken"];
@@ -789,6 +930,7 @@ export class ApplicationUser implements IApplicationUser {
                 data["userRoles"].push(item.toJSON());
         }
         data["name"] = this.name;
+        data["vendorCategoryId"] = this.vendorCategoryId;
         data["tid"] = this.tid;
         data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
         data["createdBy"] = this.createdBy;
@@ -802,6 +944,11 @@ export class ApplicationUser implements IApplicationUser {
             data["order"] = [];
             for (let item of this.order)
                 data["order"].push(item.toJSON());
+        }
+        if (Array.isArray(this.userSubCategories)) {
+            data["userSubCategories"] = [];
+            for (let item of this.userSubCategories)
+                data["userSubCategories"].push(item.toJSON());
         }
         data["isActiveMarge"] = this.isActiveMarge;
         data["notificationToken"] = this.notificationToken;
@@ -834,12 +981,14 @@ export interface IApplicationUser {
     accessFailedCount: number;
     userRoles: ApplicationUserRole[] | undefined;
     name: string | undefined;
+    vendorCategoryId: number | undefined;
     tid: number;
     createdDate: moment.Moment | undefined;
     createdBy: string | undefined;
     isActive: boolean;
     review: Review[] | undefined;
     order: Order[] | undefined;
+    userSubCategories: UserVendorSubCategory[] | undefined;
     isActiveMarge: boolean;
     notificationToken: string | undefined;
 }
@@ -2853,6 +3002,61 @@ export interface IUserRegisterModel {
     returnUrl: string | undefined;
 }
 
+export class UserVendorSubCategory implements IUserVendorSubCategory {
+    userId: string | undefined;
+    vendorSubCategoryId: number;
+    user: ApplicationUser;
+    vendorSubCategory: VendorSubCategory;
+
+    constructor(data?: IUserVendorSubCategory) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.userId = _data["userId"];
+            this.vendorSubCategoryId = _data["vendorSubCategoryId"];
+            this.user = _data["user"] ? ApplicationUser.fromJS(_data["user"]) : <any>undefined;
+            this.vendorSubCategory = _data["vendorSubCategory"] ? VendorSubCategory.fromJS(_data["vendorSubCategory"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): UserVendorSubCategory {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserVendorSubCategory();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userId"] = this.userId;
+        data["vendorSubCategoryId"] = this.vendorSubCategoryId;
+        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        data["vendorSubCategory"] = this.vendorSubCategory ? this.vendorSubCategory.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): UserVendorSubCategory {
+        const json = this.toJSON();
+        let result = new UserVendorSubCategory();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUserVendorSubCategory {
+    userId: string | undefined;
+    vendorSubCategoryId: number;
+    user: ApplicationUser;
+    vendorSubCategory: VendorSubCategory;
+}
+
 export class Varient implements IVarient {
     id: number;
     tid: number;
@@ -3093,6 +3297,204 @@ export interface IVarientImage {
     createdBy: string | undefined;
     updatedDate: moment.Moment;
     updatedBy: string | undefined;
+}
+
+export class VendorCategory implements IVendorCategory {
+    id: number;
+    tid: number;
+    imagePath: string | undefined;
+    name: string;
+    metaKeyword: string | undefined;
+    metaDescription: string | undefined;
+    status: boolean;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
+    updatedDate: moment.Moment;
+    updatedBy: string | undefined;
+    vendorSubCategory: VendorSubCategory[] | undefined;
+
+    constructor(data?: IVendorCategory) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tid = _data["tid"];
+            this.imagePath = _data["imagePath"];
+            this.name = _data["name"];
+            this.metaKeyword = _data["metaKeyword"];
+            this.metaDescription = _data["metaDescription"];
+            this.status = _data["status"];
+            this.createdDate = _data["createdDate"] ? moment(_data["createdDate"].toString()) : <any>undefined;
+            this.createdBy = _data["createdBy"];
+            this.updatedDate = _data["updatedDate"] ? moment(_data["updatedDate"].toString()) : <any>undefined;
+            this.updatedBy = _data["updatedBy"];
+            if (Array.isArray(_data["vendorSubCategory"])) {
+                this.vendorSubCategory = [] as any;
+                for (let item of _data["vendorSubCategory"])
+                    this.vendorSubCategory.push(VendorSubCategory.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): VendorCategory {
+        data = typeof data === 'object' ? data : {};
+        let result = new VendorCategory();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tid"] = this.tid;
+        data["imagePath"] = this.imagePath;
+        data["name"] = this.name;
+        data["metaKeyword"] = this.metaKeyword;
+        data["metaDescription"] = this.metaDescription;
+        data["status"] = this.status;
+        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
+        data["createdBy"] = this.createdBy;
+        data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
+        data["updatedBy"] = this.updatedBy;
+        if (Array.isArray(this.vendorSubCategory)) {
+            data["vendorSubCategory"] = [];
+            for (let item of this.vendorSubCategory)
+                data["vendorSubCategory"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone(): VendorCategory {
+        const json = this.toJSON();
+        let result = new VendorCategory();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IVendorCategory {
+    id: number;
+    tid: number;
+    imagePath: string | undefined;
+    name: string;
+    metaKeyword: string | undefined;
+    metaDescription: string | undefined;
+    status: boolean;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
+    updatedDate: moment.Moment;
+    updatedBy: string | undefined;
+    vendorSubCategory: VendorSubCategory[] | undefined;
+}
+
+export class VendorSubCategory implements IVendorSubCategory {
+    id: number;
+    tid: number;
+    vendorCategoryId: number;
+    vendorCategory: VendorCategory;
+    imagePath: string | undefined;
+    metaKeyword: string | undefined;
+    metaDescription: string | undefined;
+    name: string;
+    status: boolean;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
+    updatedDate: moment.Moment;
+    updatedBy: string | undefined;
+    userSubCategories: UserVendorSubCategory[] | undefined;
+
+    constructor(data?: IVendorSubCategory) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tid = _data["tid"];
+            this.vendorCategoryId = _data["vendorCategoryId"];
+            this.vendorCategory = _data["vendorCategory"] ? VendorCategory.fromJS(_data["vendorCategory"]) : <any>undefined;
+            this.imagePath = _data["imagePath"];
+            this.metaKeyword = _data["metaKeyword"];
+            this.metaDescription = _data["metaDescription"];
+            this.name = _data["name"];
+            this.status = _data["status"];
+            this.createdDate = _data["createdDate"] ? moment(_data["createdDate"].toString()) : <any>undefined;
+            this.createdBy = _data["createdBy"];
+            this.updatedDate = _data["updatedDate"] ? moment(_data["updatedDate"].toString()) : <any>undefined;
+            this.updatedBy = _data["updatedBy"];
+            if (Array.isArray(_data["userSubCategories"])) {
+                this.userSubCategories = [] as any;
+                for (let item of _data["userSubCategories"])
+                    this.userSubCategories.push(UserVendorSubCategory.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): VendorSubCategory {
+        data = typeof data === 'object' ? data : {};
+        let result = new VendorSubCategory();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tid"] = this.tid;
+        data["vendorCategoryId"] = this.vendorCategoryId;
+        data["vendorCategory"] = this.vendorCategory ? this.vendorCategory.toJSON() : <any>undefined;
+        data["imagePath"] = this.imagePath;
+        data["metaKeyword"] = this.metaKeyword;
+        data["metaDescription"] = this.metaDescription;
+        data["name"] = this.name;
+        data["status"] = this.status;
+        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
+        data["createdBy"] = this.createdBy;
+        data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
+        data["updatedBy"] = this.updatedBy;
+        if (Array.isArray(this.userSubCategories)) {
+            data["userSubCategories"] = [];
+            for (let item of this.userSubCategories)
+                data["userSubCategories"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone(): VendorSubCategory {
+        const json = this.toJSON();
+        let result = new VendorSubCategory();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IVendorSubCategory {
+    id: number;
+    tid: number;
+    vendorCategoryId: number;
+    vendorCategory: VendorCategory;
+    imagePath: string | undefined;
+    metaKeyword: string | undefined;
+    metaDescription: string | undefined;
+    name: string;
+    status: boolean;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
+    updatedDate: moment.Moment;
+    updatedBy: string | undefined;
+    userSubCategories: UserVendorSubCategory[] | undefined;
 }
 
 export class Wishlist implements IWishlist {

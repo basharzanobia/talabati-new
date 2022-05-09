@@ -26,6 +26,15 @@ ion-icon {
     color: #292562;
 }
 
+ion-img{
+    &::part(image) {
+        display: inline-block;
+        width: 100px;
+        max-width: 100%;
+        color: #292562;
+    }
+}
+
 
 .intro-item {
     border: #292562;
