@@ -20,6 +20,15 @@
 
 }
 
+ion-img{
+  &::part(image) {
+      display: inline-block;
+      width: 25px;
+      max-width: 100%;
+      color: #292562;
+  }
+}
+
 
 
 ion-scroll{
