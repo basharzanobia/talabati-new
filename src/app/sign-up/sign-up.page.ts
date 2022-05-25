@@ -15,6 +15,7 @@ from 'src/shared/service-proxies/service-proxies';
 export class SignUpPage implements OnInit {
   model: UserRegisterModel = new UserRegisterModel();
   saving = false;
+  name;
 
   constructor(private _accountService: UserapiServiceProxy,
     private _router: Router,

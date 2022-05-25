@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./tracking.page.scss'],
 })
 export class TrackingPage implements OnInit {
+  customFormatter;
 
   constructor() { }
 

@@ -12,4 +12,8 @@ export class VerifyPage implements OnInit {
   ngOnInit() {
   }
 
+  Verify() {
+    
+  }
+
 }

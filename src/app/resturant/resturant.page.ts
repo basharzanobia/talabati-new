@@ -20,4 +20,16 @@ export class ResturantPage implements OnInit {
     });
   }
 
+  slidePrev() {
+
+  }
+
+  slideNext() {
+
+  }
+
+  callSupport() {
+    
+  }
+
 }

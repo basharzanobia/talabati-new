@@ -12,4 +12,12 @@ export class ProductPage implements OnInit {
   ngOnInit() {
   }
 
+  slidePrev() {
+
+  }
+
+  slideNext() {
+    
+  }
+
 }
