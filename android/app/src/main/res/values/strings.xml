@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">talabat</string>
+    <string name="title_activity_main">talabat</string>
+    <string name="package_name">com.services.talabat</string>
+    <string name="custom_url_scheme">com.services.talabat</string>
+</resources>
