@@ -745,6 +745,69 @@ export class VendorapiServiceProxy {
         }
         return _observableOf<VendorSubCategory[]>(null as any);
     }
+
+    /**
+     * @param catId (optional) 
+     * @return Success
+     */
+    vendorsbycatid(catId: number | undefined): Observable<UserResponseModel[]> {
+        let url_ = this.baseUrl + "/api/vendorapi/vendorsbycatid?";
+        if (catId === null)
+            throw new Error("The parameter 'catId' cannot be null.");
+        else if (catId !== undefined)
+            url_ += "catId=" + encodeURIComponent("" + catId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processVendorsbycatid(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processVendorsbycatid(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<UserResponseModel[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<UserResponseModel[]>;
+        }));
+    }
+
+    protected processVendorsbycatid(response: HttpResponseBase): Observable<UserResponseModel[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(UserResponseModel.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UserResponseModel[]>(null as any);
+    }
 }
 
 export class ApplicationRole implements IApplicationRole {
@@ -2002,6 +2065,7 @@ export class ProductFilterModel implements IProductFilterModel {
     priceMax: number;
     selectedPriceMin: number;
     selectedPriceMax: number;
+    creatorId: string | undefined;
 
     constructor(data?: IProductFilterModel) {
         if (data) {
@@ -2029,6 +2093,7 @@ export class ProductFilterModel implements IProductFilterModel {
             this.priceMax = _data["priceMax"];
             this.selectedPriceMin = _data["selectedPriceMin"];
             this.selectedPriceMax = _data["selectedPriceMax"];
+            this.creatorId = _data["creatorId"];
         }
     }
 
@@ -2056,6 +2121,7 @@ export class ProductFilterModel implements IProductFilterModel {
         data["priceMax"] = this.priceMax;
         data["selectedPriceMin"] = this.selectedPriceMin;
         data["selectedPriceMax"] = this.selectedPriceMax;
+        data["creatorId"] = this.creatorId;
         return data;
     }
 
@@ -2083,6 +2149,7 @@ export interface IProductFilterModel {
     priceMax: number;
     selectedPriceMin: number;
     selectedPriceMax: number;
+    creatorId: string | undefined;
 }
 
 export class ProductImage implements IProductImage {
@@ -3002,6 +3069,85 @@ export interface IUserRegisterModel {
     returnUrl: string | undefined;
 }
 
+export class UserResponseModel implements IUserResponseModel {
+    id: string | undefined;
+    name: string | undefined;
+    email: string | undefined;
+    phoneNumber: string | undefined;
+    vendorCategoryId: number | undefined;
+    tid: number;
+    subCategories: VendorSubCategoryResponseModel[] | undefined;
+    createdDate: moment.Moment | undefined;
+
+    constructor(data?: IUserResponseModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.email = _data["email"];
+            this.phoneNumber = _data["phoneNumber"];
+            this.vendorCategoryId = _data["vendorCategoryId"];
+            this.tid = _data["tid"];
+            if (Array.isArray(_data["subCategories"])) {
+                this.subCategories = [] as any;
+                for (let item of _data["subCategories"])
+                    this.subCategories.push(VendorSubCategoryResponseModel.fromJS(item));
+            }
+            this.createdDate = _data["createdDate"] ? moment(_data["createdDate"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): UserResponseModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserResponseModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["email"] = this.email;
+        data["phoneNumber"] = this.phoneNumber;
+        data["vendorCategoryId"] = this.vendorCategoryId;
+        data["tid"] = this.tid;
+        if (Array.isArray(this.subCategories)) {
+            data["subCategories"] = [];
+            for (let item of this.subCategories)
+                data["subCategories"].push(item.toJSON());
+        }
+        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
+        return data;
+    }
+
+    clone(): UserResponseModel {
+        const json = this.toJSON();
+        let result = new UserResponseModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUserResponseModel {
+    id: string | undefined;
+    name: string | undefined;
+    email: string | undefined;
+    phoneNumber: string | undefined;
+    vendorCategoryId: number | undefined;
+    tid: number;
+    subCategories: VendorSubCategoryResponseModel[] | undefined;
+    createdDate: moment.Moment | undefined;
+}
+
 export class UserVendorSubCategory implements IUserVendorSubCategory {
     userId: string | undefined;
     vendorSubCategoryId: number;
@@ -3495,6 +3641,77 @@ export interface IVendorSubCategory {
     updatedDate: moment.Moment;
     updatedBy: string | undefined;
     userSubCategories: UserVendorSubCategory[] | undefined;
+}
+
+export class VendorSubCategoryResponseModel implements IVendorSubCategoryResponseModel {
+    id: number;
+    tid: number;
+    vendorCategoryId: number;
+    imagePath: string | undefined;
+    metaKeyword: string | undefined;
+    metaDescription: string | undefined;
+    name: string | undefined;
+    status: boolean;
+
+    constructor(data?: IVendorSubCategoryResponseModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tid = _data["tid"];
+            this.vendorCategoryId = _data["vendorCategoryId"];
+            this.imagePath = _data["imagePath"];
+            this.metaKeyword = _data["metaKeyword"];
+            this.metaDescription = _data["metaDescription"];
+            this.name = _data["name"];
+            this.status = _data["status"];
+        }
+    }
+
+    static fromJS(data: any): VendorSubCategoryResponseModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new VendorSubCategoryResponseModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tid"] = this.tid;
+        data["vendorCategoryId"] = this.vendorCategoryId;
+        data["imagePath"] = this.imagePath;
+        data["metaKeyword"] = this.metaKeyword;
+        data["metaDescription"] = this.metaDescription;
+        data["name"] = this.name;
+        data["status"] = this.status;
+        return data;
+    }
+
+    clone(): VendorSubCategoryResponseModel {
+        const json = this.toJSON();
+        let result = new VendorSubCategoryResponseModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IVendorSubCategoryResponseModel {
+    id: number;
+    tid: number;
+    vendorCategoryId: number;
+    imagePath: string | undefined;
+    metaKeyword: string | undefined;
+    metaDescription: string | undefined;
+    name: string | undefined;
+    status: boolean;
 }
 
 export class Wishlist implements IWishlist {

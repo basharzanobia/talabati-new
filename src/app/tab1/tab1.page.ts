@@ -3,7 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { AppConsts } from 'src/shared/AppConsts';
-import { VendorapiServiceProxy, VendorSubCategory } from 'src/shared/service-proxies/service-proxies';
+import { 
+  UserResponseModel,
+  VendorapiServiceProxy,
+  VendorSubCategory } 
+from 'src/shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-tab1',
@@ -13,6 +17,7 @@ import { VendorapiServiceProxy, VendorSubCategory } from 'src/shared/service-pro
 export class Tab1Page implements OnInit {
   catId:number;
   subcats$: Observable<VendorSubCategory[]>;
+  vendors$: Observable<UserResponseModel[]>;
 
   AppConsts = AppConsts;
 
@@ -24,6 +29,13 @@ export class Tab1Page implements OnInit {
       switchMap(params => {
         this.catId = Number(params.get('catId'));
         return this._vendorService.subcategories(this.catId);
+      })
+    );
+
+    this.vendors$ = this.route.paramMap.pipe(
+      switchMap(params => {
+        this.catId = Number(params.get('catId'));
+        return this._vendorService.vendorsbycatid(this.catId);
       })
     );
   }
