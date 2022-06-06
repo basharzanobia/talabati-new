@@ -808,6 +808,69 @@ export class VendorapiServiceProxy {
         }
         return _observableOf<UserResponseModel[]>(null as any);
     }
+
+    /**
+     * @param subCatId (optional) 
+     * @return Success
+     */
+    vendorsbysubcatid(subCatId: number | undefined): Observable<UserResponseModel[]> {
+        let url_ = this.baseUrl + "/api/vendorapi/vendorsbysubcatid?";
+        if (subCatId === null)
+            throw new Error("The parameter 'subCatId' cannot be null.");
+        else if (subCatId !== undefined)
+            url_ += "subCatId=" + encodeURIComponent("" + subCatId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processVendorsbysubcatid(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processVendorsbysubcatid(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<UserResponseModel[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<UserResponseModel[]>;
+        }));
+    }
+
+    protected processVendorsbysubcatid(response: HttpResponseBase): Observable<UserResponseModel[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(UserResponseModel.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UserResponseModel[]>(null as any);
+    }
 }
 
 export class ApplicationRole implements IApplicationRole {
@@ -1840,6 +1903,7 @@ export class Product implements IProduct {
     createdBy: string | undefined;
     updatedDate: moment.Moment;
     updatedBy: string | undefined;
+    creatorUser: ApplicationUser;
     productImage: ProductImage[] | undefined;
     varient: Varient[] | undefined;
     userCart: UserCart[] | undefined;
@@ -1891,6 +1955,7 @@ export class Product implements IProduct {
             this.createdBy = _data["createdBy"];
             this.updatedDate = _data["updatedDate"] ? moment(_data["updatedDate"].toString()) : <any>undefined;
             this.updatedBy = _data["updatedBy"];
+            this.creatorUser = _data["creatorUser"] ? ApplicationUser.fromJS(_data["creatorUser"]) : <any>undefined;
             if (Array.isArray(_data["productImage"])) {
                 this.productImage = [] as any;
                 for (let item of _data["productImage"])
@@ -1966,6 +2031,7 @@ export class Product implements IProduct {
         data["createdBy"] = this.createdBy;
         data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
         data["updatedBy"] = this.updatedBy;
+        data["creatorUser"] = this.creatorUser ? this.creatorUser.toJSON() : <any>undefined;
         if (Array.isArray(this.productImage)) {
             data["productImage"] = [];
             for (let item of this.productImage)
@@ -2041,6 +2107,7 @@ export interface IProduct {
     createdBy: string | undefined;
     updatedDate: moment.Moment;
     updatedBy: string | undefined;
+    creatorUser: ApplicationUser;
     productImage: ProductImage[] | undefined;
     varient: Varient[] | undefined;
     userCart: UserCart[] | undefined;
