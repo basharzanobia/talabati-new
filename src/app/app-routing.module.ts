@@ -39,7 +39,7 @@ const routes: Routes = [
     loadChildren: () => import('./intro/intro.module').then( m => m.IntroPageModule)
   },
   {
-    path: 'resturant',
+    path: 'resturant/:vendorId',
     loadChildren: () => import('./resturant/resturant.module').then( m => m.ResturantPageModule)
   },
   {
