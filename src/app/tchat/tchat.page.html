@@ -1,0 +1,47 @@
+
+
+    <ion-header>
+      <ion-row class="user-bar">
+        <ion-col size="2" class="logo-head" routerLink="/tabs/tab1">       
+          <img src="assets/img/logo.png">
+    </ion-col>
+        <ion-col size="8" class="page-head">
+          <ion-label class="rest-title">راسلنا</ion-label>   
+        </ion-col>
+    
+        <ion-col size="2" class="page-head">
+          <ion-buttons>  
+            <ion-menu-button></ion-menu-button>   
+          </ion-buttons>  
+        </ion-col>
+      </ion-row>
+    </ion-header>
+    <ion-content padding>
+      <div class="container">
+        <div *ngFor="let msg of messageList" class="message left ">
+          <img class="user-img" [src]="msg.sender.avatarURL" alt="" src="">
+          <div class="msg-detail">
+            <div class="msg-info">
+              <p>
+                {{msg.sender.name}}
+              </p>
+            </div>
+            <div class="msg-content">
+              <span class="triangle"></span>
+              <p class="line-breaker">{{msg.text}}</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </ion-content>
+    <ion-footer no-border>
+      <div class="input-wrap">
+        <textarea #messageInput placeholder="رسالتك!" [(ngModel)]="chatMessage" (keyup.enter)="sendMessage()">
+        </textarea>
+        <button class="maasenger" ion-button clear icon-only item-right (click)="sendMessage()">
+          <label > ارسال</label>
+          <ion-icon name="ios-send" ios="ios-send" md="md-send"></ion-icon>
+        </button>
+      </div>
+    </ion-footer>

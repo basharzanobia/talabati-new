@@ -14,18 +14,20 @@
     </ion-col>
   </ion-row>
 
-  <div class="gate-bar">
-    <ion-row>
-      <ion-col *ngFor="let subcat of subcats$ | async as list"
-        size="2">
-        <button ion-button round color="light" class="scroll-click">
-          <ion-img [src]="AppConsts.appBaseUrl + '/' + subcat.imagePath" class="scroll-item selectable-icon"></ion-img>
-          <ion-label class="rest-id">{{ subcat.name }}</ion-label>
-        </button>
-      </ion-col>
-    </ion-row>
-  </div>
 
+  <div class="row gate-bar">
+    <ion-slides [options]="catSlideOpts">
+      <ion-col size="3" class="gat-swp">
+      <ion-slide *ngFor="let subcat of subcats$ | async as list">
+          <button ion-button round color="light" class="scroll-click">
+            <ion-img [src]="AppConsts.appBaseUrl + '/' + subcat.imagePath" class="scroll-item selectable-icon"></ion-img>
+            <ion-label class="rest-id">{{ subcat.name }}</ion-label>
+          </button>
+      </ion-slide>
+    </ion-col>
+    </ion-slides>
+
+</div>
 
 
 

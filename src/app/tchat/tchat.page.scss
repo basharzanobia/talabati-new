@@ -1,0 +1,83 @@
+.user-bar {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+  }
+  
+  
+  .page-head {
+    font-size: 20px;
+    font-weight: 700;
+  
+  }
+
+
+.input-wrap {
+    padding: 5px;
+    display: flex;
+    textarea {
+      flex: 3;
+      border: 0;
+      border-bottom: 1px #000;
+      border-style: solid;
+    }
+    button {
+        flex: 1;
+    }
+}
+ion-footer {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
+    padding: 10px 5px;
+
+}
+ion-content .scroll-content {
+    background-color: #f5f5f5;
+}
+.line-breaker {
+    white-space: pre-line;
+}
+.container {
+
+  .message {
+    position: relative;
+    padding: 7px 0;
+    .msg-content {
+        color: #343434;
+        background-color: #ddd;
+        float: left;        
+    }
+    .user-img {
+        position: absolute;
+        border-radius: 45px;
+        width: 45px;
+        height: 45px;
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.36);
+    }
+    .msg-detail {
+        width: 100%;
+        padding-left: 60px;
+        display: inline-block;
+        p {
+          margin: 0;
+        }
+        .msg-info {
+          p {
+            font-size: .8em;
+            color: #888;
+          }
+        }
+    }
+  }
+}
+
+.maasenger {
+    background-color: rgb(2, 0, 92);
+    color: #f5f5f5;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 600;
+}

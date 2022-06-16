@@ -147,6 +147,45 @@ padding: 10px;
 }
 
 
+ion-scroll{
+  height: 70px;
+  
+  .scroll-zoom-wrapper{
+    display: inline-flex;
+  }
+}
+
+
+.scroll-click {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin: 15px 2px;
+    border-radius: 5px;
+    display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px;
+
+}
+
+.selectable-icon {
+    padding-bottom: 5px;
+  font-size: 20px;
+}
+
+
+.swiper-slide {
+  margin-left: 10px;
+  display: flex;
+  align-items: stretch;
+}
+
+.gat-swp {
+display: flex;
+}
+
+
 
 
 

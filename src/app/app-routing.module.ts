@@ -84,6 +84,30 @@ const routes: Routes = [
   },  {
     path: 'addres',
     loadChildren: () => import('./addres/addres.module').then( m => m.AddresPageModule)
+  },
+  {
+    path: 'commingsoon',
+    loadChildren: () => import('./commingsoon/commingsoon.module').then( m => m.CommingsoonPageModule)
+  },
+  {
+    path: 'saved-address',
+    loadChildren: () => import('./saved-address/saved-address.module').then( m => m.SavedAddressPageModule)
+  },
+  {
+    path: 'wallet',
+    loadChildren: () => import('./wallet/wallet.module').then( m => m.WalletPageModule)
+  },
+  {
+    path: 'coupons',
+    loadChildren: () => import('./coupons/coupons.module').then( m => m.CouponsPageModule)
+  },
+  {
+    path: 'massage',
+    loadChildren: () => import('./massage/massage.module').then( m => m.MassagePageModule)
+  },
+  {
+    path: 'tchat',
+    loadChildren: () => import('./tchat/tchat.module').then( m => m.TchatPageModule)
   }
 
 

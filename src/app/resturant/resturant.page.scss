@@ -41,7 +41,7 @@ ion-scroll{
 
   .scroll-click {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    margin-top: 30px;
+    margin: 15px 2px;
       border-radius: 5px;
       display: flex;
     flex-direction: column;
@@ -49,12 +49,24 @@ ion-scroll{
     font-size: 10px;
     font-weight: 600;
     padding: 10px;
+
   }
 
   .selectable-icon {
       padding-bottom: 5px;
     font-size: 20px;
   }
+
+
+  .swiper-slide {
+    margin-left: 10px;
+    display: flex;
+    align-items: stretch;
+}
+
+.gat-swp {
+  display: flex;
+}
 
 
 
@@ -128,5 +140,12 @@ padding: 2%;
 
   .add-item {
     padding: 0px 5px;
+  }
+
+
+  .feu-pro {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
+    margin-bottom: 10px;
   }
  

@@ -1,0 +1,131 @@
+<ion-content [fullscreen]="true">
+  <ion-row class="user-bar">
+    <ion-col size="2" class="logo-head" routerLink="/tabs/tab1">       
+      <img src="assets/img/logo.png">
+</ion-col>
+    <ion-col size="8" class="page-head">
+      <ion-label class="rest-title"> المحفظة</ion-label>   
+    </ion-col>
+
+    <ion-col size="2" class="page-head">
+      <ion-buttons>  
+        <ion-menu-button></ion-menu-button>   
+      </ion-buttons>  
+    </ion-col>
+  </ion-row>
+
+
+
+  <ion-card>
+    <ion-card-content>
+      <h2 class="procc-title"> المحفظة </h2>
+     <ion-row>
+ <ion-col size="6">
+         <ion-item >
+             <ion-lable class="booking-date">الرصيد الحالي  </ion-lable>
+         </ion-item>
+ </ion-col>
+
+ <ion-col size="6">
+  <ion-item >
+      <ion-lable class="booking-date">245 $</ion-lable>
+  </ion-item>
+</ion-col>
+
+</ion-row>
+ </ion-card-content>
+  </ion-card>
+
+
+
+<!-- payments mothed -->
+  <section class="add-card">
+
+
+    <ion-card>
+       <ion-card-content>
+        <h2 class="procc-title"> اضافة رصيد</h2>
+        <ion-list>
+          <ion-radio-group value="biff">
+            <ion-item>
+              <ion-label> بطاقة ائتمان</ion-label>
+              <ion-radio slot="start" value="biff"></ion-radio>
+            </ion-item>
+        
+            <ion-item>
+              <ion-label>بيبال </ion-label>
+              <ion-radio slot="start" value="griff"></ion-radio>
+            </ion-item>
+        
+            <ion-item>
+              <ion-label>قسيمة</ion-label>
+              <ion-radio slot="start" value="buford"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+    </ion-card-content>
+<!--  End payments mothed -->
+
+<!-- Card Info -->
+   <ion-row>
+    <ion-col size="12">
+         <ion-list lines="none">
+            <ion-item >
+                <ion-lable class="booking-date"> المعلومات والتفاصيل </ion-lable>
+            </ion-item>
+            <ion-item >
+                <ion-input type="text" placeholder="الاسم في البطاقة"></ion-input>
+            </ion-item>
+            <ion-item >
+                <ion-lable class="booking-time"> رقم الكرت </ion-lable>
+            </ion-item>
+            <ion-item >
+                <ion-input type="number" placeholder="0000000000"></ion-input>
+            </ion-item>
+         </ion-list>
+    </ion-col>
+     <ion-col size="6">
+         <ion-list lines="none">
+            <ion-item >
+                <ion-lable class="booking-date"> تاريخ الانتهاء </ion-lable>
+            </ion-item>
+            <ion-item >
+                <ion-input type="date" placeholder="الاسم في البطاقة"></ion-input>
+             </ion-item>
+         </ion-list>
+    </ion-col>
+    <ion-col size="6">
+      <ion-list lines="none">
+        <ion-item >
+          <ion-lable class="booking-time"> الرمز CCV </ion-lable>
+        </ion-item>
+        <ion-item >
+          <ion-input type="number" placeholder="000"></ion-input>
+        </ion-item>
+      </ion-list>
+    </ion-col>
+    <ion-col size="6">
+      <ion-item >
+        <ion-lable class="booking-time"> المبلغ </ion-lable>
+    </ion-item>
+    </ion-col>
+    <ion-col size="6">
+    <ion-item >
+        <ion-input type="number" placeholder="100$"></ion-input>
+    </ion-item>
+    </ion-col>
+      <ion-col size="12">
+        <ion-button  expand="block" class="add-card" >
+        اضافة رصيد
+        </ion-button>
+      </ion-col>
+   </ion-row>
+
+   <!--End  Card Info -->
+  </ion-card>
+  
+           <!-- Book Detile-->
+  
+  </section>
+</ion-content>
+

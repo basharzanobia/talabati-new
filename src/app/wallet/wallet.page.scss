@@ -1,0 +1,39 @@
+.user-bar {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+  }
+  
+  
+  .page-head {
+    font-size: 20px;
+    font-weight: 700;
+  
+  }
+ ion-card {
+    text-align: center;
+    border-radius: 20px;
+    border-style: solid;
+    border-color: #eeeeee;
+
+}
+
+h2 {
+    color: #090057;
+    font-size: 22px;
+    font-weight: 600;
+
+
+}
+
+/** button Style **/
+
+.add-card {
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+}
+
