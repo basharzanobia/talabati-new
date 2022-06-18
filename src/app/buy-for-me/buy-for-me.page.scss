@@ -1,0 +1,85 @@
+.user-bar {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+  }
+  
+  
+  .page-head {
+    font-size: 20px;
+    font-weight: 700;
+  
+  }
+
+
+  .buy-form {
+    text-align: center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 20px;
+    margin: 4%;
+  }
+
+  .buy-form {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .item {
+    padding-top: 15px;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+
+  .item-input {
+    font-size: 14px;
+    border: none;
+    padding: 20px 15px;
+    box-shadow: inset 0px 0px 10px rgba(165, 165, 165, 0.5);
+    border-radius: 10px;
+  }
+
+  .ion-textarea {
+    font-size: 14px;
+    border: none;
+    padding: 0px 0px;
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+
+  .add-tex {
+    padding: 0% 10%;
+  }
+
+  .order-track {
+  
+    margin-top: 20px;
+  }
+
+  .add-item {
+    color: aliceblue;
+    background-color: rgb(0, 7, 71);
+    border-radius: 10px;
+    padding: 10px 30px;
+
+  }
+
+  .item-date {
+    font-size: 14px;
+    border: none;
+    padding: 20px 15px;
+    box-shadow: inset 0px 0px 10px rgba(165, 165, 165, 0.5);
+    border-radius: 10px;
+    margin: 0px 5px;
+  }
+  .item-time {
+    font-size: 14px;
+    border: none;
+    padding: 20px 15px;
+    box-shadow: inset 0px 0px 10px rgba(165, 165, 165, 0.5);
+    border-radius: 10px;
+    margin: 0px 5px;
+  }

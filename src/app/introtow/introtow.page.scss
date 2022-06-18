@@ -1,0 +1,51 @@
+
+.ion-content {
+    --background-image: url('/img/rectangel.png');
+    --background-size:cover;
+    --background-repeat:no-repeat
+}
+ 
+/*  Form  header Title */
+
+.logos {
+    text-align: center;
+    padding-top: 40px;
+
+ }
+
+.intro {
+    text-align: center;
+    padding: 0% 25px;
+    
+  
+}
+
+ion-icon {
+    text-align: center;
+    font-size: 50px;
+    color: #292562;
+}
+
+ion-img{
+    &::part(image) {
+        display: inline-block;
+        width: 100px;
+        max-width: 100%;
+        color: #292562;
+    }
+}
+
+
+.intro-item {
+    border: #292562;
+    border-style: solid;
+    border-radius: 20px;
+    margin-top: 10px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+
+}
+
+h2 {
+    font-weight: 700;
+}

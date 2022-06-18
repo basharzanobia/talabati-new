@@ -1,0 +1,93 @@
+<ion-content [fullscreen]="true">
+  <ion-row class="user-bar">
+    <ion-col size="2" class="logo-head" routerLink="/tabs/tab1">       
+      <img src="assets/img/logo.png">
+</ion-col>
+    <ion-col size="8" class="page-head">
+      <ion-label class="rest-title"> اشتري لي </ion-label>   
+    </ion-col>
+
+    <ion-col size="2" class="page-head">
+      <ion-buttons>  
+        <ion-menu-button></ion-menu-button>   
+      </ion-buttons>  
+    </ion-col>
+  </ion-row>
+
+
+  <ion-grid>
+
+  <ion-row class="buy-form">
+  
+    <ion-col size="12">
+      <div class = "list">
+        <label class = "item"> تفاصيل الطلب
+        </label>  
+     </div>
+    </ion-col>
+    <ion-col size="12">
+      <div class = "list add-tex">
+        <ion-item>
+          <ion-textarea  placeholder="التفاصيل"></ion-textarea>
+        </ion-item>
+      </div>
+    </ion-col>
+
+    <ion-col size="12">
+      <div class = "list">
+        <label class = "item"> عنوان الاستلام
+        </label>   
+     </div>
+    </ion-col>
+    <ion-col size="12">
+      <div class = "list">
+        <input  class = "item-input" type = "text" placeholder = "عنوان الاستلام" />    
+     </div>
+    </ion-col>
+
+
+    <ion-col size="12">
+      <div class = "list">
+        <label class = "item"> وقت الاستلام 
+        </label>  
+     </div>
+    </ion-col>
+    <ion-col size="12">
+      <div class = "list">
+        <input class = "item-date" type = "date"  />
+        <input class = "item-time" type = "time" />
+     </div>
+    </ion-col>
+    <ion-col size="12">
+      <div class = "list">
+        <label class = "item">عنوان التسليم
+        </label>  
+     </div>
+    </ion-col>
+    <ion-col size="12">
+      <div class = "list">
+        <input  class = "item-input" type = "text" placeholder = "عنوان التسليم" />    
+     </div>
+    </ion-col>
+    <ion-col size="12">
+      <div class = "list">
+        <label class = "item"> وقت التسليم
+        </label>  
+     </div>
+    </ion-col>
+    <ion-col size="12">
+      <div class = "list">
+        <input class = "item-date" type = "date"  />
+        <input class = "item-time" type = "time" />   
+     </div>
+    </ion-col>
+
+    <ion-col size="12" class="order-track" routerLink="/tabs/tab2"> 
+      <a button icon-start ion-button full class="order-track">
+        <ion-label class="add-item" > ارسال الطلب  </ion-label>
+      </a>
+       </ion-col>
+  </ion-row>
+</ion-grid>
+
+</ion-content>

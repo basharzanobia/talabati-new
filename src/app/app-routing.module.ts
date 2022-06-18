@@ -81,7 +81,8 @@ const routes: Routes = [
   {
     path: 'edit-profile',
     loadChildren: () => import('./edit-profile/edit-profile.module').then( m => m.EditProfilePageModule)
-  },  {
+  },
+  {
     path: 'addres',
     loadChildren: () => import('./addres/addres.module').then( m => m.AddresPageModule)
   },
@@ -108,7 +109,20 @@ const routes: Routes = [
   {
     path: 'tchat',
     loadChildren: () => import('./tchat/tchat.module').then( m => m.TchatPageModule)
+  },
+  {
+    path: 'introtow',
+    loadChildren: () => import('./introtow/introtow.module').then( m => m.IntrotowPageModule)
+  },
+
+  {
+    path: 'buy-for-me',
+    loadChildren: () => import('./buy-for-me/buy-for-me.module').then( m => m.BuyForMePageModule)
+  },  {
+    path: 'serve-me',
+    loadChildren: () => import('./serve-me/serve-me.module').then( m => m.ServeMePageModule)
   }
+
 
 
 ];
