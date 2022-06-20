@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 import {
     UserapiServiceProxy,
     LoginApiModel,
@@ -15,7 +16,8 @@ export class AppAuthService {
 
     constructor(
         private _userService: UserapiServiceProxy,
-        private _router: Router
+        private _router: Router,
+        public alertController: AlertController
     ) {
         this.clear();
     }
@@ -36,7 +38,7 @@ export class AppAuthService {
             });
     }
 
-    private processAuthenticateResult(
+    private async processAuthenticateResult(
         authenticateResult: LoginResponseModel
     ) {
         this.authenticateResult = authenticateResult;
@@ -49,7 +51,7 @@ export class AppAuthService {
             );
         } else {
             // Unexpected result!
-
+            await this.presentAlert('فشل', 'هناك خطأ في اسم المستخدم أو كلمة المرور', null)
             console.log('Unexpected authenticateResult!');
             this._router.navigate(['/log-in']);
         }
@@ -72,5 +74,20 @@ export class AppAuthService {
         this.authenticateModel = new LoginApiModel();
         this.authenticateResult = null;
         this.rememberMe = false;
+    }
+
+    async presentAlert(header: string, msg: string, subHeader: string) {
+        const alert = await this.alertController.create({
+          cssClass: 'app-alert',
+          header: header,
+          subHeader: subHeader,
+          message: msg,
+          buttons: ['OK']
+        });
+    
+        await alert.present();
+    
+        const { role } = await alert.onDidDismiss();
+        console.log('onDidDismiss resolved with role', role);
     }
 }
