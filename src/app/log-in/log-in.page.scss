@@ -1,8 +1,12 @@
-.scroll-y {
-    --overflow-y: hidden!important;
-
+.scroll-y, .scroll-x {
+    z-index: 0;
+    will-change: scroll-position;
+    display: flex!important;
+    flex-direction: column;
+    align-content: space-around;
+    justify-content: space-between;
+    align-items: stretch;
 }
-
 
 /*  Form  header Title */
 
