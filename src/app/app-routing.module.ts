@@ -118,10 +118,15 @@ const routes: Routes = [
   {
     path: 'buy-for-me',
     loadChildren: () => import('./buy-for-me/buy-for-me.module').then( m => m.BuyForMePageModule)
-  },  {
+  },
+  {
     path: 'serve-me',
     loadChildren: () => import('./serve-me/serve-me.module').then( m => m.ServeMePageModule)
+  },  {
+    path: 'favorite',
+    loadChildren: () => import('./favorite/favorite.module').then( m => m.FavoritePageModule)
   }
+
 
 
 
