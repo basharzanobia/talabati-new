@@ -28,6 +28,7 @@ export class ResturantPage implements OnInit {
     slidesPerView: 5.7,
     spaceBetween: 5,
   };
+  selectedCategory;
 
   AppConsts = AppConsts;
 
