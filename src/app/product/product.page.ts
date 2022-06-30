@@ -14,7 +14,7 @@ from 'src/shared/service-proxies/service-proxies';
   styleUrls: ['./product.page.scss'],
 })
 export class ProductPage implements OnInit {
-  quantity = 0;
+  quantity = 1;
   productId = 1;
   product: Product;
   AppConsts = AppConsts;

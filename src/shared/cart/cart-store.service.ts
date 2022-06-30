@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class CartStoreService {
   private items = [];
-  private readonly storageKey = 'LuxesCart';
+  private readonly storageKey = 'TalabakCart';
   constructor() {
     this.items = JSON.parse(sessionStorage.getItem(this.storageKey)) || [];
   }
@@ -29,7 +29,7 @@ export class CartStoreService {
   }
 
   get Total() {
-    const sum = this.items.reduce((sum, current) => sum + current.totalPrice, 0);
+    const sum = this.items.reduce((sum, current) => sum + current.product.price * current.quantity, 0);
     return sum;
   }
 
