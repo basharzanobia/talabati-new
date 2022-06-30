@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { AppConsts } from 'src/shared/AppConsts';
 import { CartStoreService } from 'src/shared/cart/cart-store.service';
-import { Product } from 'src/shared/service-proxies/service-proxies';
+import {
+  Product,
+  ProductapiServiceProxy
+} 
+from 'src/shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-product',
@@ -11,18 +17,19 @@ export class ProductPage implements OnInit {
   quantity = 0;
   productId = 1;
   product: Product;
+  AppConsts = AppConsts;
 
-  constructor(public cart: CartStoreService) { }
+  constructor(
+    private route: ActivatedRoute,
+    public cart: CartStoreService,
+    private _productsService: ProductapiServiceProxy) { }
 
   ngOnInit() {
-  }
-
-  slidePrev() {
-
-  }
-
-  slideNext() {
-    
+    this.productId =  Number(this.route.snapshot.paramMap.get('productId'));
+    this._productsService.single(this.productId)
+          .subscribe((res: Product) => {
+            this.product = res;
+          });
   }
 
   addToCart() {

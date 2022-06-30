@@ -87,7 +87,7 @@
 
   <ion-row *ngFor="let product of featuredProducts" class="feu-pro">
     <ng-container *ngIf="!selectedCategory || selectedCategory == product.categoryId">
-      <ion-col size="4" class="item-photo" routerLink="/product">
+      <ion-col size="4" class="item-photo" [routerLink]="['/product', product.id]">
         <img [src]="AppConsts.appBaseUrl + '/' + product.mainImagePath" />
       </ion-col>
       <ion-col size="8" class="item-detile">
@@ -99,7 +99,7 @@
                 <ion-label color="secondry" class="item-price">{{ product.price }} $</ion-label> 
                 
           </ion-col>
-          <ion-col size="6" class="item-order" routerLink="/product">
+          <ion-col size="6" class="item-order" [routerLink]="['/product', product.id]">
             <a button icon-start ion-button full class="order-button">
               <ion-icon name="basket"></ion-icon>
               <ion-label class="add-item">طلب  </ion-label>

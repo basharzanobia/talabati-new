@@ -43,7 +43,7 @@ const routes: Routes = [
     loadChildren: () => import('./resturant/resturant.module').then( m => m.ResturantPageModule)
   },
   {
-    path: 'product',
+    path: 'product/:productId',
     loadChildren: () => import('./product/product.module').then( m => m.ProductPageModule)
   },
   {
@@ -122,7 +122,8 @@ const routes: Routes = [
   {
     path: 'serve-me',
     loadChildren: () => import('./serve-me/serve-me.module').then( m => m.ServeMePageModule)
-  },  {
+  },
+  {
     path: 'favorite',
     loadChildren: () => import('./favorite/favorite.module').then( m => m.FavoritePageModule)
   }
