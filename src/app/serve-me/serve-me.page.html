@@ -1,16 +1,16 @@
 <ion-content [fullscreen]="true">
   <ion-row class="user-bar">
-    <ion-col size="2" class="logo-head" routerLink="/tabs/tab1/1" routerDirection="root">       
+    <ion-col size="2" class="logo-head" routerLink="/tabs/tab1/1" routerDirection="root">
       <img src="assets/img/logo.png">
-</ion-col>
+    </ion-col>
     <ion-col size="8" class="page-head">
-      <ion-label class="rest-title"> اخدمني </ion-label>   
+      <ion-label class="rest-title"> اخدمني </ion-label>
     </ion-col>
 
     <ion-col size="2" class="page-head">
-      <ion-buttons>  
-        <ion-menu-button></ion-menu-button>   
-      </ion-buttons>  
+      <ion-buttons>
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
     </ion-col>
   </ion-row>
 
@@ -22,13 +22,17 @@
     <ion-col size="12">
       <div class = "list">
         <label class = "item serve-order-disc"> تفاصيل الطلب
-        </label>  
+        </label>
      </div>
     </ion-col>
     <ion-col size="12">
       <div class = "list add-tex">
         <ion-item>
-          <ion-textarea class="serve-order-disc-text"  placeholder="التفاصيل"></ion-textarea>
+          <ion-textarea
+            [(ngModel)]="reqModel.orderDetails"
+            class="serve-order-disc-text"
+            placeholder="التفاصيل">
+          </ion-textarea>
         </ion-item>
       </div>
     </ion-col>
@@ -36,57 +40,73 @@
     <ion-col size="12">
       <div class = "list">
         <label class = "item serve-order-receipt-address"> عنوان الاستلام
-        </label>   
+        </label>
      </div>
     </ion-col>
     <ion-col size="12">
       <div class = "list">
-        <input  class = "item-input serve-order-receipt-address-text" type = "text" placeholder = "عنوان الاستلام" />    
-     </div>
+        <input
+          [(ngModel)]="reqModel.recieverAddress"
+          type = "text"
+          class = "item-input serve-order-receipt-address-text"
+          placeholder = "عنوان الاستلام" />
+      </div>
     </ion-col>
-
 
     <ion-col size="12">
       <div class = "list">
         <label class = "item serve-order-receipt-calender"> وقت الاستلام 
-        </label>  
+        </label>
      </div>
     </ion-col>
     <ion-col size="12">
       <div class = "list">
-        <input class = "item-date serve-order-receipt-date" type = "date"  />
-        <input class = "item-time serve-order-receipt-time" type = "time" />
+        <ion-datetime 
+          class = "item-date serve-order-receipt-date"
+          [(ngModel)]="reqModel.recieverDate"
+        >
+        </ion-datetime>
      </div>
     </ion-col>
     <ion-col size="12">
       <div class = "list">
         <label class = "item serve-order-delever-address">عنوان التسليم
-        </label>  
+        </label>
      </div>
     </ion-col>
     <ion-col size="12">
       <div class = "list">
-        <input  class = "item-input serve-order-delever-address-text" type = "text" placeholder = "عنوان التسليم" />    
+        <input
+          [(ngModel)]="reqModel.senderAddress"
+          type = "text"
+          class = "item-input serve-order-delever-address-text"
+          placeholder = "عنوان التسليم" />
      </div>
     </ion-col>
     <ion-col size="12">
       <div class = "list">
         <label class = "item serve-order-delever-calender"> وقت التسليم
-        </label>  
+        </label>
      </div>
     </ion-col>
     <ion-col size="12">
       <div class = "list">
-        <input class = "item-date serve-order-delever-date" type = "date"  />
-        <input class = "item-time serve-order-delever-time" type = "time" />   
+        <ion-datetime
+          class = "item-date serve-order-delever-date"
+          [(ngModel)]="reqModel.senderDate"
+        >
+        </ion-datetime>
      </div>
     </ion-col>
 
-    <ion-col size="12" class="order-track" routerLink="/tabs/tab2"> 
-      <a button icon-start ion-button full class="order-track">
-        <ion-label class="add-item serve-order-submit" > ارسال الطلب  </ion-label>
-      </a>
-       </ion-col>
+    <ion-col size="12">
+      <ion-button
+        (click)="save()"
+        class="order-track"
+        expand="block">
+         ارسال الطلب 
+      </ion-button>
+    </ion-col>
   </ion-row>
 </ion-grid>
 

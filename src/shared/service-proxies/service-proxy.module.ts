@@ -9,7 +9,9 @@ import * as ApiServiceProxies from './service-proxies';
         ApiServiceProxies.UserapiServiceProxy,
         ApiServiceProxies.ProductapiServiceProxy,
         ApiServiceProxies.HomeapiServiceProxy,
-        ApiServiceProxies.VendorapiServiceProxy
+        ApiServiceProxies.VendorapiServiceProxy,
+        ApiServiceProxies.ServerequestServiceProxy,
+        ApiServiceProxies.BuyrequestServiceProxy
         // { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true }
     ]
 })
