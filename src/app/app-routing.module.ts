@@ -126,7 +126,11 @@ const routes: Routes = [
   {
     path: 'favorite',
     loadChildren: () => import('./favorite/favorite.module').then( m => m.FavoritePageModule)
+  },  {
+    path: 'about',
+    loadChildren: () => import('./about/about.module').then( m => m.AboutPageModule)
   }
+
 
 
 
