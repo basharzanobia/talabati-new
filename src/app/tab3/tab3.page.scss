@@ -1,39 +1,115 @@
 .user-bar {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+
+.page-head {
+  font-size: 20px;
+  font-weight: 700;
+
+}
+
+
+  .table {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;  
+  }
+
+  .table-head  {
+      padding: 15px;
+      border-bottom: solid 1px;
+     text-align: center;
+     font-weight: 600;
+     font-size: 18px;
+    }
+.table-count {
+    padding: 10px;
+    border-bottom: solid 1px;
+   text-align: center;
+   font-weight: 600;
+}
+
+.order-discount {
+    padding: 10px;
+    border-bottom: solid 1px;
+   text-align: center;
+   font-weight: 600;
+}
+
+.order-cost {
+    padding: 10px;
+    border-bottom: solid 1px;
+   text-align: center;
+   font-weight: 600;
+}
+
+.order-total {
+    padding: 10px;
+    border-bottom: solid 1px;
+   text-align: center;
+   font-weight: 600;
+}
+
+.order-addres {
+    padding: 10px;
+   text-align: center;
+   font-weight: 600;
+}
+
+.order-cancel {
+    font-size: 18px;
+    font-weight: 600;
+    background-color: rgb(214, 0, 0);
     border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: aliceblue;
+    
+  }
+
+.item-order {
+    background-color: rgb(0, 7, 71);
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .order-button {
+    color: aliceblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .add-item {
+    padding: 5px 5px;
+  }
+    
+
+  .order-pay {
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+   
+  }
+
+  .pay-title {
+    font-size: 18px;
+  }
+
+  .item-pay{
     display: flex;
     justify-content: center;
     align-items: center;
  
   }
 
-
-  
-  .page-head {
-    font-size: 20px;
-    font-weight: 700;
-
+  ion-checkbox {
+      padding: 2px;
   }
-
-  .noti {
-    box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.2), 20px 0px 20px 0px rgba(0, 0, 0, 0.19);
-    border-radius: 10px; 
-    margin-top: 30px;
-  }
-  
-    .noti-photo {
-      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-      border-radius: 10px;
-    }
-
-    .noti-detile {
-
-        text-align: start;
-        
-          }
-  
-    .noti-id {
-      color: rgb(255, 145, 0);
-      font-size: 20px;
-      font-weight: 600;
-    }

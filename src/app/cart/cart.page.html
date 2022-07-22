@@ -59,6 +59,22 @@
            </ion-col>
       </ion-row>
 
+      <ion-row class="order-pay" >
+      
+        <ion-col size="12" class="pay-title">
+          <ion-label> طريقة الدفع</ion-label>
+        </ion-col>
+        <br> <br> 
+        <ion-col size="6" class="item-pay"> <ion-checkbox color="primary"></ion-checkbox>
+          <ion-label> الدفع عند الاستلام</ion-label>
+        </ion-col>
+        <ion-col size="6" class="item-pay"><ion-checkbox color="primary"> </ion-checkbox> 
+          <ion-label> الدفع عبر حوالة بنكية</ion-label>
+        </ion-col>
+      </ion-row>
+      <br>
+
+
       <ion-row class="order-add" >
         <ion-col size="6" class="order-cancel" (click)="clearCart()"> 
           <ion-icon name="trash-sharp"></ion-icon>
@@ -67,7 +83,7 @@
         <ion-col size="6" class="item-order" routerLink="/invoice"> 
           <a button icon-start ion-button full class="order-button">
             <ion-icon name="basket"></ion-icon>
-            <ion-label class="add-item" > التالي  </ion-label>
+            <ion-label class="add-item" > تاكيد الطلب  </ion-label>
           </a>
            </ion-col>
       </ion-row>
