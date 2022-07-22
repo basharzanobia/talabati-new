@@ -129,6 +129,14 @@ const routes: Routes = [
   },  {
     path: 'about',
     loadChildren: () => import('./about/about.module').then( m => m.AboutPageModule)
+  },
+  {
+    path: 'payments',
+    loadChildren: () => import('./payments/payments.module').then( m => m.PaymentsPageModule)
+  },
+  {
+    path: 'add-payment',
+    loadChildren: () => import('./add-payment/add-payment.module').then( m => m.AddPaymentPageModule)
   }
 
 
