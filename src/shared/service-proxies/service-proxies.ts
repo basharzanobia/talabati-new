@@ -84,7 +84,7 @@ export class BuyrequestServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    addrequest(body: BuyMe | undefined): Observable<boolean> {
+    addrequest(body: BuyMe | undefined): Observable<BuyMe> {
         let url_ = this.baseUrl + "/api/buyrequest/addrequest";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -107,14 +107,14 @@ export class BuyrequestServiceProxy {
                 try {
                     return this.processAddrequest(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<boolean>;
+                    return _observableThrow(e) as any as Observable<BuyMe>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<boolean>;
+                return _observableThrow(response_) as any as Observable<BuyMe>;
         }));
     }
 
-    protected processAddrequest(response: HttpResponseBase): Observable<boolean> {
+    protected processAddrequest(response: HttpResponseBase): Observable<BuyMe> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -125,8 +125,7 @@ export class BuyrequestServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-    
+            result200 = BuyMe.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -134,14 +133,14 @@ export class BuyrequestServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<boolean>(null as any);
+        return _observableOf<BuyMe>(null as any);
     }
 
     /**
      * @param body (optional) 
      * @return Success
      */
-    updaterequest(body: BuyMe | undefined): Observable<boolean> {
+    updaterequest(body: BuyMe | undefined): Observable<BuyMe> {
         let url_ = this.baseUrl + "/api/buyrequest/updaterequest";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -157,21 +156,21 @@ export class BuyrequestServiceProxy {
             })
         };
 
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processUpdaterequest(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
                     return this.processUpdaterequest(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<boolean>;
+                    return _observableThrow(e) as any as Observable<BuyMe>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<boolean>;
+                return _observableThrow(response_) as any as Observable<BuyMe>;
         }));
     }
 
-    protected processUpdaterequest(response: HttpResponseBase): Observable<boolean> {
+    protected processUpdaterequest(response: HttpResponseBase): Observable<BuyMe> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -182,8 +181,7 @@ export class BuyrequestServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-    
+            result200 = BuyMe.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -191,7 +189,7 @@ export class BuyrequestServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<boolean>(null as any);
+        return _observableOf<BuyMe>(null as any);
     }
 
     /**
@@ -214,7 +212,7 @@ export class BuyrequestServiceProxy {
             })
         };
 
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processDeleterequest(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -734,7 +732,7 @@ export class OrderapiServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    create(body: OrderFilterModel | undefined): Observable<void> {
+    create(body: Order | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/orderapi/create";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -783,16 +781,11 @@ export class OrderapiServiceProxy {
     }
 
     /**
-     * @param id (optional) 
      * @param body (optional) 
      * @return Success
      */
-    update(id: number | undefined, body: OrderFilterModel | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/orderapi/update?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+    update(body: Order | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/orderapi/update";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -1134,7 +1127,7 @@ export class ServerequestServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    addrequest(body: ServeMe | undefined): Observable<boolean> {
+    addrequest(body: ServeMe | undefined): Observable<ServeMe> {
         let url_ = this.baseUrl + "/api/serverequest/addrequest";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1157,14 +1150,14 @@ export class ServerequestServiceProxy {
                 try {
                     return this.processAddrequest(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<boolean>;
+                    return _observableThrow(e) as any as Observable<ServeMe>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<boolean>;
+                return _observableThrow(response_) as any as Observable<ServeMe>;
         }));
     }
 
-    protected processAddrequest(response: HttpResponseBase): Observable<boolean> {
+    protected processAddrequest(response: HttpResponseBase): Observable<ServeMe> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1175,8 +1168,7 @@ export class ServerequestServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-    
+            result200 = ServeMe.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1184,14 +1176,14 @@ export class ServerequestServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<boolean>(null as any);
+        return _observableOf<ServeMe>(null as any);
     }
 
     /**
      * @param body (optional) 
      * @return Success
      */
-    updaterequest(body: ServeMe | undefined): Observable<boolean> {
+    updaterequest(body: ServeMe | undefined): Observable<ServeMe> {
         let url_ = this.baseUrl + "/api/serverequest/updaterequest";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1207,21 +1199,21 @@ export class ServerequestServiceProxy {
             })
         };
 
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processUpdaterequest(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
                     return this.processUpdaterequest(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<boolean>;
+                    return _observableThrow(e) as any as Observable<ServeMe>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<boolean>;
+                return _observableThrow(response_) as any as Observable<ServeMe>;
         }));
     }
 
-    protected processUpdaterequest(response: HttpResponseBase): Observable<boolean> {
+    protected processUpdaterequest(response: HttpResponseBase): Observable<ServeMe> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1232,8 +1224,7 @@ export class ServerequestServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-    
+            result200 = ServeMe.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1241,7 +1232,7 @@ export class ServerequestServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<boolean>(null as any);
+        return _observableOf<ServeMe>(null as any);
     }
 
     /**
@@ -1264,7 +1255,7 @@ export class ServerequestServiceProxy {
             })
         };
 
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processDeleterequest(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -1888,6 +1879,10 @@ export class ApplicationUser implements IApplicationUser {
     tid: number;
     createdDate: moment.Moment | undefined;
     createdBy: string | undefined;
+    region: string | undefined;
+    startTime: string | undefined;
+    endTime: string | undefined;
+    storeLogo: string | undefined;
     isActive: boolean;
     review: Review[] | undefined;
     order: Order[] | undefined;
@@ -1931,6 +1926,10 @@ export class ApplicationUser implements IApplicationUser {
             this.tid = _data["tid"];
             this.createdDate = _data["createdDate"] ? moment(_data["createdDate"].toString()) : <any>undefined;
             this.createdBy = _data["createdBy"];
+            this.region = _data["region"];
+            this.startTime = _data["startTime"];
+            this.endTime = _data["endTime"];
+            this.storeLogo = _data["storeLogo"];
             this.isActive = _data["isActive"];
             if (Array.isArray(_data["review"])) {
                 this.review = [] as any;
@@ -1986,6 +1985,10 @@ export class ApplicationUser implements IApplicationUser {
         data["tid"] = this.tid;
         data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
         data["createdBy"] = this.createdBy;
+        data["region"] = this.region;
+        data["startTime"] = this.startTime;
+        data["endTime"] = this.endTime;
+        data["storeLogo"] = this.storeLogo;
         data["isActive"] = this.isActive;
         if (Array.isArray(this.review)) {
             data["review"] = [];
@@ -2037,6 +2040,10 @@ export interface IApplicationUser {
     tid: number;
     createdDate: moment.Moment | undefined;
     createdBy: string | undefined;
+    region: string | undefined;
+    startTime: string | undefined;
+    endTime: string | undefined;
+    storeLogo: string | undefined;
     isActive: boolean;
     review: Review[] | undefined;
     order: Order[] | undefined;
@@ -2198,6 +2205,9 @@ export interface IBrand {
 export class BuyMe implements IBuyMe {
     id: number;
     tid: number;
+    userId: string | undefined;
+    user: ApplicationUser;
+    orderStatus: RequestStatusType;
     status: boolean;
     orderDetails: string | undefined;
     senderAddress: string | undefined;
@@ -2218,6 +2228,9 @@ export class BuyMe implements IBuyMe {
         if (_data) {
             this.id = _data["id"];
             this.tid = _data["tid"];
+            this.userId = _data["userId"];
+            this.user = _data["user"] ? ApplicationUser.fromJS(_data["user"]) : <any>undefined;
+            this.orderStatus = _data["orderStatus"];
             this.status = _data["status"];
             this.orderDetails = _data["orderDetails"];
             this.senderAddress = _data["senderAddress"];
@@ -2238,6 +2251,9 @@ export class BuyMe implements IBuyMe {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["tid"] = this.tid;
+        data["userId"] = this.userId;
+        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        data["orderStatus"] = this.orderStatus;
         data["status"] = this.status;
         data["orderDetails"] = this.orderDetails;
         data["senderAddress"] = this.senderAddress;
@@ -2258,6 +2274,9 @@ export class BuyMe implements IBuyMe {
 export interface IBuyMe {
     id: number;
     tid: number;
+    userId: string | undefined;
+    user: ApplicationUser;
+    orderStatus: RequestStatusType;
     status: boolean;
     orderDetails: string | undefined;
     senderAddress: string | undefined;
@@ -2884,149 +2903,6 @@ export interface IOrderDetail {
     updatedBy: string | undefined;
 }
 
-export class OrderFilterModel implements IOrderFilterModel {
-    status: OrderStatusType;
-    totalQty: number;
-    totalAmount: number;
-    couponId: number;
-    couponDiscount: number;
-    taxPercent: number;
-    taxAmount: number;
-    grandTotal: number;
-    orderStatus: number;
-    area: string | undefined;
-    city: string | undefined;
-    houseNo: string | undefined;
-    landmark: string | undefined;
-    mobile: string | undefined;
-    name: string | undefined;
-    middleName: string | undefined;
-    lastName: string | undefined;
-    nickName: string | undefined;
-    statements: string | undefined;
-    gender: string | undefined;
-    orderNotes: string | undefined;
-    paymentMode: number;
-    pincode: string | undefined;
-    shippingAmount: number;
-    shippingPincode: string | undefined;
-    state: string | undefined;
-
-    constructor(data?: IOrderFilterModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.status = _data["status"];
-            this.totalQty = _data["totalQty"];
-            this.totalAmount = _data["totalAmount"];
-            this.couponId = _data["couponId"];
-            this.couponDiscount = _data["couponDiscount"];
-            this.taxPercent = _data["taxPercent"];
-            this.taxAmount = _data["taxAmount"];
-            this.grandTotal = _data["grandTotal"];
-            this.orderStatus = _data["orderStatus"];
-            this.area = _data["area"];
-            this.city = _data["city"];
-            this.houseNo = _data["houseNo"];
-            this.landmark = _data["landmark"];
-            this.mobile = _data["mobile"];
-            this.name = _data["name"];
-            this.middleName = _data["middleName"];
-            this.lastName = _data["lastName"];
-            this.nickName = _data["nickName"];
-            this.statements = _data["statements"];
-            this.gender = _data["gender"];
-            this.orderNotes = _data["orderNotes"];
-            this.paymentMode = _data["paymentMode"];
-            this.pincode = _data["pincode"];
-            this.shippingAmount = _data["shippingAmount"];
-            this.shippingPincode = _data["shippingPincode"];
-            this.state = _data["state"];
-        }
-    }
-
-    static fromJS(data: any): OrderFilterModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new OrderFilterModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["status"] = this.status;
-        data["totalQty"] = this.totalQty;
-        data["totalAmount"] = this.totalAmount;
-        data["couponId"] = this.couponId;
-        data["couponDiscount"] = this.couponDiscount;
-        data["taxPercent"] = this.taxPercent;
-        data["taxAmount"] = this.taxAmount;
-        data["grandTotal"] = this.grandTotal;
-        data["orderStatus"] = this.orderStatus;
-        data["area"] = this.area;
-        data["city"] = this.city;
-        data["houseNo"] = this.houseNo;
-        data["landmark"] = this.landmark;
-        data["mobile"] = this.mobile;
-        data["name"] = this.name;
-        data["middleName"] = this.middleName;
-        data["lastName"] = this.lastName;
-        data["nickName"] = this.nickName;
-        data["statements"] = this.statements;
-        data["gender"] = this.gender;
-        data["orderNotes"] = this.orderNotes;
-        data["paymentMode"] = this.paymentMode;
-        data["pincode"] = this.pincode;
-        data["shippingAmount"] = this.shippingAmount;
-        data["shippingPincode"] = this.shippingPincode;
-        data["state"] = this.state;
-        return data;
-    }
-
-    clone(): OrderFilterModel {
-        const json = this.toJSON();
-        let result = new OrderFilterModel();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IOrderFilterModel {
-    status: OrderStatusType;
-    totalQty: number;
-    totalAmount: number;
-    couponId: number;
-    couponDiscount: number;
-    taxPercent: number;
-    taxAmount: number;
-    grandTotal: number;
-    orderStatus: number;
-    area: string | undefined;
-    city: string | undefined;
-    houseNo: string | undefined;
-    landmark: string | undefined;
-    mobile: string | undefined;
-    name: string | undefined;
-    middleName: string | undefined;
-    lastName: string | undefined;
-    nickName: string | undefined;
-    statements: string | undefined;
-    gender: string | undefined;
-    orderNotes: string | undefined;
-    paymentMode: number;
-    pincode: string | undefined;
-    shippingAmount: number;
-    shippingPincode: string | undefined;
-    state: string | undefined;
-}
-
 export class OrderResponseModel implements IOrderResponseModel {
     orders: Order[] | undefined;
 
@@ -3592,6 +3468,15 @@ export interface IProductResponseModel {
     selectedPriceMin: number;
 }
 
+export enum RequestStatusType {
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+    _5 = 5,
+    _6 = 6,
+}
+
 export class Review implements IReview {
     id: number;
     tid: number;
@@ -3696,6 +3581,9 @@ export enum ReviewStatusType {
 export class ServeMe implements IServeMe {
     id: number;
     tid: number;
+    userId: string | undefined;
+    user: ApplicationUser;
+    orderStatus: RequestStatusType;
     status: boolean;
     orderDetails: string | undefined;
     senderAddress: string | undefined;
@@ -3716,6 +3604,9 @@ export class ServeMe implements IServeMe {
         if (_data) {
             this.id = _data["id"];
             this.tid = _data["tid"];
+            this.userId = _data["userId"];
+            this.user = _data["user"] ? ApplicationUser.fromJS(_data["user"]) : <any>undefined;
+            this.orderStatus = _data["orderStatus"];
             this.status = _data["status"];
             this.orderDetails = _data["orderDetails"];
             this.senderAddress = _data["senderAddress"];
@@ -3736,6 +3627,9 @@ export class ServeMe implements IServeMe {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["tid"] = this.tid;
+        data["userId"] = this.userId;
+        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        data["orderStatus"] = this.orderStatus;
         data["status"] = this.status;
         data["orderDetails"] = this.orderDetails;
         data["senderAddress"] = this.senderAddress;
@@ -3756,6 +3650,9 @@ export class ServeMe implements IServeMe {
 export interface IServeMe {
     id: number;
     tid: number;
+    userId: string | undefined;
+    user: ApplicationUser;
+    orderStatus: RequestStatusType;
     status: boolean;
     orderDetails: string | undefined;
     senderAddress: string | undefined;

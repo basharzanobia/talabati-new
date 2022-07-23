@@ -6,10 +6,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./tchat.page.scss'],
 })
 export class TchatPage implements OnInit {
+  chatMessage;
+  messageList = [];
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  sendMessage() {
+
   }
 
 }

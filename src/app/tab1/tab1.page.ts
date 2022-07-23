@@ -18,6 +18,10 @@ export class Tab1Page implements OnInit {
   catId:number;
   subcats$: Observable<VendorSubCategory[]>;
   vendors$: Observable<UserResponseModel[]>;
+  catSlideOpts = {
+    slidesPerView: 5.7,
+    spaceBetween: 5,
+  };
 
   AppConsts = AppConsts;
 
