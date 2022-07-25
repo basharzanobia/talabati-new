@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CartStoreService } from 'src/shared/cart/cart-store.service';
+import { Order, OrderapiServiceProxy, OrderDetail } from 'src/shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-cart',
@@ -7,9 +9,12 @@ import { CartStoreService } from 'src/shared/cart/cart-store.service';
   styleUrls: ['./cart.page.scss'],
 })
 export class CartPage implements OnInit {
+  address = "";
 
   constructor(
     public cart: CartStoreService,
+    private _router: Router,
+    private _orderService: OrderapiServiceProxy
   ) { }
 
   ngOnInit() {
@@ -33,6 +38,42 @@ export class CartPage implements OnInit {
 
   clearCart() {
     this.cart.clearCart();
+  }
+
+  sendOrder() {
+    const order = new Order();
+    order.init({
+      address: this.address,
+      area: 'area',
+      city: 'city',
+      houseNo: 'houseNo',
+      state: 'state',
+      name: 'name',
+      middleName: 'middle name',
+      lastName: 'lastname',
+      mobile: 'mobile',
+      orderDetail : []
+    });
+    this.cart.Items.forEach(element => {
+      const orderDetail = new OrderDetail();
+      orderDetail.init({
+        productId: element.product.id,
+        qty: element.quantity,
+        price: element.product.price
+      });
+      order.orderDetail.push(orderDetail);
+    });
+    this._orderService.create(order).subscribe(
+      (res) => {
+        console.log('order create');
+        
+          //this._router.navigate(['/invoice']);
+      },
+      async (error) => {
+        // Unexpected result!
+        // await this.presentAlert('فشل', 'حدث خطأ حاول مرة أخرى', null);
+        console.log('error ', error);
+      });
   }
 
 }
