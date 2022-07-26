@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AppRouteGuard } from 'src/shared/auth/auth-route-guard';
 
 const routes: Routes = [
 
@@ -126,7 +127,8 @@ const routes: Routes = [
   {
     path: 'favorite',
     loadChildren: () => import('./favorite/favorite.module').then( m => m.FavoritePageModule)
-  },  {
+  },
+  {
     path: 'about',
     loadChildren: () => import('./about/about.module').then( m => m.AboutPageModule)
   },
@@ -148,6 +150,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
   ],
+  providers: [AppRouteGuard],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

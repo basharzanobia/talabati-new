@@ -15,7 +15,7 @@ export class AppSessionService {
             role : localStorage.getItem("talabati-role"),
             id: localStorage.getItem("talabati-id")
         });
-        return user;
+        return user.id ? user : undefined;
     }
 
     get userId(): string {

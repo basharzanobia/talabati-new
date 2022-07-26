@@ -15,6 +15,8 @@ import { ServiceProxyModule } from '../shared/service-proxies/service-proxy.modu
 import { AppHttpInterceptor } from '../shared/auth/app-http.interceptor';
 import { AppAuthService } from 'src/shared/auth/app-auth.service';
 import { CartStoreService } from 'src/shared/cart/cart-store.service';
+import { AppSessionService } from 'src/shared/session/app-session.service';
+import { AppRouteGuard } from 'src/shared/auth/auth-route-guard';
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,7 +33,8 @@ import { CartStoreService } from 'src/shared/cart/cart-store.service';
     { provide: API_BASE_URL, useFactory: () => AppConsts.remoteServiceBaseUrl },
     { provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
     CartStoreService,
-    AppAuthService
+    AppAuthService,
+    AppSessionService,
   ],
   bootstrap: [AppComponent],
 })
