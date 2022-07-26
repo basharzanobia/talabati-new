@@ -9,8 +9,8 @@ import { OrderapiServiceProxy, Order, OrderDetail } from 'src/shared/service-pro
   styleUrls: ['tab3.page.scss']
 })
 export class Tab3Page {
-
   address = "";
+  notes = "";
 
   constructor(
     public cart: CartStoreService,
@@ -53,6 +53,8 @@ export class Tab3Page {
       middleName: 'middle name',
       lastName: 'lastname',
       mobile: 'mobile',
+      orderNotes: this.notes,
+      grandTotal: this.cart.Total,
       orderDetail : []
     });
     this.cart.Items.forEach(element => {
