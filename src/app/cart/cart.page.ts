@@ -65,9 +65,7 @@ export class CartPage implements OnInit {
     });
     this._orderService.create(order).subscribe(
       (res) => {
-        console.log('order create');
-        
-          //this._router.navigate(['/invoice']);
+          this._router.navigate(['/invoice']);
       },
       async (error) => {
         // Unexpected result!

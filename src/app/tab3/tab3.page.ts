@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { CartStoreService } from 'src/shared/cart/cart-store.service';
+import { OrderapiServiceProxy, Order, OrderDetail } from 'src/shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-tab3',
@@ -8,8 +10,12 @@ import { CartStoreService } from 'src/shared/cart/cart-store.service';
 })
 export class Tab3Page {
 
+  address = "";
+
   constructor(
     public cart: CartStoreService,
+    private _router: Router,
+    private _orderService: OrderapiServiceProxy
   ) { }
 
   ngOnInit() {
@@ -33,6 +39,40 @@ export class Tab3Page {
 
   clearCart() {
     this.cart.clearCart();
+  }
+
+  sendOrder() {
+    const order = new Order();
+    order.init({
+      address: this.address,
+      area: 'area',
+      city: 'city',
+      houseNo: 'houseNo',
+      state: 'state',
+      name: 'name',
+      middleName: 'middle name',
+      lastName: 'lastname',
+      mobile: 'mobile',
+      orderDetail : []
+    });
+    this.cart.Items.forEach(element => {
+      const orderDetail = new OrderDetail();
+      orderDetail.init({
+        productId: element.product.id,
+        qty: element.quantity,
+        price: element.product.price
+      });
+      order.orderDetail.push(orderDetail);
+    });
+    this._orderService.create(order).subscribe(
+      (res) => {
+          this._router.navigate(['/invoice']);
+      },
+      async (error) => {
+        // Unexpected result!
+        // await this.presentAlert('فشل', 'حدث خطأ حاول مرة أخرى', null);
+        console.log('error ', error);
+      });
   }
 
 }
