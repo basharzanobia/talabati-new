@@ -46,7 +46,7 @@ export class AppAuthService {
         if (authenticateResult.success) {
             // Successfully logged in
             this.login(
-                authenticateResult.token,
+                authenticateResult,
                 this.rememberMe
             );
         } else {
@@ -58,14 +58,18 @@ export class AppAuthService {
     }
 
     private login(
-        accessToken: string,
+        authenticateResult: LoginResponseModel,
         rememberMe?: boolean
     ): void {
         // const tokenExpireDate = rememberMe
         //     ? new Date(new Date().getTime() + 1000 * expireInSeconds)
         //     : undefined;
 
-        localStorage.setItem("token", accessToken);
+        localStorage.setItem("token", authenticateResult.token);
+        localStorage.setItem("talabati-username", authenticateResult.name);
+        localStorage.setItem("talabati-email", authenticateResult.email);
+        localStorage.setItem("talabati-role", authenticateResult.role);
+        localStorage.setItem("talabati-id", authenticateResult.id);
 
         this._router.navigate(['/intro']);
     }
