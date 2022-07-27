@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { LoginResponseModel } from 'src/shared/service-proxies/service-proxies';
+import { AppSessionService } from 'src/shared/session/app-session.service';
 
 @Component({
   selector: 'app-profile',
@@ -6,10 +8,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
+  userInfo: LoginResponseModel;
 
-  constructor() { }
+  constructor(private _session: AppSessionService) { }
 
   ngOnInit() {
+    this.userInfo = this._session.user;
   }
 
 }
