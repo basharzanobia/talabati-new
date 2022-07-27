@@ -5,11 +5,16 @@ import { AppRouteGuard } from 'src/shared/auth/auth-route-guard';
 const routes: Routes = [
 
   { 
-    path: '', redirectTo: 'log-in', pathMatch: 'full'
+    path: '', redirectTo: 'guard', pathMatch: 'full'
    },
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+  },
+  {
+    path: 'guard',
+    loadChildren: () => import('./guard-page/guard.module').then( m => m.GuardPageModule),
+    canActivate: [AppRouteGuard]
   },
   {
     path: 'sign-up',
