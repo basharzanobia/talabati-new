@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartStoreService } from 'src/shared/cart/cart-store.service';
-import { OrderapiServiceProxy, OrderDetail, OrderRequestModel } from 'src/shared/service-proxies/service-proxies';
+import { OrderapiServiceProxy, OrderDetail, OrderDetailRequest, OrderRequestModel } from 'src/shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-tab3',
@@ -58,7 +58,7 @@ export class Tab3Page {
       orderDetail : []
     });
     this.cart.Items.forEach(element => {
-      const orderDetail = new OrderDetail();
+      const orderDetail = new OrderDetailRequest();
       orderDetail.init({
         productId: element.product.id,
         qty: element.quantity,
