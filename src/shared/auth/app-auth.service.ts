@@ -24,6 +24,9 @@ export class AppAuthService {
 
     logout(reload?: boolean): void {
         localStorage.clear();
+        if (reload) {
+            this._router.navigate(['/log-in']);
+        }
     }
 
     authenticate(finallyCallback?: () => void): void {

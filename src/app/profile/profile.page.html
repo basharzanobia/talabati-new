@@ -70,14 +70,18 @@
         </ion-label>
       </ion-item>
     </ion-list>
-        <!---  Edite button  -->
+        <!---  Edit button  -->
         <ion-col size="12">
           <ion-button expand="block"  class="continue-button" routerLink="/edit-profile" routerDirection="root">
           تعديل المعلومات
           </ion-button>
         </ion-col>
-    
-        <!---  End Edite in button  -->
+        <!---  End Edit in button  -->
+        <ion-col size="12">
+          <ion-button expand="block" color="danger"  class="continue-button" (click)="logout()">
+         تسجيل الخروج
+          </ion-button>
+        </ion-col>
   </ion-col>
 </ion-row>
 
