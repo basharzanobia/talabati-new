@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartStoreService } from 'src/shared/cart/cart-store.service';
-import { Order, OrderapiServiceProxy, OrderDetail } from 'src/shared/service-proxies/service-proxies';
+import { Order, OrderapiServiceProxy, OrderDetail, OrderRequestModel } from 'src/shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-cart',
@@ -41,7 +41,7 @@ export class CartPage implements OnInit {
   }
 
   sendOrder() {
-    const order = new Order();
+    const order = new OrderRequestModel();
     order.init({
       address: this.address,
       area: 'area',

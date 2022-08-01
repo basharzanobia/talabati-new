@@ -306,6 +306,69 @@ export class BuyrequestServiceProxy {
         }
         return _observableOf<BuyMe[]>(null as any);
     }
+
+    /**
+     * @param creatorId (optional) 
+     * @return Success
+     */
+    getrequestsbycreatorid(creatorId: string | undefined): Observable<BuyMe[]> {
+        let url_ = this.baseUrl + "/api/buyrequest/getrequestsbycreatorid?";
+        if (creatorId === null)
+            throw new Error("The parameter 'creatorId' cannot be null.");
+        else if (creatorId !== undefined)
+            url_ += "creatorId=" + encodeURIComponent("" + creatorId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetrequestsbycreatorid(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetrequestsbycreatorid(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BuyMe[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BuyMe[]>;
+        }));
+    }
+
+    protected processGetrequestsbycreatorid(response: HttpResponseBase): Observable<BuyMe[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(BuyMe.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<BuyMe[]>(null as any);
+    }
 }
 
 @Injectable()
@@ -673,6 +736,132 @@ export class OrderapiServiceProxy {
     }
 
     /**
+     * @param creatorId (optional) 
+     * @return Success
+     */
+    getrequestsbycreatorid(creatorId: string | undefined): Observable<Order[]> {
+        let url_ = this.baseUrl + "/api/orderapi/getrequestsbycreatorid?";
+        if (creatorId === null)
+            throw new Error("The parameter 'creatorId' cannot be null.");
+        else if (creatorId !== undefined)
+            url_ += "creatorId=" + encodeURIComponent("" + creatorId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetrequestsbycreatorid(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetrequestsbycreatorid(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<Order[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<Order[]>;
+        }));
+    }
+
+    protected processGetrequestsbycreatorid(response: HttpResponseBase): Observable<Order[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(Order.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Order[]>(null as any);
+    }
+
+    /**
+     * @param orderId (optional) 
+     * @return Success
+     */
+    listbyorderid(orderId: number | undefined): Observable<Tracking[]> {
+        let url_ = this.baseUrl + "/api/orderapi/listbyorderid?";
+        if (orderId === null)
+            throw new Error("The parameter 'orderId' cannot be null.");
+        else if (orderId !== undefined)
+            url_ += "orderId=" + encodeURIComponent("" + orderId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processListbyorderid(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processListbyorderid(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<Tracking[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<Tracking[]>;
+        }));
+    }
+
+    protected processListbyorderid(response: HttpResponseBase): Observable<Tracking[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(Tracking.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Tracking[]>(null as any);
+    }
+
+    /**
      * @param orderId (optional) 
      * @return Success
      */
@@ -732,7 +921,7 @@ export class OrderapiServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    create(body: Order | undefined): Observable<void> {
+    create(body: OrderRequestModel | undefined): Observable<number> {
         let url_ = this.baseUrl + "/api/orderapi/create";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -744,6 +933,7 @@ export class OrderapiServiceProxy {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
             })
         };
 
@@ -754,14 +944,14 @@ export class OrderapiServiceProxy {
                 try {
                     return this.processCreate(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
+                    return _observableThrow(e) as any as Observable<number>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<void>;
+                return _observableThrow(response_) as any as Observable<number>;
         }));
     }
 
-    protected processCreate(response: HttpResponseBase): Observable<void> {
+    protected processCreate(response: HttpResponseBase): Observable<number> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -770,21 +960,25 @@ export class OrderapiServiceProxy {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(null as any);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<void>(null as any);
+        return _observableOf<number>(null as any);
     }
 
     /**
      * @param body (optional) 
      * @return Success
      */
-    update(body: Order | undefined): Observable<void> {
+    update(body: Order | undefined): Observable<number> {
         let url_ = this.baseUrl + "/api/orderapi/update";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -796,6 +990,7 @@ export class OrderapiServiceProxy {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
             })
         };
 
@@ -806,14 +1001,14 @@ export class OrderapiServiceProxy {
                 try {
                     return this.processUpdate(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
+                    return _observableThrow(e) as any as Observable<number>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<void>;
+                return _observableThrow(response_) as any as Observable<number>;
         }));
     }
 
-    protected processUpdate(response: HttpResponseBase): Observable<void> {
+    protected processUpdate(response: HttpResponseBase): Observable<number> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -822,14 +1017,18 @@ export class OrderapiServiceProxy {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(null as any);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<void>(null as any);
+        return _observableOf<number>(null as any);
     }
 
     /**
@@ -1349,6 +1548,69 @@ export class ServerequestServiceProxy {
         }
         return _observableOf<ServeMe[]>(null as any);
     }
+
+    /**
+     * @param creatorId (optional) 
+     * @return Success
+     */
+    getrequestsbycreatorid(creatorId: string | undefined): Observable<ServeMe[]> {
+        let url_ = this.baseUrl + "/api/serverequest/getrequestsbycreatorid?";
+        if (creatorId === null)
+            throw new Error("The parameter 'creatorId' cannot be null.");
+        else if (creatorId !== undefined)
+            url_ += "creatorId=" + encodeURIComponent("" + creatorId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetrequestsbycreatorid(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetrequestsbycreatorid(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ServeMe[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ServeMe[]>;
+        }));
+    }
+
+    protected processGetrequestsbycreatorid(response: HttpResponseBase): Observable<ServeMe[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(ServeMe.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ServeMe[]>(null as any);
+    }
 }
 
 @Injectable()
@@ -1796,6 +2058,7 @@ export class ApplicationRole implements IApplicationRole {
     normalizedName: string | undefined;
     concurrencyStamp: string | undefined;
     userRoles: ApplicationUserRole[] | undefined;
+    arabicName: string | undefined;
 
     constructor(data?: IApplicationRole) {
         if (data) {
@@ -1817,6 +2080,7 @@ export class ApplicationRole implements IApplicationRole {
                 for (let item of _data["userRoles"])
                     this.userRoles.push(ApplicationUserRole.fromJS(item));
             }
+            this.arabicName = _data["arabicName"];
         }
     }
 
@@ -1838,6 +2102,7 @@ export class ApplicationRole implements IApplicationRole {
             for (let item of this.userRoles)
                 data["userRoles"].push(item.toJSON());
         }
+        data["arabicName"] = this.arabicName;
         return data;
     }
 
@@ -1855,6 +2120,7 @@ export interface IApplicationRole {
     normalizedName: string | undefined;
     concurrencyStamp: string | undefined;
     userRoles: ApplicationUserRole[] | undefined;
+    arabicName: string | undefined;
 }
 
 export class ApplicationUser implements IApplicationUser {
@@ -1884,6 +2150,7 @@ export class ApplicationUser implements IApplicationUser {
     endTime: string | undefined;
     storeLogo: string | undefined;
     isActive: boolean;
+    isApproved: boolean;
     review: Review[] | undefined;
     order: Order[] | undefined;
     userSubCategories: UserVendorSubCategory[] | undefined;
@@ -1931,6 +2198,7 @@ export class ApplicationUser implements IApplicationUser {
             this.endTime = _data["endTime"];
             this.storeLogo = _data["storeLogo"];
             this.isActive = _data["isActive"];
+            this.isApproved = _data["isApproved"];
             if (Array.isArray(_data["review"])) {
                 this.review = [] as any;
                 for (let item of _data["review"])
@@ -1990,6 +2258,7 @@ export class ApplicationUser implements IApplicationUser {
         data["endTime"] = this.endTime;
         data["storeLogo"] = this.storeLogo;
         data["isActive"] = this.isActive;
+        data["isApproved"] = this.isApproved;
         if (Array.isArray(this.review)) {
             data["review"] = [];
             for (let item of this.review)
@@ -2045,6 +2314,7 @@ export interface IApplicationUser {
     endTime: string | undefined;
     storeLogo: string | undefined;
     isActive: boolean;
+    isApproved: boolean;
     review: Review[] | undefined;
     order: Order[] | undefined;
     userSubCategories: UserVendorSubCategory[] | undefined;
@@ -2214,6 +2484,8 @@ export class BuyMe implements IBuyMe {
     senderDate: moment.Moment;
     recieverAddress: string | undefined;
     recieverDate: moment.Moment;
+    createdBy: string | undefined;
+    creatorUser: ApplicationUser;
 
     constructor(data?: IBuyMe) {
         if (data) {
@@ -2237,6 +2509,8 @@ export class BuyMe implements IBuyMe {
             this.senderDate = _data["senderDate"] ? moment(_data["senderDate"].toString()) : <any>undefined;
             this.recieverAddress = _data["recieverAddress"];
             this.recieverDate = _data["recieverDate"] ? moment(_data["recieverDate"].toString()) : <any>undefined;
+            this.createdBy = _data["createdBy"];
+            this.creatorUser = _data["creatorUser"] ? ApplicationUser.fromJS(_data["creatorUser"]) : <any>undefined;
         }
     }
 
@@ -2260,6 +2534,8 @@ export class BuyMe implements IBuyMe {
         data["senderDate"] = this.senderDate ? this.senderDate.toISOString() : <any>undefined;
         data["recieverAddress"] = this.recieverAddress;
         data["recieverDate"] = this.recieverDate ? this.recieverDate.toISOString() : <any>undefined;
+        data["createdBy"] = this.createdBy;
+        data["creatorUser"] = this.creatorUser ? this.creatorUser.toJSON() : <any>undefined;
         return data;
     }
 
@@ -2283,6 +2559,8 @@ export interface IBuyMe {
     senderDate: moment.Moment;
     recieverAddress: string | undefined;
     recieverDate: moment.Moment;
+    createdBy: string | undefined;
+    creatorUser: ApplicationUser;
 }
 
 export class Category implements ICategory {
@@ -2901,6 +3179,204 @@ export interface IOrderDetail {
     createdBy: string | undefined;
     updatedDate: moment.Moment;
     updatedBy: string | undefined;
+}
+
+export class OrderDetailRequest implements IOrderDetailRequest {
+    tid: number;
+    productId: number;
+    qty: number;
+    price: number;
+    amount: number;
+    varientId: number;
+
+    constructor(data?: IOrderDetailRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.tid = _data["tid"];
+            this.productId = _data["productId"];
+            this.qty = _data["qty"];
+            this.price = _data["price"];
+            this.amount = _data["amount"];
+            this.varientId = _data["varientId"];
+        }
+    }
+
+    static fromJS(data: any): OrderDetailRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new OrderDetailRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tid"] = this.tid;
+        data["productId"] = this.productId;
+        data["qty"] = this.qty;
+        data["price"] = this.price;
+        data["amount"] = this.amount;
+        data["varientId"] = this.varientId;
+        return data;
+    }
+
+    clone(): OrderDetailRequest {
+        const json = this.toJSON();
+        let result = new OrderDetailRequest();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IOrderDetailRequest {
+    tid: number;
+    productId: number;
+    qty: number;
+    price: number;
+    amount: number;
+    varientId: number;
+}
+
+export class OrderRequestModel implements IOrderRequestModel {
+    tid: number;
+    totalQty: number;
+    totalAmount: number;
+    taxPercent: number;
+    taxAmount: number;
+    grandTotal: number;
+    couponId: number;
+    couponDiscount: number;
+    area: string;
+    city: string;
+    houseNo: string;
+    paymentMode: number;
+    shippingAmount: number;
+    state: string;
+    address: string;
+    lastName: string;
+    middleName: string;
+    orderNotes: string | undefined;
+    pincode: string | undefined;
+    shippingPincode: string | undefined;
+    statements: string | undefined;
+    orderDetail: OrderDetailRequest[] | undefined;
+
+    constructor(data?: IOrderRequestModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.tid = _data["tid"];
+            this.totalQty = _data["totalQty"];
+            this.totalAmount = _data["totalAmount"];
+            this.taxPercent = _data["taxPercent"];
+            this.taxAmount = _data["taxAmount"];
+            this.grandTotal = _data["grandTotal"];
+            this.couponId = _data["couponId"];
+            this.couponDiscount = _data["couponDiscount"];
+            this.area = _data["area"];
+            this.city = _data["city"];
+            this.houseNo = _data["houseNo"];
+            this.paymentMode = _data["paymentMode"];
+            this.shippingAmount = _data["shippingAmount"];
+            this.state = _data["state"];
+            this.address = _data["address"];
+            this.lastName = _data["lastName"];
+            this.middleName = _data["middleName"];
+            this.orderNotes = _data["orderNotes"];
+            this.pincode = _data["pincode"];
+            this.shippingPincode = _data["shippingPincode"];
+            this.statements = _data["statements"];
+            if (Array.isArray(_data["orderDetail"])) {
+                this.orderDetail = [] as any;
+                for (let item of _data["orderDetail"])
+                    this.orderDetail.push(OrderDetailRequest.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): OrderRequestModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new OrderRequestModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tid"] = this.tid;
+        data["totalQty"] = this.totalQty;
+        data["totalAmount"] = this.totalAmount;
+        data["taxPercent"] = this.taxPercent;
+        data["taxAmount"] = this.taxAmount;
+        data["grandTotal"] = this.grandTotal;
+        data["couponId"] = this.couponId;
+        data["couponDiscount"] = this.couponDiscount;
+        data["area"] = this.area;
+        data["city"] = this.city;
+        data["houseNo"] = this.houseNo;
+        data["paymentMode"] = this.paymentMode;
+        data["shippingAmount"] = this.shippingAmount;
+        data["state"] = this.state;
+        data["address"] = this.address;
+        data["lastName"] = this.lastName;
+        data["middleName"] = this.middleName;
+        data["orderNotes"] = this.orderNotes;
+        data["pincode"] = this.pincode;
+        data["shippingPincode"] = this.shippingPincode;
+        data["statements"] = this.statements;
+        if (Array.isArray(this.orderDetail)) {
+            data["orderDetail"] = [];
+            for (let item of this.orderDetail)
+                data["orderDetail"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone(): OrderRequestModel {
+        const json = this.toJSON();
+        let result = new OrderRequestModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IOrderRequestModel {
+    tid: number;
+    totalQty: number;
+    totalAmount: number;
+    taxPercent: number;
+    taxAmount: number;
+    grandTotal: number;
+    couponId: number;
+    couponDiscount: number;
+    area: string;
+    city: string;
+    houseNo: string;
+    paymentMode: number;
+    shippingAmount: number;
+    state: string;
+    address: string;
+    lastName: string;
+    middleName: string;
+    orderNotes: string | undefined;
+    pincode: string | undefined;
+    shippingPincode: string | undefined;
+    statements: string | undefined;
+    orderDetail: OrderDetailRequest[] | undefined;
 }
 
 export class OrderResponseModel implements IOrderResponseModel {
@@ -3590,6 +4066,8 @@ export class ServeMe implements IServeMe {
     senderDate: moment.Moment;
     recieverAddress: string | undefined;
     recieverDate: moment.Moment;
+    createdBy: string | undefined;
+    creatorUser: ApplicationUser;
 
     constructor(data?: IServeMe) {
         if (data) {
@@ -3613,6 +4091,8 @@ export class ServeMe implements IServeMe {
             this.senderDate = _data["senderDate"] ? moment(_data["senderDate"].toString()) : <any>undefined;
             this.recieverAddress = _data["recieverAddress"];
             this.recieverDate = _data["recieverDate"] ? moment(_data["recieverDate"].toString()) : <any>undefined;
+            this.createdBy = _data["createdBy"];
+            this.creatorUser = _data["creatorUser"] ? ApplicationUser.fromJS(_data["creatorUser"]) : <any>undefined;
         }
     }
 
@@ -3636,6 +4116,8 @@ export class ServeMe implements IServeMe {
         data["senderDate"] = this.senderDate ? this.senderDate.toISOString() : <any>undefined;
         data["recieverAddress"] = this.recieverAddress;
         data["recieverDate"] = this.recieverDate ? this.recieverDate.toISOString() : <any>undefined;
+        data["createdBy"] = this.createdBy;
+        data["creatorUser"] = this.creatorUser ? this.creatorUser.toJSON() : <any>undefined;
         return data;
     }
 
@@ -3659,6 +4141,8 @@ export interface IServeMe {
     senderDate: moment.Moment;
     recieverAddress: string | undefined;
     recieverDate: moment.Moment;
+    createdBy: string | undefined;
+    creatorUser: ApplicationUser;
 }
 
 export class Size implements ISize {

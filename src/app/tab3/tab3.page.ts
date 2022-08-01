@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartStoreService } from 'src/shared/cart/cart-store.service';
-import { OrderapiServiceProxy, Order, OrderDetail } from 'src/shared/service-proxies/service-proxies';
+import { OrderapiServiceProxy, OrderDetail, OrderRequestModel } from 'src/shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-tab3',
@@ -42,7 +42,7 @@ export class Tab3Page {
   }
 
   sendOrder() {
-    const order = new Order();
+    const order = new OrderRequestModel();
     order.init({
       address: this.address,
       area: 'area',
