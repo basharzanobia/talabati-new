@@ -18,6 +18,139 @@ import * as moment from 'moment';
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 @Injectable()
+export class ServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    forgetpassword(email: string): Observable<void> {
+        let url_ = this.baseUrl + "/forgetpassword?";
+        if (email === undefined || email === null)
+            throw new Error("The parameter 'email' must be defined and cannot be null.");
+        else
+            url_ += "Email=" + encodeURIComponent("" + email) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processForgetpassword(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processForgetpassword(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processForgetpassword(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
+
+    /**
+     * @param token (optional) 
+     * @param email (optional) 
+     * @param newPassword (optional) 
+     * @param confirmPassword (optional) 
+     * @return Success
+     */
+    resetpassword(token: string | undefined, email: string | undefined, newPassword: string | undefined, confirmPassword: string | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/resetpassword";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (token === null || token === undefined)
+            throw new Error("The parameter 'token' cannot be null.");
+        else
+            content_.append("token", token.toString());
+        if (email === null || email === undefined)
+            throw new Error("The parameter 'email' cannot be null.");
+        else
+            content_.append("Email", email.toString());
+        if (newPassword === null || newPassword === undefined)
+            throw new Error("The parameter 'newPassword' cannot be null.");
+        else
+            content_.append("NewPassword", newPassword.toString());
+        if (confirmPassword === null || confirmPassword === undefined)
+            throw new Error("The parameter 'confirmPassword' cannot be null.");
+        else
+            content_.append("ConfirmPassword", confirmPassword.toString());
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processResetpassword(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processResetpassword(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processResetpassword(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
+}
+
+@Injectable()
 export class BuyrequestServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -687,7 +820,7 @@ export class OrderapiServiceProxy {
     /**
      * @return Success
      */
-    list(): Observable<OrderResponseModel> {
+    list(): Observable<Order[]> {
         let url_ = this.baseUrl + "/api/orderapi/list";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -706,14 +839,14 @@ export class OrderapiServiceProxy {
                 try {
                     return this.processList(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<OrderResponseModel>;
+                    return _observableThrow(e) as any as Observable<Order[]>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<OrderResponseModel>;
+                return _observableThrow(response_) as any as Observable<Order[]>;
         }));
     }
 
-    protected processList(response: HttpResponseBase): Observable<OrderResponseModel> {
+    protected processList(response: HttpResponseBase): Observable<Order[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -724,7 +857,14 @@ export class OrderapiServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = OrderResponseModel.fromJS(resultData200);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(Order.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -732,7 +872,7 @@ export class OrderapiServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<OrderResponseModel>(null as any);
+        return _observableOf<Order[]>(null as any);
     }
 
     /**
@@ -802,8 +942,8 @@ export class OrderapiServiceProxy {
      * @param orderId (optional) 
      * @return Success
      */
-    listbyorderid(orderId: number | undefined): Observable<Tracking[]> {
-        let url_ = this.baseUrl + "/api/orderapi/listbyorderid?";
+    trackingbyorderid(orderId: number | undefined): Observable<Tracking[]> {
+        let url_ = this.baseUrl + "/api/orderapi/trackingbyorderid?";
         if (orderId === null)
             throw new Error("The parameter 'orderId' cannot be null.");
         else if (orderId !== undefined)
@@ -819,11 +959,11 @@ export class OrderapiServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processListbyorderid(response_);
+            return this.processTrackingbyorderid(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processListbyorderid(response_ as any);
+                    return this.processTrackingbyorderid(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<Tracking[]>;
                 }
@@ -832,7 +972,7 @@ export class OrderapiServiceProxy {
         }));
     }
 
-    protected processListbyorderid(response: HttpResponseBase): Observable<Tracking[]> {
+    protected processTrackingbyorderid(response: HttpResponseBase): Observable<Tracking[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2151,6 +2291,7 @@ export class ApplicationUser implements IApplicationUser {
     storeLogo: string | undefined;
     isActive: boolean;
     isApproved: boolean;
+    vendorCovers: VendorCover[] | undefined;
     review: Review[] | undefined;
     order: Order[] | undefined;
     userSubCategories: UserVendorSubCategory[] | undefined;
@@ -2199,6 +2340,11 @@ export class ApplicationUser implements IApplicationUser {
             this.storeLogo = _data["storeLogo"];
             this.isActive = _data["isActive"];
             this.isApproved = _data["isApproved"];
+            if (Array.isArray(_data["vendorCovers"])) {
+                this.vendorCovers = [] as any;
+                for (let item of _data["vendorCovers"])
+                    this.vendorCovers.push(VendorCover.fromJS(item));
+            }
             if (Array.isArray(_data["review"])) {
                 this.review = [] as any;
                 for (let item of _data["review"])
@@ -2259,6 +2405,11 @@ export class ApplicationUser implements IApplicationUser {
         data["storeLogo"] = this.storeLogo;
         data["isActive"] = this.isActive;
         data["isApproved"] = this.isApproved;
+        if (Array.isArray(this.vendorCovers)) {
+            data["vendorCovers"] = [];
+            for (let item of this.vendorCovers)
+                data["vendorCovers"].push(item.toJSON());
+        }
         if (Array.isArray(this.review)) {
             data["review"] = [];
             for (let item of this.review)
@@ -2315,6 +2466,7 @@ export interface IApplicationUser {
     storeLogo: string | undefined;
     isActive: boolean;
     isApproved: boolean;
+    vendorCovers: VendorCover[] | undefined;
     review: Review[] | undefined;
     order: Order[] | undefined;
     userSubCategories: UserVendorSubCategory[] | undefined;
@@ -3377,57 +3529,6 @@ export interface IOrderRequestModel {
     shippingPincode: string | undefined;
     statements: string | undefined;
     orderDetail: OrderDetailRequest[] | undefined;
-}
-
-export class OrderResponseModel implements IOrderResponseModel {
-    orders: Order[] | undefined;
-
-    constructor(data?: IOrderResponseModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["orders"])) {
-                this.orders = [] as any;
-                for (let item of _data["orders"])
-                    this.orders.push(Order.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): OrderResponseModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new OrderResponseModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.orders)) {
-            data["orders"] = [];
-            for (let item of this.orders)
-                data["orders"].push(item.toJSON());
-        }
-        return data;
-    }
-
-    clone(): OrderResponseModel {
-        const json = this.toJSON();
-        let result = new OrderResponseModel();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IOrderResponseModel {
-    orders: Order[] | undefined;
 }
 
 export enum OrderStatusType {
@@ -4820,6 +4921,10 @@ export class UserResponseModel implements IUserResponseModel {
     tid: number;
     subCategories: VendorSubCategoryResponseModel[] | undefined;
     createdDate: moment.Moment | undefined;
+    region: string | undefined;
+    startTime: string | undefined;
+    endTime: string | undefined;
+    storeLogo: string | undefined;
 
     constructor(data?: IUserResponseModel) {
         if (data) {
@@ -4844,6 +4949,10 @@ export class UserResponseModel implements IUserResponseModel {
                     this.subCategories.push(VendorSubCategoryResponseModel.fromJS(item));
             }
             this.createdDate = _data["createdDate"] ? moment(_data["createdDate"].toString()) : <any>undefined;
+            this.region = _data["region"];
+            this.startTime = _data["startTime"];
+            this.endTime = _data["endTime"];
+            this.storeLogo = _data["storeLogo"];
         }
     }
 
@@ -4868,6 +4977,10 @@ export class UserResponseModel implements IUserResponseModel {
                 data["subCategories"].push(item.toJSON());
         }
         data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
+        data["region"] = this.region;
+        data["startTime"] = this.startTime;
+        data["endTime"] = this.endTime;
+        data["storeLogo"] = this.storeLogo;
         return data;
     }
 
@@ -4888,6 +5001,10 @@ export interface IUserResponseModel {
     tid: number;
     subCategories: VendorSubCategoryResponseModel[] | undefined;
     createdDate: moment.Moment | undefined;
+    region: string | undefined;
+    startTime: string | undefined;
+    endTime: string | undefined;
+    storeLogo: string | undefined;
 }
 
 export class UserVendorSubCategory implements IUserVendorSubCategory {
@@ -5280,6 +5397,85 @@ export interface IVendorCategory {
     updatedDate: moment.Moment;
     updatedBy: string | undefined;
     vendorSubCategory: VendorSubCategory[] | undefined;
+}
+
+export class VendorCover implements IVendorCover {
+    id: number;
+    tid: number;
+    name: string | undefined;
+    imagePath: string | undefined;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
+    updatedDate: moment.Moment;
+    updatedBy: string | undefined;
+    applicatioUserId: string | undefined;
+    applicatioUser: ApplicationUser;
+
+    constructor(data?: IVendorCover) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tid = _data["tid"];
+            this.name = _data["name"];
+            this.imagePath = _data["imagePath"];
+            this.createdDate = _data["createdDate"] ? moment(_data["createdDate"].toString()) : <any>undefined;
+            this.createdBy = _data["createdBy"];
+            this.updatedDate = _data["updatedDate"] ? moment(_data["updatedDate"].toString()) : <any>undefined;
+            this.updatedBy = _data["updatedBy"];
+            this.applicatioUserId = _data["applicatioUserId"];
+            this.applicatioUser = _data["applicatioUser"] ? ApplicationUser.fromJS(_data["applicatioUser"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): VendorCover {
+        data = typeof data === 'object' ? data : {};
+        let result = new VendorCover();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tid"] = this.tid;
+        data["name"] = this.name;
+        data["imagePath"] = this.imagePath;
+        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
+        data["createdBy"] = this.createdBy;
+        data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
+        data["updatedBy"] = this.updatedBy;
+        data["applicatioUserId"] = this.applicatioUserId;
+        data["applicatioUser"] = this.applicatioUser ? this.applicatioUser.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): VendorCover {
+        const json = this.toJSON();
+        let result = new VendorCover();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IVendorCover {
+    id: number;
+    tid: number;
+    name: string | undefined;
+    imagePath: string | undefined;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
+    updatedDate: moment.Moment;
+    updatedBy: string | undefined;
+    applicatioUserId: string | undefined;
+    applicatioUser: ApplicationUser;
 }
 
 export class VendorSubCategory implements IVendorSubCategory {
