@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppOrderStatusType } from 'src/shared/AppEnums';
 import { Order, OrderapiServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { AppSessionService } from 'src/shared/session/app-session.service';
+import { AppConsts } from 'src/shared/AppConsts';
 
 @Component({
   selector: 'app-tab2',
@@ -12,6 +13,7 @@ export class Tab2Page implements OnInit {
   customFormatter;
   orders: Order[] = [];
 
+  AppConsts = AppConsts;
   AppOrderStatusType = AppOrderStatusType;
 
   constructor(private _session: AppSessionService,
