@@ -65,7 +65,7 @@ const routes: Routes = [
     loadChildren: () => import('./order-confirmed/order-confirmed.module').then( m => m.OrderConfirmedPageModule)
   },
   {
-    path: 'tracking',
+    path: 'tracking/:orderId',
     loadChildren: () => import('./tracking/tracking.module').then( m => m.TrackingPageModule)
   },
   {
