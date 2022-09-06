@@ -68,7 +68,7 @@
             <ion-row class="order-action" >  
               <ion-col size="6"> طريقة الدفع:</ion-col> 
               <ion-col size="6" > 
-                {{order.totalAmount }}
+                {{order.paymentMode }}
                 </ion-col>
             </ion-row>
 
@@ -89,26 +89,38 @@
              
           </ion-col>   
     </ion-row>
+    
     <br>
     <ion-col size="12" class="item-detile">
     
       <br>
-      <ion-row class="order-action" >  
-        <ion-col size="6"> تتبع الطلب :</ion-col> 
+     
+
+      <ion-row class="order-cutomer" >  
+        <ion-col size="12"> تتبع الطلب :</ion-col> 
       </ion-row>
-      <ion-row class="order-cutomer margin-bottom" *ngFor="let track of order?.tracking" > 
-        <ion-row class="order-action center" >  
-          <ion-col size="6" > 
+      <ion-grid  class="order-cutomer margin-bottom" *ngFor="let track of order?.tracking" > 
+        <ion-row class="order-action center" >    
+          <ion-col size="12" > 
             <ion-label class="item-id" >الحالة:</ion-label>
             {{ track.title }}
-            </ion-col>
-  
-          <ion-col size="6"> 
-            <ion-label class="item-id" >الرسالة:</ion-label>
+          </ion-col>
+       </ion-row>
+       <br>
+       <ion-row class="order-action center" > 
+          <ion-col size="12"> 
+            <ion-label class="item-id" >الرسالة:</ion-label> 
             {{ track.message }}
             </ion-col>
         </ion-row>
-      </ion-row>
+        <br>
+        <ion-row class="order-action center" > 
+          <ion-col size="12"> 
+            <ion-label class="item-id" >التاريخ:</ion-label> 
+            {{ track.createdDate|date:'medium' }}
+            </ion-col>
+        </ion-row>
+      </ion-grid>
     <br><br>
    
     </ion-col>   
