@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { UserAddress, AddressapiServiceProxy } from 'src/shared/service-proxies/service-proxies';
+import { AppSessionService } from 'src/shared/session/app-session.service';
+import { AppConsts } from 'src/shared/AppConsts';
+import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'app-saved-address',
@@ -7,9 +12,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SavedAddressPage implements OnInit {
 
-  constructor() { }
+  customFormatter;
+  userAddress:UserAddress[]=[];
+  AppConsts = AppConsts;
 
-  ngOnInit() {
+  constructor(private _session: AppSessionService,
+    private route: ActivatedRoute,
+    private _addressService: AddressapiServiceProxy) {
+
+  }
+
+  ngOnInit(): void {
+    this._addressService.getrequestsbyuserid(this._session.userId).subscribe((res: UserAddress[]) => this.userAddress = res);
   }
 
 }
