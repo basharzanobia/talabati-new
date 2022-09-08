@@ -6116,6 +6116,7 @@ export enum OrderStatusType {
 export enum PaymentModeType {
     _1 = 1,
     _2 = 2,
+    _3 = 3,
 }
 
 export class Permissions implements IPermissions {
@@ -7845,6 +7846,7 @@ export class UserResponseModel implements IUserResponseModel {
     startTime: string | undefined;
     endTime: string | undefined;
     storeLogo: string | undefined;
+    vendorCovers: VendorCoversResponseModel[] | undefined;
 
     constructor(data?: IUserResponseModel) {
         if (data) {
@@ -7873,6 +7875,11 @@ export class UserResponseModel implements IUserResponseModel {
             this.startTime = _data["startTime"];
             this.endTime = _data["endTime"];
             this.storeLogo = _data["storeLogo"];
+            if (Array.isArray(_data["vendorCovers"])) {
+                this.vendorCovers = [] as any;
+                for (let item of _data["vendorCovers"])
+                    this.vendorCovers.push(VendorCoversResponseModel.fromJS(item));
+            }
         }
     }
 
@@ -7901,6 +7908,11 @@ export class UserResponseModel implements IUserResponseModel {
         data["startTime"] = this.startTime;
         data["endTime"] = this.endTime;
         data["storeLogo"] = this.storeLogo;
+        if (Array.isArray(this.vendorCovers)) {
+            data["vendorCovers"] = [];
+            for (let item of this.vendorCovers)
+                data["vendorCovers"].push(item.toJSON());
+        }
         return data;
     }
 
@@ -7925,6 +7937,7 @@ export interface IUserResponseModel {
     startTime: string | undefined;
     endTime: string | undefined;
     storeLogo: string | undefined;
+    vendorCovers: VendorCoversResponseModel[] | undefined;
 }
 
 export class UserReview implements IUserReview {
@@ -8554,6 +8567,81 @@ export interface IVendorCover {
     updatedBy: string | undefined;
     applicatioUserId: string | undefined;
     applicatioUser: ApplicationUser;
+}
+
+export class VendorCoversResponseModel implements IVendorCoversResponseModel {
+    id: number;
+    tid: number;
+    name: string | undefined;
+    imagePath: string | undefined;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
+    updatedDate: moment.Moment;
+    updatedBy: string | undefined;
+    applicationUserId: string | undefined;
+
+    constructor(data?: IVendorCoversResponseModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tid = _data["tid"];
+            this.name = _data["name"];
+            this.imagePath = _data["imagePath"];
+            this.createdDate = _data["createdDate"] ? moment(_data["createdDate"].toString()) : <any>undefined;
+            this.createdBy = _data["createdBy"];
+            this.updatedDate = _data["updatedDate"] ? moment(_data["updatedDate"].toString()) : <any>undefined;
+            this.updatedBy = _data["updatedBy"];
+            this.applicationUserId = _data["applicationUserId"];
+        }
+    }
+
+    static fromJS(data: any): VendorCoversResponseModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new VendorCoversResponseModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tid"] = this.tid;
+        data["name"] = this.name;
+        data["imagePath"] = this.imagePath;
+        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
+        data["createdBy"] = this.createdBy;
+        data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
+        data["updatedBy"] = this.updatedBy;
+        data["applicationUserId"] = this.applicationUserId;
+        return data;
+    }
+
+    clone(): VendorCoversResponseModel {
+        const json = this.toJSON();
+        let result = new VendorCoversResponseModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IVendorCoversResponseModel {
+    id: number;
+    tid: number;
+    name: string | undefined;
+    imagePath: string | undefined;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
+    updatedDate: moment.Moment;
+    updatedBy: string | undefined;
+    applicationUserId: string | undefined;
 }
 
 export class VendorSubCategory implements IVendorSubCategory {
