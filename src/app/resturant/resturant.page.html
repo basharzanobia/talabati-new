@@ -41,7 +41,8 @@
   
   </div>
   <ion-slides  paginationType="bullets" slidesPerView="1" pager="true" class="baner">
-    <ion-slide  *ngFor="let vendorCover of vendor$?.vendorCovers" class="banner-item">
+    <ion-slide  *ngFor="let vendorCover of (vendor$ | async)?.vendorCovers" class="banner-item">
+
       <ion-img [src]="AppConsts.appBaseUrl + '/' + vendorCover.imagePath" ></ion-img>
     </ion-slide>
   </ion-slides>
