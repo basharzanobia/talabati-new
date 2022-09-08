@@ -40,15 +40,9 @@
   <div class="slide-next" (click)="slideNext()">
   
   </div>
-  <ion-slides paginationType="bullets" slidesPerView="1" pager="true" class="baner">
-    <ion-slide class="banner-item">
-      <img src="assets/img/banner.jpg" />
-    </ion-slide>
-    <ion-slide class="banner-item">
-      <img src="assets/img/banner.jpg" />
-    </ion-slide>
-    <ion-slide class="banner-item">
-      <img src="assets/img/banner.jpg" />
+  <ion-slides  paginationType="bullets" slidesPerView="1" pager="true" class="baner">
+    <ion-slide  *ngFor="let vendorCover of vendor$?.vendorCovers" class="banner-item">
+      <ion-img [src]="AppConsts.appBaseUrl + '/' + vendorCover.imagePath" ></ion-img>
     </ion-slide>
   </ion-slides>
 
