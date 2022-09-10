@@ -134,6 +134,10 @@ const routes: Routes = [
     loadChildren: () => import('./favorite/favorite.module').then( m => m.FavoritePageModule)
   },
   {
+    path: 'notification',
+    loadChildren: () => import('./notification/notification.module').then( m => m.NotificationPageModule)
+  },
+  {
     path: 'about',
     loadChildren: () => import('./about/about.module').then( m => m.AboutPageModule)
   },
