@@ -12,10 +12,10 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class NotificationPage {
     customFormatter;
-    messageNotifications:ChatLogListBaseResponse;
+    messageNotifications;
     notificationId = 1;
     AppConsts = AppConsts;
-
+    messageNotificationsData=[]
   constructor(  
     private _session: AppSessionService,
     private _router: Router,
@@ -23,9 +23,8 @@ export class NotificationPage {
   ) { }
 
   ngOnInit(): void {
-    this._notificationService.getmessagesnotificationsbyuserid(this._session.userId).subscribe((res: ChatLogListBaseResponse ) => this.messageNotifications= res);
-    
-  }
+    this._notificationService.getmessagesnotificationsbyuserid(this._session.userId).subscribe((res: ChatLogListBaseResponse ) => this.messageNotifications= res.data);
+}
 
  
 

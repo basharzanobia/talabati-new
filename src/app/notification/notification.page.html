@@ -16,11 +16,11 @@
   
     </ion-row>
   
-    <ion-row class="noti" *ngFor="let messageNotification of messageNotifications.data" >
+    <ion-row class="noti" >
       <ion-col size="3" class="noti-photo" >
         <img src="assets/img/noti.png" />
       </ion-col>
-      <ion-col size="9" class="noti-detile">
+      <ion-col size="9" class="noti-detile" *ngFor="let messageNotification of messageNotifications" >
         <ion-label class="noti-id">{{messageNotification.text}}</ion-label>
         <p class="noti-descrip">    {{ messageNotification.sendingDate|date:'medium' }}</p>
       </ion-col>
