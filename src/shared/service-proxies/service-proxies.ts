@@ -1049,13 +1049,25 @@ export class CouponapiServiceProxy {
         }
         return _observableOf<CouponBaseResponse>(null as any);
     }
+}
+
+@Injectable()
+export class EwalletServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
 
     /**
      * @param body (optional) 
      * @return Success
      */
-    createcoupon(body: Coupon | undefined): Observable<CouponBaseResponse> {
-        let url_ = this.baseUrl + "/api/couponapi/createcoupon";
+    withdraw(body: EWallet | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/ewallet/withdraw";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -1071,20 +1083,20 @@ export class CouponapiServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreatecoupon(response_);
+            return this.processWithdraw(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processCreatecoupon(response_ as any);
+                    return this.processWithdraw(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<CouponBaseResponse>;
+                    return _observableThrow(e) as any as Observable<boolean>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<CouponBaseResponse>;
+                return _observableThrow(response_) as any as Observable<boolean>;
         }));
     }
 
-    protected processCreatecoupon(response: HttpResponseBase): Observable<CouponBaseResponse> {
+    protected processWithdraw(response: HttpResponseBase): Observable<boolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1095,7 +1107,8 @@ export class CouponapiServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = CouponBaseResponse.fromJS(resultData200);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1103,76 +1116,15 @@ export class CouponapiServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<CouponBaseResponse>(null as any);
+        return _observableOf<boolean>(null as any);
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
-     */
-    deletecoupon(body: Coupon | undefined): Observable<CouponBaseResponse> {
-        let url_ = this.baseUrl + "/api/couponapi/deletecoupon";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDeletecoupon(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processDeletecoupon(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<CouponBaseResponse>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<CouponBaseResponse>;
-        }));
-    }
-
-    protected processDeletecoupon(response: HttpResponseBase): Observable<CouponBaseResponse> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = CouponBaseResponse.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<CouponBaseResponse>(null as any);
-    }
-
-    /**
-     * @param couponId (optional) 
      * @param userId (optional) 
      * @return Success
      */
-    addcoupontouser(couponId: number | undefined, userId: string | undefined): Observable<BooleanBaseResponse> {
-        let url_ = this.baseUrl + "/api/couponapi/addcoupontouser?";
-        if (couponId === null)
-            throw new Error("The parameter 'couponId' cannot be null.");
-        else if (couponId !== undefined)
-            url_ += "CouponId=" + encodeURIComponent("" + couponId) + "&";
+    totalbyuserid(userId: string | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/ewallet/totalbyuserid?";
         if (userId === null)
             throw new Error("The parameter 'userId' cannot be null.");
         else if (userId !== undefined)
@@ -1187,21 +1139,21 @@ export class CouponapiServiceProxy {
             })
         };
 
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAddcoupontouser(response_);
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processTotalbyuserid(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processAddcoupontouser(response_ as any);
+                    return this.processTotalbyuserid(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<BooleanBaseResponse>;
+                    return _observableThrow(e) as any as Observable<number>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<BooleanBaseResponse>;
+                return _observableThrow(response_) as any as Observable<number>;
         }));
     }
 
-    protected processAddcoupontouser(response: HttpResponseBase): Observable<BooleanBaseResponse> {
+    protected processTotalbyuserid(response: HttpResponseBase): Observable<number> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1212,7 +1164,8 @@ export class CouponapiServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = BooleanBaseResponse.fromJS(resultData200);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1220,7 +1173,7 @@ export class CouponapiServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<BooleanBaseResponse>(null as any);
+        return _observableOf<number>(null as any);
     }
 }
 
@@ -1759,68 +1712,6 @@ export class NotificationapiServiceProxy {
             }));
         }
         return _observableOf<StringBaseResponse>(null as any);
-    }
-
-    /**
-     * @param orderId (optional) 
-     * @param userId (optional) 
-     * @return Success
-     */
-    sendnewordernotification(orderId: number | undefined, userId: string | undefined): Observable<boolean> {
-        let url_ = this.baseUrl + "/api/notificationapi/sendnewordernotification?";
-        if (orderId === null)
-            throw new Error("The parameter 'orderId' cannot be null.");
-        else if (orderId !== undefined)
-            url_ += "orderId=" + encodeURIComponent("" + orderId) + "&";
-        if (userId === null)
-            throw new Error("The parameter 'userId' cannot be null.");
-        else if (userId !== undefined)
-            url_ += "userId=" + encodeURIComponent("" + userId) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processSendnewordernotification(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processSendnewordernotification(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<boolean>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<boolean>;
-        }));
-    }
-
-    protected processSendnewordernotification(response: HttpResponseBase): Observable<boolean> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-    
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<boolean>(null as any);
     }
 }
 
@@ -3761,7 +3652,7 @@ export class VendorwishlistapiServiceProxy {
      * @param userId (optional) 
      * @return Success
      */
-    getwishlist(userId: string | undefined): Observable<VendorWishlist[]> {
+    getwishlist(userId: string | undefined): Observable<VendorWishListResponseModel[]> {
         let url_ = this.baseUrl + "/api/vendorwishlistapi/getwishlist?";
         if (userId === null)
             throw new Error("The parameter 'userId' cannot be null.");
@@ -3784,14 +3675,14 @@ export class VendorwishlistapiServiceProxy {
                 try {
                     return this.processGetwishlist(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<VendorWishlist[]>;
+                    return _observableThrow(e) as any as Observable<VendorWishListResponseModel[]>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<VendorWishlist[]>;
+                return _observableThrow(response_) as any as Observable<VendorWishListResponseModel[]>;
         }));
     }
 
-    protected processGetwishlist(response: HttpResponseBase): Observable<VendorWishlist[]> {
+    protected processGetwishlist(response: HttpResponseBase): Observable<VendorWishListResponseModel[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3805,7 +3696,7 @@ export class VendorwishlistapiServiceProxy {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200.push(VendorWishlist.fromJS(item));
+                    result200.push(VendorWishListResponseModel.fromJS(item));
             }
             else {
                 result200 = <any>null;
@@ -3817,7 +3708,7 @@ export class VendorwishlistapiServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<VendorWishlist[]>(null as any);
+        return _observableOf<VendorWishListResponseModel[]>(null as any);
     }
 
     /**
@@ -3950,7 +3841,7 @@ export class WishlistapiServiceProxy {
      * @param userId (optional) 
      * @return Success
      */
-    getwishlist(userId: string | undefined): Observable<Wishlist[]> {
+    getwishlist(userId: string | undefined): Observable<WishListModel[]> {
         let url_ = this.baseUrl + "/api/wishlistapi/getwishlist?";
         if (userId === null)
             throw new Error("The parameter 'userId' cannot be null.");
@@ -3973,14 +3864,14 @@ export class WishlistapiServiceProxy {
                 try {
                     return this.processGetwishlist(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<Wishlist[]>;
+                    return _observableThrow(e) as any as Observable<WishListModel[]>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<Wishlist[]>;
+                return _observableThrow(response_) as any as Observable<WishListModel[]>;
         }));
     }
 
-    protected processGetwishlist(response: HttpResponseBase): Observable<Wishlist[]> {
+    protected processGetwishlist(response: HttpResponseBase): Observable<WishListModel[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3994,7 +3885,7 @@ export class WishlistapiServiceProxy {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200.push(Wishlist.fromJS(item));
+                    result200.push(WishListModel.fromJS(item));
             }
             else {
                 result200 = <any>null;
@@ -4006,7 +3897,7 @@ export class WishlistapiServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<Wishlist[]>(null as any);
+        return _observableOf<WishListModel[]>(null as any);
     }
 
     /**
@@ -5337,6 +5228,77 @@ export interface IDoubleBaseResponse {
     response: string | undefined;
     data: number;
     modelKey: string | undefined;
+}
+
+export class EWallet implements IEWallet {
+    id: number;
+    tid: number;
+    userId: string | undefined;
+    user: ApplicationUser;
+    transactionType: TransactionType;
+    amount: number;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
+
+    constructor(data?: IEWallet) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tid = _data["tid"];
+            this.userId = _data["userId"];
+            this.user = _data["user"] ? ApplicationUser.fromJS(_data["user"]) : <any>undefined;
+            this.transactionType = _data["transactionType"];
+            this.amount = _data["amount"];
+            this.createdDate = _data["createdDate"] ? moment(_data["createdDate"].toString()) : <any>undefined;
+            this.createdBy = _data["createdBy"];
+        }
+    }
+
+    static fromJS(data: any): EWallet {
+        data = typeof data === 'object' ? data : {};
+        let result = new EWallet();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tid"] = this.tid;
+        data["userId"] = this.userId;
+        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        data["transactionType"] = this.transactionType;
+        data["amount"] = this.amount;
+        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
+        data["createdBy"] = this.createdBy;
+        return data;
+    }
+
+    clone(): EWallet {
+        const json = this.toJSON();
+        let result = new EWallet();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IEWallet {
+    id: number;
+    tid: number;
+    userId: string | undefined;
+    user: ApplicationUser;
+    transactionType: TransactionType;
+    amount: number;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
 }
 
 export enum Gender {
@@ -7572,6 +7534,11 @@ export interface ITracking {
     updatedBy: string | undefined;
 }
 
+export enum TransactionType {
+    _1 = 1,
+    __1 = -1,
+}
+
 export class UserAddress implements IUserAddress {
     id: number;
     tid: number;
@@ -8901,6 +8868,77 @@ export interface IVendorWishlist {
     updatedBy: string | undefined;
 }
 
+export class VendorWishListResponseModel implements IVendorWishListResponseModel {
+    id: number;
+    vendorId: string | undefined;
+    userId: string | undefined;
+    status: boolean;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
+    updatedDate: moment.Moment;
+    updatedBy: string | undefined;
+
+    constructor(data?: IVendorWishListResponseModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.vendorId = _data["vendorId"];
+            this.userId = _data["userId"];
+            this.status = _data["status"];
+            this.createdDate = _data["createdDate"] ? moment(_data["createdDate"].toString()) : <any>undefined;
+            this.createdBy = _data["createdBy"];
+            this.updatedDate = _data["updatedDate"] ? moment(_data["updatedDate"].toString()) : <any>undefined;
+            this.updatedBy = _data["updatedBy"];
+        }
+    }
+
+    static fromJS(data: any): VendorWishListResponseModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new VendorWishListResponseModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["vendorId"] = this.vendorId;
+        data["userId"] = this.userId;
+        data["status"] = this.status;
+        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
+        data["createdBy"] = this.createdBy;
+        data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
+        data["updatedBy"] = this.updatedBy;
+        return data;
+    }
+
+    clone(): VendorWishListResponseModel {
+        const json = this.toJSON();
+        let result = new VendorWishListResponseModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IVendorWishListResponseModel {
+    id: number;
+    vendorId: string | undefined;
+    userId: string | undefined;
+    status: boolean;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
+    updatedDate: moment.Moment;
+    updatedBy: string | undefined;
+}
+
 export class Wishlist implements IWishlist {
     id: number;
     tid: number;
@@ -8973,6 +9011,81 @@ export interface IWishlist {
     userId: string | undefined;
     productId: number;
     product: Product;
+    status: boolean;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
+    updatedDate: moment.Moment;
+    updatedBy: string | undefined;
+}
+
+export class WishListModel implements IWishListModel {
+    id: number;
+    tid: number;
+    userId: string | undefined;
+    productId: number;
+    status: boolean;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
+    updatedDate: moment.Moment;
+    updatedBy: string | undefined;
+
+    constructor(data?: IWishListModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tid = _data["tid"];
+            this.userId = _data["userId"];
+            this.productId = _data["productId"];
+            this.status = _data["status"];
+            this.createdDate = _data["createdDate"] ? moment(_data["createdDate"].toString()) : <any>undefined;
+            this.createdBy = _data["createdBy"];
+            this.updatedDate = _data["updatedDate"] ? moment(_data["updatedDate"].toString()) : <any>undefined;
+            this.updatedBy = _data["updatedBy"];
+        }
+    }
+
+    static fromJS(data: any): WishListModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new WishListModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tid"] = this.tid;
+        data["userId"] = this.userId;
+        data["productId"] = this.productId;
+        data["status"] = this.status;
+        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
+        data["createdBy"] = this.createdBy;
+        data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
+        data["updatedBy"] = this.updatedBy;
+        return data;
+    }
+
+    clone(): WishListModel {
+        const json = this.toJSON();
+        let result = new WishListModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IWishListModel {
+    id: number;
+    tid: number;
+    userId: string | undefined;
+    productId: number;
     status: boolean;
     createdDate: moment.Moment;
     createdBy: string | undefined;
