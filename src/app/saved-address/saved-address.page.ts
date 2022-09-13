@@ -13,7 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 export class SavedAddressPage implements OnInit {
 
   customFormatter;
-  userAddress:UserAddress[]=[];
+  userAddresses:UserAddress[]=[];
   AppConsts = AppConsts;
 
   constructor(private _session: AppSessionService,
@@ -23,7 +23,7 @@ export class SavedAddressPage implements OnInit {
   }
 
   ngOnInit(): void {
-    this._addressService.getrequestsbyuserid(this._session.userId).subscribe((res: UserAddress[]) => this.userAddress = res);
+    this._addressService.getrequestsbyuserid(this._session.userId).subscribe((res: UserAddress[]) => this.userAddresses = res);
   }
 
 }
