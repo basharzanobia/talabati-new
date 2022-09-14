@@ -14,6 +14,9 @@ import * as ApiServiceProxies from './service-proxies';
         ApiServiceProxies.BuyrequestServiceProxy,
         ApiServiceProxies.OrderapiServiceProxy,
         ApiServiceProxies.AddressapiServiceProxy,
+        ApiServiceProxies.NotificationapiServiceProxy,
+        ApiServiceProxies.VendorwishlistapiServiceProxy,
+        ApiServiceProxies.WishlistapiServiceProxy,
         ApiServiceProxies.EwalletServiceProxy
 
 
