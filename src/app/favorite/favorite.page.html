@@ -18,14 +18,24 @@
   
 
   <br>
-  <ion-grid class="main">
+  <ion-row class="user-bar">
+    <ion-col size="8" class="page-head">
+      <ion-label class="rest-title"> مطاعمي المفضلة </ion-label>  
+    </ion-col>
+  </ion-row> 
+  <ion-grid class="main" >
+  <br>
+  <ion-row *ngIf="favVendors.length==0" else favVendorss class="feu-pro">
+    <ion-label class="message">ليس لديك مطاعم مفضلة..
+      <br>تسوق للوصول إلى المطاعم 
+    </ion-label>
+  </ion-row>
+  
     <!---  card -->
     <br>
-    <ion-row>
-      <ion-label class="title"> مطاعمي المفضلة</ion-label>
-    </ion-row>
-    <ion-row class="intro">
-      <ion-col *ngFor="let vendor of favVendors$ | async as list" size="6" class="intro-item">
+    
+    <ion-row class="intro" #favVendorss>
+      <ion-col *ngFor="let vendor of favVendors$ | async as list" size="6"  class="intro-item">
         <ion-row class="rst-card" [routerLink]="['/resturant', vendor.id]" routerDirection="forward">
           <ion-col size="12" class="rest-item">
             <img [src]="vendor.storeLogo ? (AppConsts.appBaseUrl + '/' + vendor.storeLogo) : 'assets/img/Istanbul-Restaurant-17.jpg'" />
@@ -57,14 +67,22 @@
   </ion-grid>
 <br>
 
+  <ion-row class="user-bar">
+    <ion-col size="8" class="page-head">
+      <ion-label class="rest-title"> منتجاتي المفضلة</ion-label>  
+    </ion-col>
+  </ion-row> 
   <ion-grid class="main">
     <!---  card -->
-    <br>
-    <ion-row>
-      <ion-label class="title"> منتجاتي المفضلة</ion-label>
+    <br>  
+    <ion-row *ngIf="!favProducts" else favProducts class="feu-pro ">
+    <ion-col size="12" class="message">
+      <ion-label >ليس لديك منتجات مفضلة..
+        <br>تسوق للوصول إلى المنتجات 
+      </ion-label>
+    </ion-col>
     </ion-row>
-    
-  <ion-row *ngFor="let product of favProducts" class="feu-pro">
+  <ion-row *ngFor="let product of favProducts" #favProducts class="feu-pro">
     <ng-container>
       <ion-col size="4" class="item-photo" [routerLink]="['/product', product.id]">
         <img [src]="AppConsts.appBaseUrl + '/' + product.mainImagePath" />

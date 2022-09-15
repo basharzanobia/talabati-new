@@ -5,8 +5,11 @@ import {
   VendorapiServiceProxy,
   WishlistapiServiceProxy,
   WishListModel,
-  ProductapiServiceProxy
+  ProductapiServiceProxy,
+  Product,
+  UserResponseModel
 } from 'src/shared/service-proxies/service-proxies';
+import { Observable } from 'rxjs';
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { AppConsts } from 'src/shared/AppConsts';
 
@@ -19,10 +22,13 @@ export class FavoritePage implements OnInit {
 
   customFormatter;
   vendorlist :VendorWishListResponseModel[]=[];
-  productlist :WishListModel[]=[];
+  productlist:WishListModel[]=[]; 
   AppConsts = AppConsts;
   favVendors=[];
   favProducts=[];
+  productId=1;
+  vendortId='';
+
   constructor(private _session: AppSessionService,
     private _vendorwishlistService: VendorwishlistapiServiceProxy,
     private _vendorService: VendorapiServiceProxy,
@@ -31,6 +37,36 @@ export class FavoritePage implements OnInit {
     ) {
 
   }
+  
+getWishList(){
+  this._wishListService.getwishlist(this._session.userId).subscribe((res:WishListModel[])=>{ this.productlist = res;
+     this.productlist.forEach(element=>{
+      this.productId =Number(element.productId);
+      this._productService.single(this.productId).subscribe((pro: Product)=> {
+        const Product = pro;
+        this.favProducts.push(Product);
+      });
+      
+    });
+  });
+   
+}
+
+
+getVendorsWishList(){
+  this._vendorwishlistService.getwishlist(this._session.userId).subscribe((res:VendorWishListResponseModel[])=>{ this.vendorlist = res;
+     this.vendorlist.forEach(element=>{
+      this.vendortId =element.vendorId;
+      this._vendorService.vendorbyid(this.vendortId).subscribe((vendor: UserResponseModel)=> {
+        const Vendor = vendor;
+        this.favVendors.push(Vendor);
+      });
+      
+    });
+  });
+   
+}
+
 
   ngOnInit(): void {
     this._vendorwishlistService.getwishlist(this._session.userId).subscribe((res:VendorWishListResponseModel[]) => this.vendorlist = res);
@@ -38,12 +74,9 @@ export class FavoritePage implements OnInit {
       const vendor =  this._vendorService.vendorbyid(element.vendorId); 
       this.favVendors.push(vendor);
     });
-
-    this._wishListService.getwishlist(this._session.userId).subscribe((res:WishListModel[]) => this.productlist = res);
-    this.productlist.forEach(element => {
-      const product =  this._productService.single(element.productId); 
-      this.favProducts.push(product);
-    });
+    this.getVendorsWishList();
+    this.getWishList();
+    
   }
 
 }
