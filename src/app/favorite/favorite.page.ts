@@ -69,11 +69,7 @@ getVendorsWishList(){
 
 
   ngOnInit(): void {
-    this._vendorwishlistService.getwishlist(this._session.userId).subscribe((res:VendorWishListResponseModel[]) => this.vendorlist = res);
-    this.vendorlist.forEach(element => {
-      const vendor =  this._vendorService.vendorbyid(element.vendorId); 
-      this.favVendors.push(vendor);
-    });
+    
     this.getVendorsWishList();
     this.getWishList();
     
