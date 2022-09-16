@@ -8,11 +8,15 @@ import {
   ProductFilterModel,
   ProductResponseModel,
   UserResponseModel,
-  VendorapiServiceProxy } 
+  VendorapiServiceProxy ,
+  VendorWishlist,
+  VendorwishlistapiServiceProxy} 
 from 'src/shared/service-proxies/service-proxies';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { AppConsts } from 'src/shared/AppConsts';
+import { AlertController } from '@ionic/angular';  
+import { AppSessionService } from 'src/shared/session/app-session.service';
 
 @Component({
   selector: 'app-resturant',
@@ -33,10 +37,14 @@ export class ResturantPage implements OnInit {
   AppConsts = AppConsts;
 
   constructor(
+    private _session: AppSessionService,
     private route: ActivatedRoute,
     private _vendorService: VendorapiServiceProxy,
     private _productsService: ProductapiServiceProxy,
-    private _homeService: HomeapiServiceProxy
+    private _homeService: HomeapiServiceProxy,
+    private _vendorwishlistService: VendorwishlistapiServiceProxy,
+    public alertCtrl: AlertController
+
   ) { }
 
   ngOnInit() {
@@ -74,5 +82,35 @@ export class ResturantPage implements OnInit {
   callSupport() {
     
   }
+
+  async  showAlert() {  
+    const alert = await this.alertCtrl.create({  
+      header: 'المفضلة',  
+      subHeader: '',  
+      message: 'تمت إضافة المنتج إلى المفضلة بنجاح!',  
+      buttons: ['تم']  
+    });  
+    await alert.present();  
+    const result = await alert.onDidDismiss();  
+    console.log(result);  
+  }  
+  createVendorWishList(){
+    const vendorWhishlist = new VendorWishlist();
+    vendorWhishlist.init({
+      vendorId: this.vendorId,
+      userId:this._session.userId,
+    });
+   
+    this._vendorwishlistService.createwish(vendorWhishlist).subscribe(
+      (res) => {
+        this.showAlert();   
+      },
+      async (error) => {
+        // Unexpected result!
+        // await this.presentAlert('فشل', 'حدث خطأ حاول مرة أخرى', null);
+        console.log('error ', error);
+      });
+  }
+
 
 }

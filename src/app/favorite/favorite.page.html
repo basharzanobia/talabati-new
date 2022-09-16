@@ -35,7 +35,7 @@
     <br>
     
     <ion-row class="intro" #favVendorss>
-      <ion-col *ngFor="let vendor of favVendors$ | async as list" size="6"  class="intro-item">
+      <ion-col *ngFor="let vendor of favVendors " size="6"  class="intro-item">
         <ion-row class="rst-card" [routerLink]="['/resturant', vendor.id]" routerDirection="forward">
           <ion-col size="12" class="rest-item">
             <img [src]="vendor.storeLogo ? (AppConsts.appBaseUrl + '/' + vendor.storeLogo) : 'assets/img/Istanbul-Restaurant-17.jpg'" />
