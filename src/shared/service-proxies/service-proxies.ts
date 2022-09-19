@@ -2254,6 +2254,137 @@ export class OrderapiServiceProxy {
 }
 
 @Injectable()
+export class PopularquestionsapiServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getrequestbyid(id: number | undefined): Observable<PopularQuestions> {
+        let url_ = this.baseUrl + "/api/popularquestionsapi/getrequestbyid?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetrequestbyid(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetrequestbyid(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PopularQuestions>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PopularQuestions>;
+        }));
+    }
+
+    protected processGetrequestbyid(response: HttpResponseBase): Observable<PopularQuestions> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PopularQuestions.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PopularQuestions>(null as any);
+    }
+
+    /**
+     * @param category (optional) 
+     * @return Success
+     */
+    listbycategory(category: UserType | undefined): Observable<PopularQuestions[]> {
+        let url_ = this.baseUrl + "/api/popularquestionsapi/listbycategory?";
+        if (category === null)
+            throw new Error("The parameter 'category' cannot be null.");
+        else if (category !== undefined)
+            url_ += "category=" + encodeURIComponent("" + category) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processListbycategory(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processListbycategory(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PopularQuestions[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PopularQuestions[]>;
+        }));
+    }
+
+    protected processListbycategory(response: HttpResponseBase): Observable<PopularQuestions[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(PopularQuestions.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PopularQuestions[]>(null as any);
+    }
+}
+
+@Injectable()
 export class ProductapiServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -2421,6 +2552,127 @@ export class ProductapiServiceProxy {
             }));
         }
         return _observableOf<void>(null as any);
+    }
+
+    /**
+     * @param name (optional) 
+     * @return Success
+     */
+    getproductbyname(name: string | undefined): Observable<ProductModel[]> {
+        let url_ = this.baseUrl + "/api/productapi/getproductbyname?";
+        if (name === null)
+            throw new Error("The parameter 'name' cannot be null.");
+        else if (name !== undefined)
+            url_ += "name=" + encodeURIComponent("" + name) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetproductbyname(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetproductbyname(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ProductModel[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ProductModel[]>;
+        }));
+    }
+
+    protected processGetproductbyname(response: HttpResponseBase): Observable<ProductModel[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(ProductModel.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ProductModel[]>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getproductwithdiscount(): Observable<ProductModel[]> {
+        let url_ = this.baseUrl + "/api/productapi/getproductwithdiscount";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetproductwithdiscount(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetproductwithdiscount(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ProductModel[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ProductModel[]>;
+        }));
+    }
+
+    protected processGetproductwithdiscount(response: HttpResponseBase): Observable<ProductModel[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(ProductModel.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ProductModel[]>(null as any);
     }
 }
 
@@ -4268,6 +4520,7 @@ export class ApplicationUser implements IApplicationUser {
     order: Order[] | undefined;
     userSubCategories: UserVendorSubCategory[] | undefined;
     coupons: Coupon[] | undefined;
+    banners: Banner[] | undefined;
     readonly isActiveMarge: boolean;
     notificationToken: string | undefined;
 
@@ -4358,6 +4611,11 @@ export class ApplicationUser implements IApplicationUser {
                 this.coupons = [] as any;
                 for (let item of _data["coupons"])
                     this.coupons.push(Coupon.fromJS(item));
+            }
+            if (Array.isArray(_data["banners"])) {
+                this.banners = [] as any;
+                for (let item of _data["banners"])
+                    this.banners.push(Banner.fromJS(item));
             }
             (<any>this).isActiveMarge = _data["isActiveMarge"];
             this.notificationToken = _data["notificationToken"];
@@ -4450,6 +4708,11 @@ export class ApplicationUser implements IApplicationUser {
             for (let item of this.coupons)
                 data["coupons"].push(item.toJSON());
         }
+        if (Array.isArray(this.banners)) {
+            data["banners"] = [];
+            for (let item of this.banners)
+                data["banners"].push(item.toJSON());
+        }
         data["isActiveMarge"] = this.isActiveMarge;
         data["notificationToken"] = this.notificationToken;
         return data;
@@ -4501,6 +4764,7 @@ export interface IApplicationUser {
     order: Order[] | undefined;
     userSubCategories: UserVendorSubCategory[] | undefined;
     coupons: Coupon[] | undefined;
+    banners: Banner[] | undefined;
     isActiveMarge: boolean;
     notificationToken: string | undefined;
 }
@@ -4558,6 +4822,89 @@ export interface IApplicationUserRole {
     roleId: string | undefined;
     user: ApplicationUser;
     role: ApplicationRole;
+}
+
+export class Banner implements IBanner {
+    id: number;
+    tid: number;
+    name: string | undefined;
+    imagePath: string | undefined;
+    status: boolean;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
+    updatedDate: moment.Moment;
+    updatedBy: string | undefined;
+    userId: string | undefined;
+    user: ApplicationUser;
+
+    constructor(data?: IBanner) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tid = _data["tid"];
+            this.name = _data["name"];
+            this.imagePath = _data["imagePath"];
+            this.status = _data["status"];
+            this.createdDate = _data["createdDate"] ? moment(_data["createdDate"].toString()) : <any>undefined;
+            this.createdBy = _data["createdBy"];
+            this.updatedDate = _data["updatedDate"] ? moment(_data["updatedDate"].toString()) : <any>undefined;
+            this.updatedBy = _data["updatedBy"];
+            this.userId = _data["userId"];
+            this.user = _data["user"] ? ApplicationUser.fromJS(_data["user"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): Banner {
+        data = typeof data === 'object' ? data : {};
+        let result = new Banner();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tid"] = this.tid;
+        data["name"] = this.name;
+        data["imagePath"] = this.imagePath;
+        data["status"] = this.status;
+        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
+        data["createdBy"] = this.createdBy;
+        data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
+        data["updatedBy"] = this.updatedBy;
+        data["userId"] = this.userId;
+        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): Banner {
+        const json = this.toJSON();
+        let result = new Banner();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IBanner {
+    id: number;
+    tid: number;
+    name: string | undefined;
+    imagePath: string | undefined;
+    status: boolean;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
+    updatedDate: moment.Moment;
+    updatedBy: string | undefined;
+    userId: string | undefined;
+    user: ApplicationUser;
 }
 
 export class BooleanBaseResponse implements IBooleanBaseResponse {
@@ -6256,6 +6603,73 @@ export interface IPermissions {
     entity: string | undefined;
 }
 
+export class PopularQuestions implements IPopularQuestions {
+    id: number;
+    tid: number;
+    question: string | undefined;
+    answer: string | undefined;
+    category: UserType;
+    createdDate: string | undefined;
+    createdBy: string | undefined;
+
+    constructor(data?: IPopularQuestions) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tid = _data["tid"];
+            this.question = _data["question"];
+            this.answer = _data["answer"];
+            this.category = _data["category"];
+            this.createdDate = _data["createdDate"];
+            this.createdBy = _data["createdBy"];
+        }
+    }
+
+    static fromJS(data: any): PopularQuestions {
+        data = typeof data === 'object' ? data : {};
+        let result = new PopularQuestions();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tid"] = this.tid;
+        data["question"] = this.question;
+        data["answer"] = this.answer;
+        data["category"] = this.category;
+        data["createdDate"] = this.createdDate;
+        data["createdBy"] = this.createdBy;
+        return data;
+    }
+
+    clone(): PopularQuestions {
+        const json = this.toJSON();
+        let result = new PopularQuestions();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPopularQuestions {
+    id: number;
+    tid: number;
+    question: string | undefined;
+    answer: string | undefined;
+    category: UserType;
+    createdDate: string | undefined;
+    createdBy: string | undefined;
+}
+
 export class Product implements IProduct {
     id: number;
     categoryId: number;
@@ -6683,6 +7097,161 @@ export interface IProductImage {
     createdBy: string | undefined;
     updatedDate: moment.Moment;
     updatedBy: string | undefined;
+}
+
+export class ProductModel implements IProductModel {
+    id: number;
+    tid: number;
+    name: string | undefined;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
+    updatedDate: moment.Moment;
+    updatedBy: string | undefined;
+    categoryId: number;
+    subCategoryId: number | undefined;
+    subSubCategoryId: number | undefined;
+    brandId: number | undefined;
+    metaKeyword: string | undefined;
+    metaDescription: string | undefined;
+    shortDescription: string | undefined;
+    longDescription: string | undefined;
+    rating: number;
+    mainImagePath: string | undefined;
+    hasVarient: boolean;
+    mrpPrice: number;
+    discount: number;
+    price: number;
+    quanity: number;
+    minQuanity: number;
+    maxQuanity: number;
+    isRetunable: boolean;
+    isCOD: boolean;
+    status: boolean;
+    isFeatured: boolean;
+    purchaseCount: number;
+
+    constructor(data?: IProductModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tid = _data["tid"];
+            this.name = _data["name"];
+            this.createdDate = _data["createdDate"] ? moment(_data["createdDate"].toString()) : <any>undefined;
+            this.createdBy = _data["createdBy"];
+            this.updatedDate = _data["updatedDate"] ? moment(_data["updatedDate"].toString()) : <any>undefined;
+            this.updatedBy = _data["updatedBy"];
+            this.categoryId = _data["categoryId"];
+            this.subCategoryId = _data["subCategoryId"];
+            this.subSubCategoryId = _data["subSubCategoryId"];
+            this.brandId = _data["brandId"];
+            this.metaKeyword = _data["metaKeyword"];
+            this.metaDescription = _data["metaDescription"];
+            this.shortDescription = _data["shortDescription"];
+            this.longDescription = _data["longDescription"];
+            this.rating = _data["rating"];
+            this.mainImagePath = _data["mainImagePath"];
+            this.hasVarient = _data["hasVarient"];
+            this.mrpPrice = _data["mrpPrice"];
+            this.discount = _data["discount"];
+            this.price = _data["price"];
+            this.quanity = _data["quanity"];
+            this.minQuanity = _data["minQuanity"];
+            this.maxQuanity = _data["maxQuanity"];
+            this.isRetunable = _data["isRetunable"];
+            this.isCOD = _data["isCOD"];
+            this.status = _data["status"];
+            this.isFeatured = _data["isFeatured"];
+            this.purchaseCount = _data["purchaseCount"];
+        }
+    }
+
+    static fromJS(data: any): ProductModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProductModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tid"] = this.tid;
+        data["name"] = this.name;
+        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
+        data["createdBy"] = this.createdBy;
+        data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
+        data["updatedBy"] = this.updatedBy;
+        data["categoryId"] = this.categoryId;
+        data["subCategoryId"] = this.subCategoryId;
+        data["subSubCategoryId"] = this.subSubCategoryId;
+        data["brandId"] = this.brandId;
+        data["metaKeyword"] = this.metaKeyword;
+        data["metaDescription"] = this.metaDescription;
+        data["shortDescription"] = this.shortDescription;
+        data["longDescription"] = this.longDescription;
+        data["rating"] = this.rating;
+        data["mainImagePath"] = this.mainImagePath;
+        data["hasVarient"] = this.hasVarient;
+        data["mrpPrice"] = this.mrpPrice;
+        data["discount"] = this.discount;
+        data["price"] = this.price;
+        data["quanity"] = this.quanity;
+        data["minQuanity"] = this.minQuanity;
+        data["maxQuanity"] = this.maxQuanity;
+        data["isRetunable"] = this.isRetunable;
+        data["isCOD"] = this.isCOD;
+        data["status"] = this.status;
+        data["isFeatured"] = this.isFeatured;
+        data["purchaseCount"] = this.purchaseCount;
+        return data;
+    }
+
+    clone(): ProductModel {
+        const json = this.toJSON();
+        let result = new ProductModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IProductModel {
+    id: number;
+    tid: number;
+    name: string | undefined;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
+    updatedDate: moment.Moment;
+    updatedBy: string | undefined;
+    categoryId: number;
+    subCategoryId: number | undefined;
+    subSubCategoryId: number | undefined;
+    brandId: number | undefined;
+    metaKeyword: string | undefined;
+    metaDescription: string | undefined;
+    shortDescription: string | undefined;
+    longDescription: string | undefined;
+    rating: number;
+    mainImagePath: string | undefined;
+    hasVarient: boolean;
+    mrpPrice: number;
+    discount: number;
+    price: number;
+    quanity: number;
+    minQuanity: number;
+    maxQuanity: number;
+    isRetunable: boolean;
+    isCOD: boolean;
+    status: boolean;
+    isFeatured: boolean;
+    purchaseCount: number;
 }
 
 export class ProductResponseModel implements IProductResponseModel {
@@ -8183,6 +8752,13 @@ export interface IUserReviewListBaseResponse {
     response: string | undefined;
     data: UserReview[] | undefined;
     modelKey: string | undefined;
+}
+
+export enum UserType {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
 }
 
 export class UserVendorSubCategory implements IUserVendorSubCategory {
