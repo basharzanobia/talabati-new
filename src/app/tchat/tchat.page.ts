@@ -26,14 +26,15 @@ export class TchatPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this._chatService.getmessagesbyuserid(this._session.userId).subscribe((res: ChatLog[] ) =>
+    const SenderId= this.route.snapshot.paramMap.get('senderId');
+    const RecieverId=this.route.snapshot.paramMap.get('recieverId');
+    this._chatService.getchat(SenderId,RecieverId).subscribe((res: ChatLog[] ) =>
      {
       this.messageList= res ;
       this.userId=this._session.userId;
       
       //this.userId === true ? this.displayString = 'looping data' : this.displayString = 'Record not found';
-     const SenderId= this.route.snapshot.paramMap.get('senderId');
-     const RecieverId=this.route.snapshot.paramMap.get('recieverId');
+    
      this.SenderId=this.userId;
      //console.log(RecieverId);
      console.log(this.userId);
@@ -60,6 +61,7 @@ export class TchatPage implements OnInit {
     this._chatService.createmessage(message).subscribe(
       (res) => {
         this._chatService.getmessagesbyuserid(this._session.userId).subscribe((res: ChatLog[] ) => this.messageList= res);
+        this.chatMessage='';
       },
       async (error) => {
         // Unexpected result!
