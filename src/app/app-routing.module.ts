@@ -113,7 +113,7 @@ const routes: Routes = [
     loadChildren: () => import('./massage/massage.module').then( m => m.MassagePageModule)
   },
   {
-    path: 'tchat',
+    path: 'tchat/:senderId/:recieverId',
     loadChildren: () => import('./tchat/tchat.module').then( m => m.TchatPageModule)
   },
   {
