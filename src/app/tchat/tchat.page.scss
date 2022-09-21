@@ -48,7 +48,8 @@ ion-content .scroll-content {
     .msg-content {
         color: #343434;
         background-color: #ddd;
-        float: left;        
+        float:left;   
+        margin:2%; 
     }
     .user-img {
         position: absolute;
@@ -57,10 +58,27 @@ ion-content .scroll-content {
         height: 45px;
         box-shadow: 0 0 2px rgba(0, 0, 0, 0.36);
     }
+    #rightMsg {
+      background-color: #b7dbce !important;
+      border-radius: 8%;
+      width: 60%;
+      padding: 5px;
+      padding-right: 10px;
+    }
+    #leftMsg {
+      background-color: #2b6851 !important;
+      border-radius: 8%;
+      color:red;
+      width: 60%;
+      padding: 5px;
+      padding-right: 10px;
+      float: left !important;
+    }
     .msg-detail {
         width: 100%;
         padding-left: 60px;
         display: inline-block;
+       
         p {
           margin: 0;
         }
@@ -69,6 +87,7 @@ ion-content .scroll-content {
             font-size: .8em;
             color: #888;
           }
+          
         }
     }
   }

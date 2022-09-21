@@ -18,21 +18,37 @@
     </ion-header>
     <ion-content padding>
       <div class="container">
-        <div *ngFor="let msg of messageList" class="message left ">
-          <img class="user-img" [src]="msg.sender.avatarURL" alt="" src="">
-          <div class="msg-detail">
-            <div class="msg-info">
-              <p>
-                {{msg.sender.name}}
-              </p>
+        <div *ngFor="let msg of messageList">
+          <div *ngIf="userId == msg.senderId" else leftMsg>
+            <img class="user-img" [src]="msg.sender?.avatarURL" alt="" src="">
+            <div class="msg-detail">
+              <div class="msg-info ">
+                <p id="rightMsg">
+                  {{msg.sender?.name}}
+                </p>
+              </div>
+              <div class="msg-content">
+                <span class="triangle"></span>
+                <p class="line-breaker">{{msg.text}}</p>
+              </div>
             </div>
-            <div class="msg-content">
-              <span class="triangle"></span>
-              <p class="line-breaker">{{msg.text}}</p>
-            </div>
-
           </div>
-        </div>
+ 
+          <div *ngIf="userId == msg.recieverId"  #leftMsg>
+            <img class="user-img" [src]="msg.sender?.avatarURL" alt="" src="">
+            <div class="msg-detail">
+              <div class="msg-info ">
+                <p  id="leftMsg">
+                  {{msg.sender?.name}}
+                </p>
+              </div>
+              <div class="msg-content">
+                <span class="triangle"></span>
+                <p class="line-breaker">{{msg.text}}</p>
+              </div>
+            </div>
+          </div>
+          </div>
       </div>
     </ion-content>
     <ion-footer no-border>

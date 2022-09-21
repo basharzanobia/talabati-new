@@ -5320,7 +5320,7 @@ export class ChatLog implements IChatLog {
         data["sender"] = this.sender ? this.sender.toJSON() : <any>undefined;
         data["recieverId"] = this.recieverId;
         data["reciever"] = this.reciever ? this.reciever.toJSON() : <any>undefined;
-        data["text"] = this.text;
+        data["Text"] = this.text;
         data["sendingDate"] = this.sendingDate ? this.sendingDate.toISOString() : <any>undefined;
         data["recievingDate"] = this.recievingDate ? this.recievingDate.toISOString() : <any>undefined;
         data["read"] = this.read;

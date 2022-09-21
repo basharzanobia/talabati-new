@@ -17,8 +17,8 @@ import * as ApiServiceProxies from './service-proxies';
         ApiServiceProxies.NotificationapiServiceProxy,
         ApiServiceProxies.VendorwishlistapiServiceProxy,
         ApiServiceProxies.WishlistapiServiceProxy,
-        ApiServiceProxies.EwalletServiceProxy
-
+        ApiServiceProxies.EwalletServiceProxy,
+        ApiServiceProxies.ChatapiServiceProxy
 
         // { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true }
     ]
