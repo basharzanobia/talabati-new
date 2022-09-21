@@ -2927,7 +2927,7 @@ export class ReviewuserapiServiceProxy {
      * @param userId (optional) 
      * @return Success
      */
-    getreviewsbyuserid(userId: string | undefined): Observable<UserReviewListBaseResponse> {
+    getreviewsbyuserid(userId: string | undefined): Observable<ReviewUserResponse[]> {
         let url_ = this.baseUrl + "/api/reviewuserapi/getreviewsbyuserid?";
         if (userId === null)
             throw new Error("The parameter 'userId' cannot be null.");
@@ -2950,14 +2950,14 @@ export class ReviewuserapiServiceProxy {
                 try {
                     return this.processGetreviewsbyuserid(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<UserReviewListBaseResponse>;
+                    return _observableThrow(e) as any as Observable<ReviewUserResponse[]>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<UserReviewListBaseResponse>;
+                return _observableThrow(response_) as any as Observable<ReviewUserResponse[]>;
         }));
     }
 
-    protected processGetreviewsbyuserid(response: HttpResponseBase): Observable<UserReviewListBaseResponse> {
+    protected processGetreviewsbyuserid(response: HttpResponseBase): Observable<ReviewUserResponse[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2968,7 +2968,14 @@ export class ReviewuserapiServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = UserReviewListBaseResponse.fromJS(resultData200);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(ReviewUserResponse.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2976,14 +2983,14 @@ export class ReviewuserapiServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<UserReviewListBaseResponse>(null as any);
+        return _observableOf<ReviewUserResponse[]>(null as any);
     }
 
     /**
      * @param userId (optional) 
      * @return Success
      */
-    getratingofuser(userId: string | undefined): Observable<DoubleBaseResponse> {
+    getratingofuser(userId: string | undefined): Observable<number> {
         let url_ = this.baseUrl + "/api/reviewuserapi/getratingofuser?";
         if (userId === null)
             throw new Error("The parameter 'userId' cannot be null.");
@@ -3006,14 +3013,14 @@ export class ReviewuserapiServiceProxy {
                 try {
                     return this.processGetratingofuser(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<DoubleBaseResponse>;
+                    return _observableThrow(e) as any as Observable<number>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<DoubleBaseResponse>;
+                return _observableThrow(response_) as any as Observable<number>;
         }));
     }
 
-    protected processGetratingofuser(response: HttpResponseBase): Observable<DoubleBaseResponse> {
+    protected processGetratingofuser(response: HttpResponseBase): Observable<number> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3024,7 +3031,8 @@ export class ReviewuserapiServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = DoubleBaseResponse.fromJS(resultData200);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3032,7 +3040,7 @@ export class ReviewuserapiServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<DoubleBaseResponse>(null as any);
+        return _observableOf<number>(null as any);
     }
 }
 
@@ -7553,6 +7561,89 @@ export enum ReviewStatusType {
     _2 = 2,
 }
 
+export class ReviewUserResponse implements IReviewUserResponse {
+    id: number;
+    tid: number;
+    userId: string | undefined;
+    raterId: string | undefined;
+    rating: number;
+    commentText: string | undefined;
+    status: ReviewStatusType;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
+    updatedDate: moment.Moment;
+    updatedBy: string | undefined;
+
+    constructor(data?: IReviewUserResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tid = _data["tid"];
+            this.userId = _data["userId"];
+            this.raterId = _data["raterId"];
+            this.rating = _data["rating"];
+            this.commentText = _data["commentText"];
+            this.status = _data["status"];
+            this.createdDate = _data["createdDate"] ? moment(_data["createdDate"].toString()) : <any>undefined;
+            this.createdBy = _data["createdBy"];
+            this.updatedDate = _data["updatedDate"] ? moment(_data["updatedDate"].toString()) : <any>undefined;
+            this.updatedBy = _data["updatedBy"];
+        }
+    }
+
+    static fromJS(data: any): ReviewUserResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReviewUserResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tid"] = this.tid;
+        data["userId"] = this.userId;
+        data["raterId"] = this.raterId;
+        data["rating"] = this.rating;
+        data["commentText"] = this.commentText;
+        data["status"] = this.status;
+        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
+        data["createdBy"] = this.createdBy;
+        data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
+        data["updatedBy"] = this.updatedBy;
+        return data;
+    }
+
+    clone(): ReviewUserResponse {
+        const json = this.toJSON();
+        let result = new ReviewUserResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IReviewUserResponse {
+    id: number;
+    tid: number;
+    userId: string | undefined;
+    raterId: string | undefined;
+    rating: number;
+    commentText: string | undefined;
+    status: ReviewStatusType;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
+    updatedDate: moment.Moment;
+    updatedBy: string | undefined;
+}
+
 export class RolePermissions implements IRolePermissions {
     id: number;
     roleId: string | undefined;
@@ -8689,69 +8780,6 @@ export interface IUserReview {
     updatedDate: moment.Moment;
     updatedBy: string | undefined;
     returnUrl: string | undefined;
-}
-
-export class UserReviewListBaseResponse implements IUserReviewListBaseResponse {
-    success: boolean;
-    response: string | undefined;
-    data: UserReview[] | undefined;
-    modelKey: string | undefined;
-
-    constructor(data?: IUserReviewListBaseResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.success = _data["success"];
-            this.response = _data["response"];
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data.push(UserReview.fromJS(item));
-            }
-            this.modelKey = _data["modelKey"];
-        }
-    }
-
-    static fromJS(data: any): UserReviewListBaseResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new UserReviewListBaseResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["success"] = this.success;
-        data["response"] = this.response;
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
-        data["modelKey"] = this.modelKey;
-        return data;
-    }
-
-    clone(): UserReviewListBaseResponse {
-        const json = this.toJSON();
-        let result = new UserReviewListBaseResponse();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IUserReviewListBaseResponse {
-    success: boolean;
-    response: string | undefined;
-    data: UserReview[] | undefined;
-    modelKey: string | undefined;
 }
 
 export enum UserType {
