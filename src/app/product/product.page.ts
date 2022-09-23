@@ -10,6 +10,7 @@ import {
   ProductapiServiceProxy,
   WishlistapiServiceProxy,
   Wishlist,
+  WishListModel
 } 
 from 'src/shared/service-proxies/service-proxies';
 
@@ -23,6 +24,9 @@ export class ProductPage implements OnInit {
   productId = 1;
   product: Product;
   AppConsts = AppConsts;
+  productlist;
+  isFav:boolean=false;
+  wishListId;
 
   constructor(
     private _session: AppSessionService,
@@ -39,6 +43,7 @@ export class ProductPage implements OnInit {
           .subscribe((res: Product) => {
             this.product = res;
           });
+          this.isFavProduct();
   }
 
   addToCart() {
@@ -49,11 +54,11 @@ export class ProductPage implements OnInit {
     });
     
   }
-  async  showAlert() {  
+  async  showAlert(msg) {  
     const alert = await this.alertCtrl.create({  
       header: 'المفضلة',  
       subHeader: '',  
-      message: 'تمت إضافة المنتج إلى المفضلة بنجاح!',  
+      message: msg,  
       buttons: ['تم']  
     });  
     await alert.present();  
@@ -69,13 +74,40 @@ export class ProductPage implements OnInit {
    
     this._wishlistService.createwish(whishlist).subscribe(
       (res) => {
-        this.showAlert();   
+        this.showAlert('تمت إضافة المنتج إلى المفضلة بنجاح!');   
+        this.isFavProduct()
       },
       async (error) => {
         // Unexpected result!
         // await this.presentAlert('فشل', 'حدث خطأ حاول مرة أخرى', null);
         console.log('error ', error);
       });
+  }
+
+  isFavProduct(){
+    this._wishlistService.getwishlist(this._session.userId).subscribe((res:WishListModel[])=>{ this.productlist = res;
+    this.productlist.forEach(element=>{
+    if( this.productId ==element.productId)
+    {
+      this.isFav=true; 
+      this.wishListId=element.id;
+    }
+
+   });
+ });
+}
+
+  deleteWishList(){
+    this._wishlistService.deletewish(this.wishListId).subscribe((res:boolean)=>{ 
+     if(res==true)
+     {
+      this.showAlert('تمت إزالة المطعم من المفضلة بنجاح!' );
+      this.isFav=false;
+     }
+     else
+     this.showAlert('لم تتم إزالة المطعم من المفضلة !');
+
+    });
   }
   }
 
