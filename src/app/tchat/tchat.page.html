@@ -19,11 +19,12 @@
     <ion-content padding>
       <div class="container">
         <div *ngFor="let msg of messageList">
-          <div *ngIf="userId == msg.senderId" else leftMsg>
+          <ion-row>
+          <div  class="leftMsg" *ngIf="userId == msg.senderId" >
             <img class="user-img" [src]="msg.sender?.avatarURL" alt="" src="">
             <div class="msg-detail">
               <div class="msg-info ">
-                <p id="rightMsg">
+                <p>
                   {{msg.sender?.name}}
                 </p>
               </div>
@@ -33,12 +34,13 @@
               </div>
             </div>
           </div>
- 
-          <div *ngIf="userId == msg.recieverId"  #leftMsg>
+        </ion-row>
+      <ion-row>
+          <div class="rightMsg" *ngIf="userId == msg.recieverId" >
             <img class="user-img" [src]="msg.sender?.avatarURL" alt="" src="">
             <div class="msg-detail">
               <div class="msg-info ">
-                <p  id="leftMsg">
+                <p>
                   {{msg.sender?.name}}
                 </p>
               </div>
@@ -48,6 +50,7 @@
               </div>
             </div>
           </div>
+          </ion-row>
           </div>
       </div>
     </ion-content>
