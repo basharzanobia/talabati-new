@@ -132,7 +132,7 @@ export class ResturantPage implements OnInit {
  });
 }
 
-  deleteWishList(){
+deleteVendorWishList (){
     this._vendorwishlistService.deletewish(this.vendorWishListId).subscribe((res:boolean)=>{ 
      if(res==true)
      {
