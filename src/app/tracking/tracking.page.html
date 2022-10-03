@@ -22,6 +22,63 @@
       <ion-col size="6">{{order?.id}} </ion-col>
     </ion-row>
 
+    <ion-row class="order-cutomer small" >
+      <ion-col size="4"  >
+        الإجمالي :  
+       </ion-col>
+        <ion-col size="8"  class="focus">
+           {{order?.totalAmount }}
+        </ion-col>
+       
+     <br>
+    
+      <ion-col size="4"  >
+        طريقة الدفع  :
+       </ion-col>
+        <ion-col size="8" >
+           {{order?.paymentMethod }}
+        </ion-col>
+      
+     <br>
+    
+      <ion-col size="4"  >
+        العنوان  :
+       </ion-col>
+        <ion-col size="8" class="focus" >
+           {{order?.addressMarge }}
+        </ion-col>
+      
+     <br>
+   
+      <ion-col size="4" >
+        تاريخ الطلب :
+        </ion-col>
+         <ion-col size="8" >
+              {{order?.createdDate|date:'medium'}}
+         </ion-col>   
+     
+    <br>
+
+    <ion-col *ngIf="order.pincode != null" size="4" >
+     الرمز:
+      </ion-col>
+       <ion-col size="8" >
+        {{ order?.pincode }}
+       </ion-col>   
+    </ion-row>
+  <br>
+    
+    <ion-row   class="order-cutomer" >
+      <ion-col size=""  >
+       <h4>المنتجات</h4>
+        </ion-col>
+        
+      </ion-row>
+    <br>
+
+     
+  
+
     <ion-row class="order-cutomer" *ngFor="let orderDetail of order?.orderDetail" >
         <ion-col size="4" class="item-photo" routerLink="/product">
           <ion-img [src]="AppConsts.appBaseUrl+ '/' +orderDetail.product.mainImagePath" ></ion-img>
@@ -44,49 +101,14 @@
                 </ion-col>
             </ion-row>
 
-            <ion-row class="order-action" >  
-              <ion-col size="6">تكاليف الشحن  :</ion-col> 
-              <ion-col size="6" > 
-                {{ order.shippingAmount }}
-                </ion-col>
-            </ion-row>
-
-            <ion-row class="order-action" >  
-              <ion-col size="6">الضريبة   :</ion-col> 
-              <ion-col size="6" > 
-                {{order.taxAmount }}
-                </ion-col>
-            </ion-row>
-
-            <ion-row class="order-action" >  
-              <ion-col size="6">الإجمالي   :</ion-col> 
-              <ion-col size="6" > 
-                {{order.totalAmount }}
-                </ion-col>
-            </ion-row>
-
-            <ion-row class="order-action" >  
-              <ion-col size="6"> طريقة الدفع:</ion-col> 
-              <ion-col size="6" > 
-                {{order.paymentMode }}
-                </ion-col>
-            </ion-row>
-
-            
-            <ion-row *ngIf="order.pincode != null" class="order-action" >  
-              <ion-col size="6">الرمز  :</ion-col> 
-              <ion-col size="6" > 
-                {{ order.pincode }}
-                </ion-col>
-            </ion-row>
-
-            <ion-row  *ngIf="orderDetail.orderNotes != null" class="order-action" >  
-              <ion-col size="6">ملاحظات الشحن :</ion-col> 
-              <ion-col size="6" > 
-                {{ orderDetail.orderNotes  }}
-                </ion-col>
-            </ion-row>
-             
+               
+    <ion-row  *ngIf="orderDetail.orderNotes != null" class="order-action" >  
+      <ion-col size="6">ملاحظات الشحن :</ion-col> 
+      <ion-col size="6" > 
+        {{ orderDetail.orderNotes  }}
+        </ion-col>
+    </ion-row>
+      <br>
           </ion-col>   
     </ion-row>
     
