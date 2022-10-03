@@ -37,6 +37,7 @@ export class AppRouteGuard implements CanActivate, CanActivateChild {
             return '/log-in';
         }
 
-        return '/intro';
+       // return '/intro';
+       this._router.navigate(['/splash']);
     }
 }

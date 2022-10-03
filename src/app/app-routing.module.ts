@@ -148,7 +148,11 @@ const routes: Routes = [
   {
     path: 'add-payment',
     loadChildren: () => import('./add-payment/add-payment.module').then( m => m.AddPaymentPageModule)
+  },  {
+    path: 'splash',
+    loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)
   }
+
 
 
 
