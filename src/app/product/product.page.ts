@@ -10,7 +10,9 @@ import {
   ProductapiServiceProxy,
   WishlistapiServiceProxy,
   Wishlist,
-  WishListModel
+  WishListModel,
+  ReviewproductapiServiceProxy,
+  Review
 } 
 from 'src/shared/service-proxies/service-proxies';
 
@@ -27,6 +29,7 @@ export class ProductPage implements OnInit {
   productlist;
   isFav:boolean=false;
   wishListId;
+  rating;
 
   constructor(
     private _session: AppSessionService,
@@ -34,7 +37,8 @@ export class ProductPage implements OnInit {
     public cart: CartStoreService,
     private _productsService: ProductapiServiceProxy,
     private _wishlistService: WishlistapiServiceProxy,
-    public alertCtrl: AlertController
+    private _productapiService:ReviewproductapiServiceProxy,
+    public alertCtrl: AlertController,
     ) { }
 
   ngOnInit() {
@@ -42,8 +46,10 @@ export class ProductPage implements OnInit {
     this._productsService.single(this.productId)
           .subscribe((res: Product) => {
             this.product = res;
+            this.getReview(this.product.review);
           });
           this.isFavProduct();
+         
   }
 
   addToCart() {
@@ -82,6 +88,35 @@ export class ProductPage implements OnInit {
         // await this.presentAlert('فشل', 'حدث خطأ حاول مرة أخرى', null);
         console.log('error ', error);
       });
+  }
+  getReview(Review){
+    var sum=0;
+            var number=0;
+            Review.forEach(element=>{
+              sum+=element.rating;
+              number++
+             });
+            var rating=sum/number;
+            this.rating=Math.round(rating);
+  }
+  addReview(rate){
+    
+      const review = new Review();
+      review.init({
+        productId: this.productId,
+        userId:this._session.userId,
+        rating:rate
+      });
+
+      this._productapiService.create(review).subscribe(
+        (res) => {    
+          this.getReview(this.product.review);
+        },
+        async (error) => {
+          // Unexpected result!
+          // await this.presentAlert('فشل', 'حدث خطأ حاول مرة أخرى', null);
+          console.log('error ', error);
+        });
   }
 
   isFavProduct(){

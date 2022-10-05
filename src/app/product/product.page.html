@@ -61,6 +61,21 @@
       </ion-col>
   
     </ion-row >
+
+    <ion-row class="prod-mid">
+      <ion-col size="12">
+    <div>
+      <ion-icon class="stars"  (click)="addReview(1)" [ngClass]="{'checked' : rating >= 1}" name="star" ></ion-icon>
+      <ion-icon class="stars"  (click)="addReview(2)" [ngClass]="{'checked' : rating >= 2}"  name="star" ></ion-icon>
+      <ion-icon class="stars" (click)="addReview(3)" [ngClass]="{'checked' : rating >= 3}" name="star" ></ion-icon>
+      <ion-icon class="stars" (click)="addReview(4)"  [ngClass]="{'checked' : rating >= 4}" name="star" ></ion-icon>
+     <ion-icon class="stars"  (click)="addReview(5)"  [ngClass]="{'checked' : rating >= 5}" name="star" ></ion-icon>
+    </div>
+  </ion-col>
+
+  
+  </ion-row>
+
     <ion-row class="prod-mid">
       <ion-col size="12" class="prod-tilte-describ">
        <ion-label class="prod-price"> الوصف والمحتويات </ion-label>

@@ -14,8 +14,15 @@
 
 }
 
-
-
+.stars{
+  color:rgb(170, 167, 167) ;
+}
+.checked{
+  color:#ff9100 !important;
+}
+.stars :hover{
+  color:#ff9165 !important ;
+}
 .banner {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 20px;
