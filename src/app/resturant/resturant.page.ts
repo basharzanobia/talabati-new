@@ -11,7 +11,11 @@ import {
   VendorapiServiceProxy ,
   VendorWishlist,
   VendorwishlistapiServiceProxy,
-  VendorWishListResponseModel} 
+  VendorWishListResponseModel,
+  ReviewuserapiServiceProxy,
+  UserReview,
+  ReviewUserResponse,
+} 
 from 'src/shared/service-proxies/service-proxies';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -33,12 +37,13 @@ export class ResturantPage implements OnInit {
     slidesPerView: 5.7,
     spaceBetween: 5,
   };
+  rating;
   selectedCategory;
   vendorlist :VendorWishListResponseModel[]=[];
   isFav:boolean=false;
-  vendorWishListId
+  vendorWishListId;
   AppConsts = AppConsts;
-
+  Review: ReviewUserResponse[]=[];
   constructor(
     private _session: AppSessionService,
     private route: ActivatedRoute,
@@ -46,7 +51,8 @@ export class ResturantPage implements OnInit {
     private _productsService: ProductapiServiceProxy,
     private _homeService: HomeapiServiceProxy,
     private _vendorwishlistService: VendorwishlistapiServiceProxy,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    private _reviewuserService: ReviewuserapiServiceProxy
 
   ) { }
 
@@ -58,6 +64,7 @@ export class ResturantPage implements OnInit {
     this.vendor$ = this.route.paramMap.pipe(
       switchMap(params => {
         this.vendorId = params.get('vendorId');
+       
         const productFilter = new ProductFilterModel();
         productFilter.init( {
           creatorId: this.vendorId,
@@ -69,12 +76,14 @@ export class ResturantPage implements OnInit {
         .subscribe((res: ProductResponseModel) => {
           this.featuredProducts = res.products;
         });
+        this.getReview(this.vendorId);
         return this._vendorService.vendorbyid(this.vendorId);
       })
     );
 
     this.categories$ = this._homeService.menu();
     this.isFavVendor();
+   
   }
 
   slidePrev() {
@@ -87,6 +96,43 @@ export class ResturantPage implements OnInit {
 
   callSupport() {
     
+  }
+
+
+  getReview(vendorId){
+   
+    this._reviewuserService.getreviewsbyuserid(vendorId).subscribe((res: ReviewUserResponse[]) =>{ this.Review = res
+      var sum=0;
+      var number=0;
+      this.Review.forEach(element=>{
+             sum+=element.rating;
+             number++;
+            });
+           var rating=sum/number;
+           this.rating=Math.round(rating);
+          
+        });
+     
+            
+  }
+  addReview(rate){
+    
+      const review = new UserReview();
+      review.init({
+        userId: this.vendorId,
+        raterId:this._session.userId,
+        rating:rate
+      });
+
+      this._reviewuserService.create(review).subscribe(
+        (res) => {    
+
+        },
+        async (error) => {
+          // Unexpected result!
+          // await this.presentAlert('فشل', 'حدث خطأ حاول مرة أخرى', null);
+          console.log('error ', error);
+        });
   }
 
   async  showAlert(msg) {  
