@@ -28,7 +28,7 @@
 
  <ion-col size="6">
   <ion-item >
-      <ion-label class="booking-date">$ {{total_ammount}}</ion-label>
+      <ion-label class="booking-date">$ {{total_amount}}</ion-label>
   </ion-item>
 </ion-col>
 
@@ -45,6 +45,20 @@
     <ion-card>
        <ion-card-content>
         <h2 class="procc-title"> اضافة رصيد</h2>
+        <ion-row>
+          <ion-col size="6">
+                  <ion-item >
+                      <ion-label class="booking-date"> المبلغ</ion-label>
+                  </ion-item>
+          </ion-col>
+         
+          <ion-col size="6">
+            <ion-item>
+              <ion-input type="number" [(ngModel)]="amount" class="amount" placeholder="0000">$</ion-input>
+            </ion-item>
+         </ion-col>
+         
+         </ion-row>
         <ion-list>
           <ion-radio-group value="biff">
             <ion-item routerLink="/payments">
@@ -69,7 +83,7 @@
 <!-- Card Info -->
    <ion-row>
       <ion-col size="12">
-        <ion-button  expand="block" class="add-card" >
+        <ion-button  expand="block" class="add-card" (click)="deposit()" >
         اضافة رصيد
         </ion-button>
       </ion-col>
