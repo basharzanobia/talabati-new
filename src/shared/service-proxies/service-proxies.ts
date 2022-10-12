@@ -1115,6 +1115,301 @@ export class CouponapiServiceProxy {
 }
 
 @Injectable()
+export class DynamicpagesServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getbyid(id: number | undefined): Observable<DynamicPageModel> {
+        let url_ = this.baseUrl + "/api/dynamicpages/getbyid?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetbyid(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetbyid(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<DynamicPageModel>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<DynamicPageModel>;
+        }));
+    }
+
+    protected processGetbyid(response: HttpResponseBase): Observable<DynamicPageModel> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = DynamicPageModel.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DynamicPageModel>(null as any);
+    }
+
+    /**
+     * @param slug (optional) 
+     * @return Success
+     */
+    getbyslug(slug: string | undefined): Observable<DynamicPageModel> {
+        let url_ = this.baseUrl + "/api/dynamicpages/getbyslug?";
+        if (slug === null)
+            throw new Error("The parameter 'slug' cannot be null.");
+        else if (slug !== undefined)
+            url_ += "slug=" + encodeURIComponent("" + slug) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetbyslug(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetbyslug(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<DynamicPageModel>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<DynamicPageModel>;
+        }));
+    }
+
+    protected processGetbyslug(response: HttpResponseBase): Observable<DynamicPageModel> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = DynamicPageModel.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DynamicPageModel>(null as any);
+    }
+
+    /**
+     * @param title (optional) 
+     * @return Success
+     */
+    getbytitle(title: string | undefined): Observable<DynamicPageModel> {
+        let url_ = this.baseUrl + "/api/dynamicpages/getbytitle?";
+        if (title === null)
+            throw new Error("The parameter 'title' cannot be null.");
+        else if (title !== undefined)
+            url_ += "title=" + encodeURIComponent("" + title) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetbytitle(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetbytitle(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<DynamicPageModel>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<DynamicPageModel>;
+        }));
+    }
+
+    protected processGetbytitle(response: HttpResponseBase): Observable<DynamicPageModel> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = DynamicPageModel.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DynamicPageModel>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getpages(): Observable<DynamicPageModel[]> {
+        let url_ = this.baseUrl + "/api/dynamicpages/getpages";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetpages(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetpages(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<DynamicPageModel[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<DynamicPageModel[]>;
+        }));
+    }
+
+    protected processGetpages(response: HttpResponseBase): Observable<DynamicPageModel[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(DynamicPageModel.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DynamicPageModel[]>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createpage(body: DynamicPageModel | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/dynamicpages/createpage";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreatepage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreatepage(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<boolean>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<boolean>;
+        }));
+    }
+
+    protected processCreatepage(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(null as any);
+    }
+}
+
+@Injectable()
 export class EwalletServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -3703,6 +3998,75 @@ export class UserapiServiceProxy {
 }
 
 @Injectable()
+export class UserlocationapiServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    updatedriverlocation(body: UserLocation | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/userlocationapi/updatedriverlocation";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdatedriverlocation(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdatedriverlocation(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<boolean>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<boolean>;
+        }));
+    }
+
+    protected processUpdatedriverlocation(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(null as any);
+    }
+}
+
+@Injectable()
 export class VendorapiServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -5320,7 +5684,7 @@ export class ChatLog implements IChatLog {
         data["sender"] = this.sender ? this.sender.toJSON() : <any>undefined;
         data["recieverId"] = this.recieverId;
         data["reciever"] = this.reciever ? this.reciever.toJSON() : <any>undefined;
-        data["Text"] = this.text;
+        data["text"] = this.text;
         data["sendingDate"] = this.sendingDate ? this.sendingDate.toISOString() : <any>undefined;
         data["recievingDate"] = this.recievingDate ? this.recievingDate.toISOString() : <any>undefined;
         data["read"] = this.read;
@@ -5705,6 +6069,96 @@ export interface IDoubleBaseResponse {
     modelKey: string | undefined;
 }
 
+export enum DriverTaskStatusType {
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+}
+
+export class DynamicPageModel implements IDynamicPageModel {
+    id: number;
+    title: string;
+    content: string;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
+    updatedDate: moment.Moment | undefined;
+    updatedBy: string | undefined;
+    publishedDate: moment.Moment | undefined;
+    publishedBy: string | undefined;
+    slug: string | undefined;
+    isPublished: boolean;
+
+    constructor(data?: IDynamicPageModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.title = _data["title"];
+            this.content = _data["content"];
+            this.createdDate = _data["createdDate"] ? moment(_data["createdDate"].toString()) : <any>undefined;
+            this.createdBy = _data["createdBy"];
+            this.updatedDate = _data["updatedDate"] ? moment(_data["updatedDate"].toString()) : <any>undefined;
+            this.updatedBy = _data["updatedBy"];
+            this.publishedDate = _data["publishedDate"] ? moment(_data["publishedDate"].toString()) : <any>undefined;
+            this.publishedBy = _data["publishedBy"];
+            this.slug = _data["slug"];
+            this.isPublished = _data["isPublished"];
+        }
+    }
+
+    static fromJS(data: any): DynamicPageModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new DynamicPageModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["title"] = this.title;
+        data["content"] = this.content;
+        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
+        data["createdBy"] = this.createdBy;
+        data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
+        data["updatedBy"] = this.updatedBy;
+        data["publishedDate"] = this.publishedDate ? this.publishedDate.toISOString() : <any>undefined;
+        data["publishedBy"] = this.publishedBy;
+        data["slug"] = this.slug;
+        data["isPublished"] = this.isPublished;
+        return data;
+    }
+
+    clone(): DynamicPageModel {
+        const json = this.toJSON();
+        let result = new DynamicPageModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IDynamicPageModel {
+    id: number;
+    title: string;
+    content: string;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
+    updatedDate: moment.Moment | undefined;
+    updatedBy: string | undefined;
+    publishedDate: moment.Moment | undefined;
+    publishedBy: string | undefined;
+    slug: string | undefined;
+    isPublished: boolean;
+}
+
 export class EWallet implements IEWallet {
     id: number;
     tid: number;
@@ -6035,12 +6489,12 @@ export class Order implements IOrder {
     lastName: string;
     mobile: string;
     nickName: string | undefined;
-    gender: number;
+    gender: Gender;
     additionalMobile: string | undefined;
     pincode: string | undefined;
     houseNo: string;
     address: string;
-    addressType: number;
+    addressType: AddressType;
     area: string;
     landmark: string | undefined;
     city: string;
@@ -6062,6 +6516,7 @@ export class Order implements IOrder {
     taxAmount: number;
     grandTotal: number;
     orderStatus: OrderStatusType;
+    driverTaskStatus: DriverTaskStatusType;
     createdDate: moment.Moment;
     createdBy: string | undefined;
     updatedDate: moment.Moment;
@@ -6113,6 +6568,7 @@ export class Order implements IOrder {
             this.taxAmount = _data["taxAmount"];
             this.grandTotal = _data["grandTotal"];
             this.orderStatus = _data["orderStatus"];
+            this.driverTaskStatus = _data["driverTaskStatus"];
             this.createdDate = _data["createdDate"] ? moment(_data["createdDate"].toString()) : <any>undefined;
             this.createdBy = _data["createdBy"];
             this.updatedDate = _data["updatedDate"] ? moment(_data["updatedDate"].toString()) : <any>undefined;
@@ -6172,6 +6628,7 @@ export class Order implements IOrder {
         data["taxAmount"] = this.taxAmount;
         data["grandTotal"] = this.grandTotal;
         data["orderStatus"] = this.orderStatus;
+        data["driverTaskStatus"] = this.driverTaskStatus;
         data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
         data["createdBy"] = this.createdBy;
         data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
@@ -6204,12 +6661,12 @@ export interface IOrder {
     lastName: string;
     mobile: string;
     nickName: string | undefined;
-    gender: number;
+    gender: Gender;
     additionalMobile: string | undefined;
     pincode: string | undefined;
     houseNo: string;
     address: string;
-    addressType: number;
+    addressType: AddressType;
     area: string;
     landmark: string | undefined;
     city: string;
@@ -6231,6 +6688,7 @@ export interface IOrder {
     taxAmount: number;
     grandTotal: number;
     orderStatus: OrderStatusType;
+    driverTaskStatus: DriverTaskStatusType;
     createdDate: moment.Moment;
     createdBy: string | undefined;
     updatedDate: moment.Moment;
@@ -6245,6 +6703,8 @@ export class OrderDetail implements IOrderDetail {
     tid: number;
     orderId: number;
     order: Order;
+    subOrderId: number | undefined;
+    subOrder: SubOrder;
     productId: number;
     product: Product;
     varientId: number | undefined;
@@ -6256,6 +6716,8 @@ export class OrderDetail implements IOrderDetail {
     createdBy: string | undefined;
     updatedDate: moment.Moment;
     updatedBy: string | undefined;
+    vendorId: string | undefined;
+    vendor: ApplicationUser;
 
     constructor(data?: IOrderDetail) {
         if (data) {
@@ -6272,6 +6734,8 @@ export class OrderDetail implements IOrderDetail {
             this.tid = _data["tid"];
             this.orderId = _data["orderId"];
             this.order = _data["order"] ? Order.fromJS(_data["order"]) : <any>undefined;
+            this.subOrderId = _data["subOrderId"];
+            this.subOrder = _data["subOrder"] ? SubOrder.fromJS(_data["subOrder"]) : <any>undefined;
             this.productId = _data["productId"];
             this.product = _data["product"] ? Product.fromJS(_data["product"]) : <any>undefined;
             this.varientId = _data["varientId"];
@@ -6283,6 +6747,8 @@ export class OrderDetail implements IOrderDetail {
             this.createdBy = _data["createdBy"];
             this.updatedDate = _data["updatedDate"] ? moment(_data["updatedDate"].toString()) : <any>undefined;
             this.updatedBy = _data["updatedBy"];
+            this.vendorId = _data["vendorId"];
+            this.vendor = _data["vendor"] ? ApplicationUser.fromJS(_data["vendor"]) : <any>undefined;
         }
     }
 
@@ -6299,6 +6765,8 @@ export class OrderDetail implements IOrderDetail {
         data["tid"] = this.tid;
         data["orderId"] = this.orderId;
         data["order"] = this.order ? this.order.toJSON() : <any>undefined;
+        data["subOrderId"] = this.subOrderId;
+        data["subOrder"] = this.subOrder ? this.subOrder.toJSON() : <any>undefined;
         data["productId"] = this.productId;
         data["product"] = this.product ? this.product.toJSON() : <any>undefined;
         data["varientId"] = this.varientId;
@@ -6310,6 +6778,8 @@ export class OrderDetail implements IOrderDetail {
         data["createdBy"] = this.createdBy;
         data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
         data["updatedBy"] = this.updatedBy;
+        data["vendorId"] = this.vendorId;
+        data["vendor"] = this.vendor ? this.vendor.toJSON() : <any>undefined;
         return data;
     }
 
@@ -6326,6 +6796,8 @@ export interface IOrderDetail {
     tid: number;
     orderId: number;
     order: Order;
+    subOrderId: number | undefined;
+    subOrder: SubOrder;
     productId: number;
     product: Product;
     varientId: number | undefined;
@@ -6337,6 +6809,8 @@ export interface IOrderDetail {
     createdBy: string | undefined;
     updatedDate: moment.Moment;
     updatedBy: string | undefined;
+    vendorId: string | undefined;
+    vendor: ApplicationUser;
 }
 
 export class OrderDetailRequest implements IOrderDetailRequest {
@@ -6346,6 +6820,7 @@ export class OrderDetailRequest implements IOrderDetailRequest {
     price: number;
     amount: number;
     varientId: number;
+    vendorId: string;
 
     constructor(data?: IOrderDetailRequest) {
         if (data) {
@@ -6364,6 +6839,7 @@ export class OrderDetailRequest implements IOrderDetailRequest {
             this.price = _data["price"];
             this.amount = _data["amount"];
             this.varientId = _data["varientId"];
+            this.vendorId = _data["vendorId"];
         }
     }
 
@@ -6382,6 +6858,7 @@ export class OrderDetailRequest implements IOrderDetailRequest {
         data["price"] = this.price;
         data["amount"] = this.amount;
         data["varientId"] = this.varientId;
+        data["vendorId"] = this.vendorId;
         return data;
     }
 
@@ -6400,6 +6877,7 @@ export interface IOrderDetailRequest {
     price: number;
     amount: number;
     varientId: number;
+    vendorId: string;
 }
 
 export class OrderRequestModel implements IOrderRequestModel {
@@ -8128,6 +8606,125 @@ export interface ISubCategory {
     product: Product[] | undefined;
 }
 
+export class SubOrder implements ISubOrder {
+    id: number;
+    tid: number;
+    orderId: number;
+    vendorId: string | undefined;
+    vendor: ApplicationUser;
+    userId: string | undefined;
+    user: ApplicationUser;
+    totalQty: number;
+    totalAmount: number;
+    taxPercent: number;
+    taxAmount: number;
+    grandTotal: number;
+    orderStatus: OrderStatusType;
+    driverTaskStatus: DriverTaskStatusType;
+    orderDetail: OrderDetail[] | undefined;
+    tracking: Tracking[] | undefined;
+
+    constructor(data?: ISubOrder) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tid = _data["tid"];
+            this.orderId = _data["orderId"];
+            this.vendorId = _data["vendorId"];
+            this.vendor = _data["vendor"] ? ApplicationUser.fromJS(_data["vendor"]) : <any>undefined;
+            this.userId = _data["userId"];
+            this.user = _data["user"] ? ApplicationUser.fromJS(_data["user"]) : <any>undefined;
+            this.totalQty = _data["totalQty"];
+            this.totalAmount = _data["totalAmount"];
+            this.taxPercent = _data["taxPercent"];
+            this.taxAmount = _data["taxAmount"];
+            this.grandTotal = _data["grandTotal"];
+            this.orderStatus = _data["orderStatus"];
+            this.driverTaskStatus = _data["driverTaskStatus"];
+            if (Array.isArray(_data["orderDetail"])) {
+                this.orderDetail = [] as any;
+                for (let item of _data["orderDetail"])
+                    this.orderDetail.push(OrderDetail.fromJS(item));
+            }
+            if (Array.isArray(_data["tracking"])) {
+                this.tracking = [] as any;
+                for (let item of _data["tracking"])
+                    this.tracking.push(Tracking.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): SubOrder {
+        data = typeof data === 'object' ? data : {};
+        let result = new SubOrder();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tid"] = this.tid;
+        data["orderId"] = this.orderId;
+        data["vendorId"] = this.vendorId;
+        data["vendor"] = this.vendor ? this.vendor.toJSON() : <any>undefined;
+        data["userId"] = this.userId;
+        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        data["totalQty"] = this.totalQty;
+        data["totalAmount"] = this.totalAmount;
+        data["taxPercent"] = this.taxPercent;
+        data["taxAmount"] = this.taxAmount;
+        data["grandTotal"] = this.grandTotal;
+        data["orderStatus"] = this.orderStatus;
+        data["driverTaskStatus"] = this.driverTaskStatus;
+        if (Array.isArray(this.orderDetail)) {
+            data["orderDetail"] = [];
+            for (let item of this.orderDetail)
+                data["orderDetail"].push(item.toJSON());
+        }
+        if (Array.isArray(this.tracking)) {
+            data["tracking"] = [];
+            for (let item of this.tracking)
+                data["tracking"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone(): SubOrder {
+        const json = this.toJSON();
+        let result = new SubOrder();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISubOrder {
+    id: number;
+    tid: number;
+    orderId: number;
+    vendorId: string | undefined;
+    vendor: ApplicationUser;
+    userId: string | undefined;
+    user: ApplicationUser;
+    totalQty: number;
+    totalAmount: number;
+    taxPercent: number;
+    taxAmount: number;
+    grandTotal: number;
+    orderStatus: OrderStatusType;
+    driverTaskStatus: DriverTaskStatusType;
+    orderDetail: OrderDetail[] | undefined;
+    tracking: Tracking[] | undefined;
+}
+
 export class SubSubCategory implements ISubSubCategory {
     id: number;
     tid: number;
@@ -8240,6 +8837,8 @@ export class Tracking implements ITracking {
     tid: number;
     orderId: number;
     order: Order;
+    subOrderId: number | undefined;
+    subOrder: SubOrder;
     title: OrderStatusType;
     message: string;
     createdDate: moment.Moment;
@@ -8262,6 +8861,8 @@ export class Tracking implements ITracking {
             this.tid = _data["tid"];
             this.orderId = _data["orderId"];
             this.order = _data["order"] ? Order.fromJS(_data["order"]) : <any>undefined;
+            this.subOrderId = _data["subOrderId"];
+            this.subOrder = _data["subOrder"] ? SubOrder.fromJS(_data["subOrder"]) : <any>undefined;
             this.title = _data["title"];
             this.message = _data["message"];
             this.createdDate = _data["createdDate"] ? moment(_data["createdDate"].toString()) : <any>undefined;
@@ -8284,6 +8885,8 @@ export class Tracking implements ITracking {
         data["tid"] = this.tid;
         data["orderId"] = this.orderId;
         data["order"] = this.order ? this.order.toJSON() : <any>undefined;
+        data["subOrderId"] = this.subOrderId;
+        data["subOrder"] = this.subOrder ? this.subOrder.toJSON() : <any>undefined;
         data["title"] = this.title;
         data["message"] = this.message;
         data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
@@ -8306,6 +8909,8 @@ export interface ITracking {
     tid: number;
     orderId: number;
     order: Order;
+    subOrderId: number | undefined;
+    subOrder: SubOrder;
     title: OrderStatusType;
     message: string;
     createdDate: moment.Moment;
@@ -8322,13 +8927,15 @@ export enum TransactionType {
 export class UserAddress implements IUserAddress {
     id: number;
     tid: number;
-    userId: string;
+    userId: string | undefined;
     user: ApplicationUser;
     address: string;
     area: string | undefined;
     city: string | undefined;
     houseNo: string | undefined;
     status: boolean;
+    latitude: number;
+    longitude: number;
 
     constructor(data?: IUserAddress) {
         if (data) {
@@ -8350,6 +8957,8 @@ export class UserAddress implements IUserAddress {
             this.city = _data["city"];
             this.houseNo = _data["houseNo"];
             this.status = _data["status"];
+            this.latitude = _data["latitude"];
+            this.longitude = _data["longitude"];
         }
     }
 
@@ -8371,6 +8980,8 @@ export class UserAddress implements IUserAddress {
         data["city"] = this.city;
         data["houseNo"] = this.houseNo;
         data["status"] = this.status;
+        data["latitude"] = this.latitude;
+        data["longitude"] = this.longitude;
         return data;
     }
 
@@ -8385,13 +8996,15 @@ export class UserAddress implements IUserAddress {
 export interface IUserAddress {
     id: number;
     tid: number;
-    userId: string;
+    userId: string | undefined;
     user: ApplicationUser;
     address: string;
     area: string | undefined;
     city: string | undefined;
     houseNo: string | undefined;
     status: boolean;
+    latitude: number;
+    longitude: number;
 }
 
 export class UserCart implements IUserCart {
@@ -8483,6 +9096,57 @@ export interface IUserCart {
     total: number;
     createdDate: moment.Moment;
     updatedDate: moment.Moment | undefined;
+}
+
+export class UserLocation implements IUserLocation {
+    latitude: number;
+    longitude: number;
+    userId: string | undefined;
+
+    constructor(data?: IUserLocation) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.latitude = _data["latitude"];
+            this.longitude = _data["longitude"];
+            this.userId = _data["userId"];
+        }
+    }
+
+    static fromJS(data: any): UserLocation {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserLocation();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["latitude"] = this.latitude;
+        data["longitude"] = this.longitude;
+        data["userId"] = this.userId;
+        return data;
+    }
+
+    clone(): UserLocation {
+        const json = this.toJSON();
+        let result = new UserLocation();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUserLocation {
+    latitude: number;
+    longitude: number;
+    userId: string | undefined;
 }
 
 export class UserRegisterModel implements IUserRegisterModel {
