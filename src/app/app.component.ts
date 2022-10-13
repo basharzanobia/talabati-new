@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { Optional } from '@angular/core';
 import { IonRouterOutlet, Platform, AlertController } from '@ionic/angular';
 
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+// import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+// import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { Location } from '@angular/common';
 import { App } from '@capacitor/app';
@@ -16,8 +16,8 @@ export class AppComponent {
  
   constructor(
     private platform: Platform,
-    private splashScreen: SplashScreen,
-    private statusBar: StatusBar,
+   // private splashScreen: SplashScreen,
+   // private statusBar: StatusBar,
     private _location: Location,
     public alertController: AlertController,
     @Optional() private routerOutlet?: IonRouterOutlet
@@ -27,8 +27,8 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
+     // this.statusBar.styleDefault();
+     // this.splashScreen.hide();
     });
 
 
