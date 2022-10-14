@@ -20,7 +20,7 @@
        <div class="map-block">
          <ion-item class="map-header">
           <ion-icon  name="locate" class="location"></ion-icon>
-          <ion-label *ngIf=" userAddress !='' " class="location-titlle"> </ion-label>
+          <ion-label *ngIf="userAddresses.length" class="location-titlle"> </ion-label>
          </ion-item>
        </div>
   </section>
@@ -35,7 +35,7 @@
         <h1> العنوان الحالي </h1>
         <ion-list lines="none">
           <ion-item  *ngFor="let userAddress of userAddresses" >
-              <ion-item *ngIf=" userAddress != null ">
+              <ion-item *ngIf=" userAddress !== null ">
               <ion-label  class="location-titlle"> {{userAddress?.address}} / {{userAddress?.area}} / {{userAddress?.city}} /  {{userAddress?.houseNo}} </ion-label>
                 <!--  Edite Address info  -->
               <ion-icon class="edite-location" name="create"  routerLink="/addres" ><span>تعديل</span></ion-icon>

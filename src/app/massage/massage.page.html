@@ -24,13 +24,13 @@
       
 
       <ion-label class="noti-id">{{lastMsg?.text}}</ion-label>
-      <ion-label class="noti-id" *ngIf=" lastMsg?.read == false " >
-        <p class="noti-descrip">    {{ lastMsg?.sendingDate|date:'medium' }}</p>
+      <ion-label class="noti-id" *ngIf=" lastMsg?.read === false " >
+        <p class="noti-descrip">    {{ lastMsg?.sendingDate?.toDate()| date:'medium' }}</p>
         <ion-icon class="read-icon"  name="checkmark-outline"></ion-icon>
       </ion-label>
 
-      <ion-label class="noti-id"*ngIf=" lastMsg?.read == true " >
-        <p class="noti-descrip">    {{ lastMsg?.sendingDate|date:'medium' }}</p>
+      <ion-label class="noti-id"*ngIf=" lastMsg?.read === true " >
+        <p class="noti-descrip">    {{ lastMsg?.sendingDate?.toDate()| date:'medium' }}</p>
         <ion-icon class="read-icon"  name="checkmark-done-outline" ></ion-icon>
       </ion-label>
     </ion-col>

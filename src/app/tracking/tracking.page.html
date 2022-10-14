@@ -54,12 +54,12 @@
         تاريخ الطلب :
         </ion-col>
          <ion-col size="8" >
-              {{order?.createdDate|date:'medium'}}
+              {{order?.createdDate.toDate() |date:'medium'}}
          </ion-col>   
      
     <br>
 
-    <ion-col *ngIf="order.pincode != null" size="4" >
+    <ion-col *ngIf="order.pincode !== null" size="4" >
      الرمز:
       </ion-col>
        <ion-col size="8" >
@@ -102,10 +102,10 @@
             </ion-row>
 
                
-    <ion-row  *ngIf="orderDetail.orderNotes != null" class="order-action" >  
+    <ion-row  *ngIf="order.orderNotes !== null" class="order-action" >  
       <ion-col size="6">ملاحظات الشحن :</ion-col> 
       <ion-col size="6" > 
-        {{ orderDetail.orderNotes  }}
+        {{ order.orderNotes  }}
         </ion-col>
     </ion-row>
       <br>
@@ -139,7 +139,7 @@
         <ion-row class="order-action center" > 
           <ion-col size="12"> 
             <ion-label class="item-id" >التاريخ:</ion-label> 
-            {{ track.createdDate|date:'medium' }}
+            {{ track.createdDate?.toDate()|date:'medium' }}
             </ion-col>
         </ion-row>
       </ion-grid>
