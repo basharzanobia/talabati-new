@@ -4,86 +4,94 @@ import { IonRouterOutlet, Platform, AlertController } from '@ionic/angular';
 
 // import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 // import { StatusBar } from '@ionic-native/status-bar/ngx';
-
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import {  NavController, ToastController } from '@ionic/angular';
 import { Location } from '@angular/common';
 import { App } from '@capacitor/app';
+
+
+
+
+@Injectable({
+  providedIn: 'root'
+})
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
- 
+  private lastTimeBackButtonWasPressed = 1000;
+   private timePeriodToAction =0;
+  
   constructor(
-    private platform: Platform,
+     private platform: Platform,
    // private splashScreen: SplashScreen,
    // private statusBar: StatusBar,
-    private _location: Location,
-    public alertController: AlertController,
+      private _location: Location,
+      public alertController: AlertController,
+      private router: Router,
+      private navController: NavController,
+      private toastController: ToastController,
     @Optional() private routerOutlet?: IonRouterOutlet
   ) {
-    this.initializeApp();
+    this.init();
   }
 
-  initializeApp() {
-    this.platform.ready().then(() => {
-     // this.statusBar.styleDefault();
-     // this.splashScreen.hide();
-    });
-
-
-    this.platform.backButton.subscribeWithPriority(10, (processNextHandler) => {
-      console.log('Back press handler!');
-      if (this._location.isCurrentPathEqualTo('/home')) {
-
-        // Show Exit Alert!
-       
-        this.showExitConfirm();
-        processNextHandler();
-      } else {
-
-        // Navigate to back page
-        console.log('Navigate to back page');
-        this._location.back();
-
-      }
-
-    });
-
-    this.platform.backButton.subscribeWithPriority(5, () => {
-      console.log('Handler called to force close!');
-      this.alertController.getTop().then(r => {
-        if (r) {
-          navigator['app'].exitApp();
+ 
+  async init() {
+      this.platform.backButton.subscribeWithPriority(12, async () => {
+        const currentUrl = this.router.url;
+        if (currentUrl === "/intro" || currentUrl === "/splash") {
+          // this.withDoublePress("Press again to exit", () => {
+          this.withAlert("هل أنت متأكد من الخروج", () =>{
+           navigator['app'].exitApp();
+          
+          });
+        } else {
+          this.navController.back();
         }
-      }).catch(e => {
-        console.log(e);
-      })
-    });
-
-  }
-
-  showExitConfirm() {
-    this.alertController.create({
-      header: 'الخروح من التطبيق',
-      message: 'هل أنت متأكد من الخروج',
-      backdropDismiss: false,
-      buttons: [{
-        text: 'البقاء',
-        role: 'إلغاء',
-        handler: () => {
-          console.log('Application exit prevented!');
-        }
-      }, {
-        text: 'الخروج',
-        handler: () => {
-          navigator['app'].exitApp();
-        }
-      }]
-    })
-      .then(alert => {
-        alert.present();
+  
       });
-  }
+    }
+
+    
+  
+    // async withDoublePress(message: string, action: () => void) {
+    //   const currentTime = new Date().getTime();
+  
+    //   if (currentTime - this.lastTimeBackButtonWasPressed < this.timePeriodToAction) {
+    //     action();
+    //   } else {
+    //     const toast = await this.toastController.create({
+    //       message: message,
+    //       duration: this.timePeriodToAction
+    //     });
+  
+    //     await toast.present();
+  
+    //     this.lastTimeBackButtonWasPressed = currentTime;
+    //   }
+    // }
+  
+    async withAlert(message: string, action: () => void) {
+      const alert = await this.alertController.create({
+        message: message,
+        buttons: [{
+          text: "إلغاء",
+          role: "cancel"
+        },
+        {
+          text: "متأكد",
+          handler: action
+        }]
+      });
+  
+      await alert.present();
+    }
+  
+    
 
 }
