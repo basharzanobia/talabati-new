@@ -1,0 +1,108 @@
+<ion-content [fullscreen]="true">
+  <ion-row class="user-bar">
+    <ion-col size="2" class="logo-head" routerLink="/tabs/tab1/1" routerDirection="root">       
+      <img src="assets/img/logo.png">
+</ion-col>
+    <ion-col size="8" class="page-head">
+      <ion-label class="rest-title">العناوين</ion-label>   
+    </ion-col>
+
+    <ion-col size="2" class="page-head">
+      <ion-buttons>  
+        <ion-menu-button></ion-menu-button>   
+      </ion-buttons>  
+    </ion-col>
+  </ion-row>
+
+
+
+
+  <!-- map-->
+  <section class="map-section">
+       <div class="map-block">
+         <ion-item class="map-header">
+          <ion-icon name="locate" class="location"></ion-icon>
+          <ion-label class="location-titlle"> </ion-label>
+         </ion-item>
+       </div>
+  </section>
+ <!-- End map-->
+
+ <!--Address Info-->
+
+<section class="address-info" >
+  <ion-grid class="sevices">
+    <ion-row>
+      <ion-col size="6">
+        <ion-list lines="none">
+          <ion-item >
+            <ion-label class="booking-date" > المدينة</ion-label>
+          </ion-item>
+          <ion-item >
+            <ion-input type="txt" [(ngModel)]="city" placeholder="city"></ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col size="6">
+        <ion-list lines="none">
+          <ion-item >
+            <ion-label class="booking-time"> المنطقة </ion-label>
+          </ion-item>
+          <ion-item >
+            <ion-input type="text"  [(ngModel)]="area"  placeholder="area"></ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col size="6">
+        <ion-list lines="none">
+          <ion-item >
+            <ion-label class="booking-date"> العنوان</ion-label>
+          </ion-item>
+          <ion-item >
+            <ion-input type="text" [(ngModel)]="address" placeholder="address"></ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col size="6">
+        <ion-list lines="none">
+          <ion-item >
+            <ion-label class="booking-time">  رقم البناء </ion-label>
+          </ion-item>
+          <ion-item >
+            <ion-input type="text" [(ngModel)]="houseNo" placeholder="000"></ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+       <!-- End Address Info-->
+       <ion-row class="prod-mid">
+        <ion-col size="6">
+          نوع العنوان
+        </ion-col>
+        <ion-col size="6">
+          <ion-list>     
+            <ion-item>
+              <ion-select placeholder="حدد احد الخيارات">
+                <ion-select-option value="f">منزل</ion-select-option>
+                <ion-select-option value="m">عمل</ion-select-option>
+                <ion-select-option value="m">آخر</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+    
+      </ion-row >
+
+
+      <!-- save Address -->
+      <ion-col size="12">
+        <ion-button  expand="block"  class="save-address" (click)="saveAddress()" >
+         تعديل العنوان
+        </ion-button>
+      </ion-col>
+      <!-- save Address -->
+    </ion-row>
+  </ion-grid>
+</section>
+
+</ion-content>
+

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AppRouteGuard } from 'src/shared/auth/auth-route-guard';
+import { EditAddressResolverService } from './resolver/edit-address-resolver.service';
 
 const routes: Routes = [
 
@@ -93,6 +94,13 @@ const routes: Routes = [
     loadChildren: () => import('./addres/addres.module').then( m => m.AddresPageModule)
   },
   {
+    path: 'edit-addres/:id',
+    resolve: {
+      address: EditAddressResolverService
+    },
+    loadChildren: () => import('./edit-address/edit-addres.module').then( m => m.EditAddresPageModule)
+  },
+  {
     path: 'commingsoon',
     loadChildren: () => import('./commingsoon/commingsoon.module').then( m => m.CommingsoonPageModule)
   },
@@ -148,7 +156,8 @@ const routes: Routes = [
   {
     path: 'add-payment',
     loadChildren: () => import('./add-payment/add-payment.module').then( m => m.AddPaymentPageModule)
-  },  {
+  },
+  {
     path: 'splash',
     loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)
   }
