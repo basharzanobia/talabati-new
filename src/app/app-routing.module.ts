@@ -74,7 +74,7 @@ const routes: Routes = [
     loadChildren: () => import('./order-canceled/order-canceled.module').then( m => m.OrderCanceledPageModule)
   },
   {
-    path: 'profile',
+    path: 'tabs/profile',
     loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
   },
   {
