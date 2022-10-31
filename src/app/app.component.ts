@@ -27,9 +27,9 @@ export class AppComponent {
    private timePeriodToAction =0;
   
   constructor(
-     private platform: Platform,
-   // private splashScreen: SplashScreen,
-   // private statusBar: StatusBar,
+       private platform: Platform,
+      // private splashScreen: SplashScreen,
+      // private statusBar: StatusBar,
       private _location: Location,
       public alertController: AlertController,
       private router: Router,
@@ -37,44 +37,25 @@ export class AppComponent {
       private toastController: ToastController,
     @Optional() private routerOutlet?: IonRouterOutlet
   ) {
-    this.init();
-  }
-
- 
-  async init() {
-      this.platform.backButton.subscribeWithPriority(12, async () => {
-        const currentUrl = this.router.url;
-        if (currentUrl === "/intro" || currentUrl === "/splash") {
-          // this.withDoublePress("Press again to exit", () => {
-          this.withAlert("هل أنت متأكد من الخروج", () =>{
-           navigator['app'].exitApp();
-          
-          });
-        } else {
-          this.navController.back();
-        }
-  
-      });
-    }
-
     
+    this.initializeApp();
   
-    // async withDoublePress(message: string, action: () => void) {
-    //   const currentTime = new Date().getTime();
+  }
+  initializeApp() {
+    App.addListener('backButton', () => {
+      const currentUrl = this.router.url;
+      if (currentUrl === "/intro" || currentUrl === "/splash") {
+        // this.withDoublePress("Press again to exit", () => {
+          const logo = document.getElementById('logo');
+          logo.style.display = 'none';
+          this.withAlert("هل أنت متأكد من الخروج", () =>{
+          App.exitApp();
+    });
+  }}
+  ); 
+}
   
-    //   if (currentTime - this.lastTimeBackButtonWasPressed < this.timePeriodToAction) {
-    //     action();
-    //   } else {
-    //     const toast = await this.toastController.create({
-    //       message: message,
-    //       duration: this.timePeriodToAction
-    //     });
-  
-    //     await toast.present();
-  
-    //     this.lastTimeBackButtonWasPressed = currentTime;
-    //   }
-    // }
+
   
     async withAlert(message: string, action: () => void) {
       const alert = await this.alertController.create({
