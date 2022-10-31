@@ -73,7 +73,7 @@ const routes: Routes = [
     loadChildren: () => import('./order-canceled/order-canceled.module').then( m => m.OrderCanceledPageModule)
   },
   {
-    path: 'profile',
+    path: 'tabs/profile',
     loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
   },
   {
@@ -148,7 +148,8 @@ const routes: Routes = [
   {
     path: 'add-payment',
     loadChildren: () => import('./add-payment/add-payment.module').then( m => m.AddPaymentPageModule)
-  },  {
+  },
+  {
     path: 'splash',
     loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)
   }
