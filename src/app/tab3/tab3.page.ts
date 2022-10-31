@@ -13,7 +13,7 @@ import { AlertController } from '@ionic/angular';
 export class Tab3Page {
   address = "";
   notes = "";
-
+  items_len;
   constructor(
     public cart: CartStoreService,
     private _router: Router,
@@ -23,6 +23,7 @@ export class Tab3Page {
 
   ngOnInit() {
     console.log('cart ', this.cart.Items);
+    this.items_len=this.cart.Items.length;
     
   }
 
