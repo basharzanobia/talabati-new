@@ -15,7 +15,8 @@ export class EditAddresPage implements OnInit {
   city: string;
   houseNo: string;
   AppConsts = AppConsts;
-  data: any;
+  id: any;
+  userId : string;
 
 constructor(  
   private _session: AppSessionService,
@@ -30,21 +31,24 @@ constructor(
       this.address = this.route.snapshot.data['address'].address;
       this.area = this.route.snapshot.data['address'].area;
       this.city = this.route.snapshot.data['address'].city;
-      this.houseNo = this.route.snapshot.data['address'].houseNo;    
+      this.houseNo = this.route.snapshot.data['address'].houseNo;  
+      this.id = this.route.snapshot.data['address'].id;
+      this.userId = this.route.snapshot.data['address'].userId;    
     }
   }
   saveAddress()
   { 
       const address = new UserAddress();
       address.init({
-        userId:this._session.userId,
+        id:this.id,
+        userId:this.userId,
         address: this.address,
         area:this.area,
         city: this.city,
         houseNo: this.houseNo, 
       });
      
-      this._addressService.createaddress(address).subscribe(
+      this._addressService.updateaddress(address).subscribe(
         (res) => {
             this._router.navigate(['/saved-address']);
           console.log('الرسالة ', 'تم تعديل العنوان');

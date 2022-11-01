@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserAddress, AddressapiServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { AppConsts } from 'src/shared/AppConsts';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute ,Router} from '@angular/router';
 
 
 @Component({
@@ -18,6 +18,7 @@ export class SavedAddressPage implements OnInit {
 
   constructor(private _session: AppSessionService,
     private route: ActivatedRoute,
+    private _router: Router,
     private _addressService: AddressapiServiceProxy) {
 
   }
@@ -25,5 +26,17 @@ export class SavedAddressPage implements OnInit {
   ngOnInit(): void {
     this._addressService.getrequestsbyuserid(this._session.userId).subscribe((res: UserAddress[]) => this.userAddresses = res);
   }
+
+  deleteAddress(id)
+  {  
+      this._addressService.deleteaddress(id).subscribe(
+        (res) => {
+          this._router.navigate(['/saved-address']);
+          console.log('الرسالة ', 'تم حذف العنوان');
+        },
+        async (error) => {
+          console.log('error ', error);
+        });
+    }  
 
 }
