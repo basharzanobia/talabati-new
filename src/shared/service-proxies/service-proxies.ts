@@ -1350,63 +1350,6 @@ export class DynamicpagesServiceProxy {
         }
         return _observableOf<DynamicPageModel[]>(null as any);
     }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    createpage(body: DynamicPageModel | undefined): Observable<boolean> {
-        let url_ = this.baseUrl + "/api/dynamicpages/createpage";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreatepage(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processCreatepage(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<boolean>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<boolean>;
-        }));
-    }
-
-    protected processCreatepage(response: HttpResponseBase): Observable<boolean> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-    
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<boolean>(null as any);
-    }
 }
 
 @Injectable()
@@ -2545,6 +2488,145 @@ export class OrderapiServiceProxy {
             }));
         }
         return _observableOf<void>(null as any);
+    }
+}
+
+@Injectable()
+export class PaymentcompanyapiServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    getallcompanies(): Observable<PaymentCompany[]> {
+        let url_ = this.baseUrl + "/api/paymentcompanyapi/getallcompanies";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetallcompanies(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetallcompanies(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PaymentCompany[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PaymentCompany[]>;
+        }));
+    }
+
+    protected processGetallcompanies(response: HttpResponseBase): Observable<PaymentCompany[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(PaymentCompany.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PaymentCompany[]>(null as any);
+    }
+}
+
+@Injectable()
+export class PaymenttransactionServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    create(body: PaymentTransactionLog | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/paymenttransaction/create";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<boolean>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<boolean>;
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(null as any);
     }
 }
 
@@ -6354,6 +6436,7 @@ export class NotificationLog implements INotificationLog {
     token: string;
     userId: string | undefined;
     orderId: number | undefined;
+    subOrderId: number | undefined;
     notificationJson: string;
     responseJson: string | undefined;
     isOpended: boolean;
@@ -6374,6 +6457,7 @@ export class NotificationLog implements INotificationLog {
             this.token = _data["token"];
             this.userId = _data["userId"];
             this.orderId = _data["orderId"];
+            this.subOrderId = _data["subOrderId"];
             this.notificationJson = _data["notificationJson"];
             this.responseJson = _data["responseJson"];
             this.isOpended = _data["isOpended"];
@@ -6394,6 +6478,7 @@ export class NotificationLog implements INotificationLog {
         data["token"] = this.token;
         data["userId"] = this.userId;
         data["orderId"] = this.orderId;
+        data["subOrderId"] = this.subOrderId;
         data["notificationJson"] = this.notificationJson;
         data["responseJson"] = this.responseJson;
         data["isOpended"] = this.isOpended;
@@ -6414,6 +6499,7 @@ export interface INotificationLog {
     token: string;
     userId: string | undefined;
     orderId: number | undefined;
+    subOrderId: number | undefined;
     notificationJson: string;
     responseJson: string | undefined;
     isOpended: boolean;
@@ -6502,6 +6588,8 @@ export class Order implements IOrder {
     orderNotes: string | undefined;
     statements: boolean;
     paymentMode: PaymentModeType;
+    paymentCompanyId: number | undefined;
+    paymentReferenceCode: number | undefined;
     couponId: number;
     couponDiscount: number;
     shippingPincode: string | undefined;
@@ -6516,7 +6604,6 @@ export class Order implements IOrder {
     taxAmount: number;
     grandTotal: number;
     orderStatus: OrderStatusType;
-    driverTaskStatus: DriverTaskStatusType;
     createdDate: moment.Moment;
     createdBy: string | undefined;
     updatedDate: moment.Moment;
@@ -6554,6 +6641,8 @@ export class Order implements IOrder {
             this.orderNotes = _data["orderNotes"];
             this.statements = _data["statements"];
             this.paymentMode = _data["paymentMode"];
+            this.paymentCompanyId = _data["paymentCompanyId"];
+            this.paymentReferenceCode = _data["paymentReferenceCode"];
             this.couponId = _data["couponId"];
             this.couponDiscount = _data["couponDiscount"];
             this.shippingPincode = _data["shippingPincode"];
@@ -6568,7 +6657,6 @@ export class Order implements IOrder {
             this.taxAmount = _data["taxAmount"];
             this.grandTotal = _data["grandTotal"];
             this.orderStatus = _data["orderStatus"];
-            this.driverTaskStatus = _data["driverTaskStatus"];
             this.createdDate = _data["createdDate"] ? moment(_data["createdDate"].toString()) : <any>undefined;
             this.createdBy = _data["createdBy"];
             this.updatedDate = _data["updatedDate"] ? moment(_data["updatedDate"].toString()) : <any>undefined;
@@ -6614,6 +6702,8 @@ export class Order implements IOrder {
         data["orderNotes"] = this.orderNotes;
         data["statements"] = this.statements;
         data["paymentMode"] = this.paymentMode;
+        data["paymentCompanyId"] = this.paymentCompanyId;
+        data["paymentReferenceCode"] = this.paymentReferenceCode;
         data["couponId"] = this.couponId;
         data["couponDiscount"] = this.couponDiscount;
         data["shippingPincode"] = this.shippingPincode;
@@ -6628,7 +6718,6 @@ export class Order implements IOrder {
         data["taxAmount"] = this.taxAmount;
         data["grandTotal"] = this.grandTotal;
         data["orderStatus"] = this.orderStatus;
-        data["driverTaskStatus"] = this.driverTaskStatus;
         data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
         data["createdBy"] = this.createdBy;
         data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
@@ -6674,6 +6763,8 @@ export interface IOrder {
     orderNotes: string | undefined;
     statements: boolean;
     paymentMode: PaymentModeType;
+    paymentCompanyId: number | undefined;
+    paymentReferenceCode: number | undefined;
     couponId: number;
     couponDiscount: number;
     shippingPincode: string | undefined;
@@ -6688,7 +6779,6 @@ export interface IOrder {
     taxAmount: number;
     grandTotal: number;
     orderStatus: OrderStatusType;
-    driverTaskStatus: DriverTaskStatusType;
     createdDate: moment.Moment;
     createdBy: string | undefined;
     updatedDate: moment.Moment;
@@ -7028,10 +7118,148 @@ export enum OrderStatusType {
     _6 = 6,
 }
 
+export class PaymentCompany implements IPaymentCompany {
+    id: number;
+    tid: number;
+    name: string | undefined;
+    logo: string | undefined;
+    accountNumber: number;
+
+    constructor(data?: IPaymentCompany) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tid = _data["tid"];
+            this.name = _data["name"];
+            this.logo = _data["logo"];
+            this.accountNumber = _data["accountNumber"];
+        }
+    }
+
+    static fromJS(data: any): PaymentCompany {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentCompany();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tid"] = this.tid;
+        data["name"] = this.name;
+        data["logo"] = this.logo;
+        data["accountNumber"] = this.accountNumber;
+        return data;
+    }
+
+    clone(): PaymentCompany {
+        const json = this.toJSON();
+        let result = new PaymentCompany();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPaymentCompany {
+    id: number;
+    tid: number;
+    name: string | undefined;
+    logo: string | undefined;
+    accountNumber: number;
+}
+
 export enum PaymentModeType {
     _1 = 1,
     _2 = 2,
     _3 = 3,
+}
+
+export class PaymentTransactionLog implements IPaymentTransactionLog {
+    id: number;
+    tid: number;
+    orderId: number;
+    userId: string | undefined;
+    user: ApplicationUser;
+    paymentCompanyName: string | undefined;
+    paymentCompanyAccount: number;
+    transactionReferenceCode: number;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
+
+    constructor(data?: IPaymentTransactionLog) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tid = _data["tid"];
+            this.orderId = _data["orderId"];
+            this.userId = _data["userId"];
+            this.user = _data["user"] ? ApplicationUser.fromJS(_data["user"]) : <any>undefined;
+            this.paymentCompanyName = _data["paymentCompanyName"];
+            this.paymentCompanyAccount = _data["paymentCompanyAccount"];
+            this.transactionReferenceCode = _data["transactionReferenceCode"];
+            this.createdDate = _data["createdDate"] ? moment(_data["createdDate"].toString()) : <any>undefined;
+            this.createdBy = _data["createdBy"];
+        }
+    }
+
+    static fromJS(data: any): PaymentTransactionLog {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentTransactionLog();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tid"] = this.tid;
+        data["orderId"] = this.orderId;
+        data["userId"] = this.userId;
+        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        data["paymentCompanyName"] = this.paymentCompanyName;
+        data["paymentCompanyAccount"] = this.paymentCompanyAccount;
+        data["transactionReferenceCode"] = this.transactionReferenceCode;
+        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
+        data["createdBy"] = this.createdBy;
+        return data;
+    }
+
+    clone(): PaymentTransactionLog {
+        const json = this.toJSON();
+        let result = new PaymentTransactionLog();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPaymentTransactionLog {
+    id: number;
+    tid: number;
+    orderId: number;
+    userId: string | undefined;
+    user: ApplicationUser;
+    paymentCompanyName: string | undefined;
+    paymentCompanyAccount: number;
+    transactionReferenceCode: number;
+    createdDate: moment.Moment;
+    createdBy: string | undefined;
 }
 
 export class Permissions implements IPermissions {
@@ -8845,6 +9073,8 @@ export class Tracking implements ITracking {
     createdBy: string | undefined;
     updatedDate: moment.Moment;
     updatedBy: string | undefined;
+    endDate: moment.Moment;
+    isDone: boolean;
 
     constructor(data?: ITracking) {
         if (data) {
@@ -8869,6 +9099,8 @@ export class Tracking implements ITracking {
             this.createdBy = _data["createdBy"];
             this.updatedDate = _data["updatedDate"] ? moment(_data["updatedDate"].toString()) : <any>undefined;
             this.updatedBy = _data["updatedBy"];
+            this.endDate = _data["endDate"] ? moment(_data["endDate"].toString()) : <any>undefined;
+            this.isDone = _data["isDone"];
         }
     }
 
@@ -8893,6 +9125,8 @@ export class Tracking implements ITracking {
         data["createdBy"] = this.createdBy;
         data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
         data["updatedBy"] = this.updatedBy;
+        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
+        data["isDone"] = this.isDone;
         return data;
     }
 
@@ -8917,6 +9151,8 @@ export interface ITracking {
     createdBy: string | undefined;
     updatedDate: moment.Moment;
     updatedBy: string | undefined;
+    endDate: moment.Moment;
+    isDone: boolean;
 }
 
 export enum TransactionType {
@@ -9451,6 +9687,7 @@ export enum UserType {
     _1 = 1,
     _2 = 2,
     _3 = 3,
+    _4 = 4,
 }
 
 export class UserVendorSubCategory implements IUserVendorSubCategory {

@@ -113,3 +113,45 @@
   ion-checkbox {
       padding: 2px;
   }
+
+
+  .thanx {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    box-shadow: inset 0px 0px 10px rgba(165, 165, 165, 0.5);
+    padding: 2%;
+    margin-top: 20%;
+    border-radius: 10px;
+}
+.thanx-title {
+    color: #ff6600;
+    font-size: 30px;
+}
+
+
+.thanx-head {
+  padding-top: 20px;
+
+}
+
+
+
+.main-button {
+    background-color: rgb(0, 7, 71);
+    border-radius: 10px;
+    color: aliceblue;
+    padding: 10px;
+  }
+
+  .order-track {
+    color: aliceblue;
+    background-color: #ff6600;
+    border-radius: 10px;
+    padding: 10px;
+    
+  }
+
+  .main-button{
+    margin-bottom: 20px;
+  }
