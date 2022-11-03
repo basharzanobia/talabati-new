@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartStoreService } from 'src/shared/cart/cart-store.service';
-import { OrderapiServiceProxy, OrderDetail, OrderDetailRequest, OrderRequestModel } from 'src/shared/service-proxies/service-proxies';
+import { OrderapiServiceProxy, OrderDetail, OrderDetailRequest, OrderRequestModel, PaymentCompany,PaymentcompanyapiServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { AlertController } from '@ionic/angular';  
-
 
 @Component({
   selector: 'app-tab3',
@@ -14,17 +13,19 @@ export class Tab3Page {
   address = "";
   notes = "";
   items_len;
+  PaymentCompanies: PaymentCompany[] = [];
   constructor(
     public cart: CartStoreService,
     private _router: Router,
     private _orderService: OrderapiServiceProxy,
+    private _paymentCompanyService: PaymentcompanyapiServiceProxy,
     public alertController: AlertController,
   ) { }
 
   ngOnInit() {
     console.log('cart ', this.cart.Items);
     this.items_len=this.cart.Items.length;
-    
+    this._paymentCompanyService.getallcompanies().subscribe((res: PaymentCompany[]) => this.PaymentCompanies = res);
   }
 
   decItem(i: number) {
@@ -60,7 +61,6 @@ export class Tab3Page {
 
     await alert.present();
   }
-
 
   sendOrder() {
     this.withAlert("هل أنت متأكد من تثبيت الطلب؟", () =>{
