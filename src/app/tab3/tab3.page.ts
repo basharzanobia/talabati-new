@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartStoreService } from 'src/shared/cart/cart-store.service';
-import { OrderapiServiceProxy, OrderDetail, OrderDetailRequest, OrderRequestModel, PaymentCompany,PaymentcompanyapiServiceProxy } from 'src/shared/service-proxies/service-proxies';
+import { OrderapiServiceProxy,Order, OrderDetail, OrderDetailRequest, OrderRequestModel, PaymentCompany,PaymentcompanyapiServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { AlertController } from '@ionic/angular';  
 
 @Component({
@@ -12,6 +12,7 @@ import { AlertController } from '@ionic/angular';
 export class Tab3Page {
   address = "";
   notes = "";
+  PaymentMode = "";
   items_len;
   PaymentCompanies: PaymentCompany[] = [];
   constructor(
@@ -79,6 +80,7 @@ export class Tab3Page {
       mobile: 'mobile',
       orderNotes: this.notes,
       grandTotal: this.cart.Total,
+      paymentMode : this.PaymentMode,
       orderDetail : []
     });
     this.cart.Items.forEach(element => {
