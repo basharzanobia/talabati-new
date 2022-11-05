@@ -24,54 +24,14 @@
     <ion-card-content>
       <ion-row>
         <ion-col size="12">
-        <ion-accordion-group>
+        <ion-accordion-group *ngFor="let question of Questions">
           <ion-accordion toggle-icon="arrow-down-circle" color="primary">
             <ion-item slot="header">
-              <ion-label>سؤال 1</ion-label>
+              <ion-label>{{question.question}}</ion-label>
             </ion-item>
             <ion-list slot="content">
               <ion-item>
-                <ion-label>1</ion-label>
-              </ion-item>
-            </ion-list>
-          </ion-accordion>
-          <ion-accordion  toggle-icon="arrow-down-circle" color="primary">
-            <ion-item slot="header">
-              <ion-label>سؤال 1</ion-label>
-            </ion-item>
-            <ion-list slot="content">
-              <ion-item>
-                <ion-label>1</ion-label>
-              </ion-item>
-            </ion-list>
-          </ion-accordion>
-          <ion-accordion  toggle-icon="arrow-down-circle" color="primary">
-            <ion-item slot="header">
-              <ion-label>سؤال 1</ion-label>
-            </ion-item>
-            <ion-list slot="content">
-              <ion-item>
-                <ion-label>1</ion-label>
-              </ion-item>
-            </ion-list>
-          </ion-accordion>
-          <ion-accordion  toggle-icon="arrow-down-circle" color="primary" >
-            <ion-item slot="header">
-              <ion-label>سؤال 1</ion-label>
-            </ion-item>
-            <ion-list slot="content">
-              <ion-item>
-                <ion-label>1</ion-label>
-              </ion-item>
-            </ion-list>
-          </ion-accordion>
-          <ion-accordion  toggle-icon="arrow-down-circle" color="primary">
-            <ion-item slot="header">
-              <ion-label>سؤال 1</ion-label>
-            </ion-item>
-            <ion-list slot="content">
-              <ion-item>
-                <ion-label>1</ion-label>
+                <ion-label>{{question.answer}}</ion-label>
               </ion-item>
             </ion-list>
           </ion-accordion>

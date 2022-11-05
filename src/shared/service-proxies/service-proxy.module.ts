@@ -21,7 +21,8 @@ import * as ApiServiceProxies from './service-proxies';
         ApiServiceProxies.ChatapiServiceProxy,
         ApiServiceProxies.ReviewproductapiServiceProxy,
         ApiServiceProxies.ReviewuserapiServiceProxy,
-        ApiServiceProxies.PaymentcompanyapiServiceProxy
+        ApiServiceProxies.PaymentcompanyapiServiceProxy,
+        ApiServiceProxies.PopularquestionsapiServiceProxy
         // { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true }
     ]
 })

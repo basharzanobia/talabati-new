@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PopularQuestions,PopularquestionsapiServiceProxy } from 'src/shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-support',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SupportPage implements OnInit {
 
-  constructor() { }
+  Questions: PopularQuestions[] = [];
+
+  constructor(private _popularQestionsService: PopularquestionsapiServiceProxy,) { }
 
   ngOnInit() {
+    this._popularQestionsService.listbycategory(2).subscribe((res: PopularQuestions[]) => this.Questions = res);
   }
 
   call() {
