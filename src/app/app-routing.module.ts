@@ -86,6 +86,10 @@ const routes: Routes = [
     loadChildren: () => import('./support/support.module').then( m => m.SupportPageModule)
   },
   {
+    path: 'blog',
+    loadChildren: () => import('./blog/blog.module').then( m => m.BlogPageModule)
+  },
+  {
     path: 'edit-profile',
     loadChildren: () => import('./edit-profile/edit-profile.module').then( m => m.EditProfilePageModule)
   },

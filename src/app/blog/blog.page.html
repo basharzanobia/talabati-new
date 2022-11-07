@@ -1,0 +1,61 @@
+<ion-content [fullscreen]="true">
+  <ion-row class="user-bar">
+    <ion-col size="2" class="logo-head" routerLink="/tabs/tab1/1" routerDirection="root">       
+      <img src="assets/img/logo.png">
+</ion-col>
+    <ion-col size="8" class="page-head">
+      <ion-label class="rest-title"> المدونة </ion-label>   
+    </ion-col>
+
+    <ion-col size="2" class="page-head">
+      <ion-buttons>  
+        <ion-menu-button></ion-menu-button>   
+      </ion-buttons>  
+    </ion-col>
+  </ion-row>
+
+  <ng-container *ngFor="let page of pages">
+    <br>
+  <ion-row class="user-bar">
+    <ion-col size="8" class="page-head">
+      <ion-label class="rest-title">{{ page.title }} </ion-label>  
+    </ion-col>
+  </ion-row> 
+  <br>
+  <ion-row>
+    <ion-label class="message">
+      {{ page.content }} 
+    </ion-label>
+  </ion-row>
+
+
+   </ng-container>
+
+
+  <!-- map-->
+  <section class="map-section">
+       <div class="map-block">
+         <ion-item class="map-header">
+          <ion-icon name="locate" class="location"></ion-icon>
+          <ion-label class="location-titlle"> </ion-label>
+         </ion-item>
+       </div>
+  </section>
+ <!-- End map-->
+
+ <!--Address Info-->
+
+<section class="address-info" >
+  <ion-grid class="sevices">
+    <ion-row>
+
+
+
+       <!-- End Address Info-->
+
+    </ion-row>
+  </ion-grid>
+</section>
+
+</ion-content>
+
