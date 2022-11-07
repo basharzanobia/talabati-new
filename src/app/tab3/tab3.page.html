@@ -57,7 +57,7 @@
         <ion-col size="12"> 
           <ion-input type="text" 
             placeholder="ادخل العنوان من فضلك ..."
-            [(ngModel)]="address"> </ion-input> 
+            [(ngModel)]="orderRequest.address"> </ion-input> 
           <br> <br>
            </ion-col>
       </ion-row>
@@ -68,7 +68,7 @@
         <ion-col size="12"> 
           <ion-textarea type="text" 
             placeholder="ادخل ملاحظات الطلب من فضلك ..."
-            [(ngModel)]="notes"> </ion-textarea> 
+            [(ngModel)]="orderRequest.orderNotes"> </ion-textarea> 
           <br> <br>
            </ion-col>
       </ion-row>
@@ -80,7 +80,7 @@
         <br> <br> 
 
         <ion-list style="width: 100%;">
-          <ion-radio-group [(ngModel)]="PaymentMode">
+          <ion-radio-group [(ngModel)]="orderRequest.paymentMode">
              <ion-item>
               <ion-label> الدفع عبر المحفظة</ion-label>
               <ion-radio slot="end" value="1"></ion-radio>

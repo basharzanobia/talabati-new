@@ -15,6 +15,7 @@ export class Tab3Page {
   PaymentMode = "";
   items_len;
   PaymentCompanies: PaymentCompany[] = [];
+  orderRequest: OrderRequestModel=new OrderRequestModel();
   constructor(
     public cart: CartStoreService,
     private _router: Router,
@@ -67,7 +68,7 @@ export class Tab3Page {
     this.withAlert("هل أنت متأكد من تثبيت الطلب؟", () =>{
      
 
-    const order = new OrderRequestModel();
+    /*const order = new OrderRequestModel();
     order.init({
       address: '12, street, , sanaa, sss, 123456',
       area: 'area',
@@ -83,18 +84,25 @@ export class Tab3Page {
       paymentMode : this.PaymentMode,
       orderDetail : []
     });
+    */
+    this.orderRequest.area="zsdfg";
+    this.orderRequest.city="zdfbgz";
+    this.orderRequest.houseNo="3643";
+    this.orderRequest.lastName="zSFg";
+    this.orderRequest.middleName="SDGvzs";
+    this.orderRequest.state="sfg";
+    this.orderRequest.orderDetail = [];
     this.cart.Items.forEach(element => {
       const orderDetail = new OrderDetailRequest();
       orderDetail.init({
         productId: element.product.id,
         qty: element.quantity,
         price: element.product.price,
-        VendorId:"58705507-ccad-4088-8a72-2be7263773fa",
-       
+        vendorId:"58705507-ccad-4088-8a72-2be7263773fa",      
       });
-      order.orderDetail.push(orderDetail);
+      this.orderRequest.orderDetail.push(orderDetail);
     });
-    this._orderService.create(order).subscribe(
+    this._orderService.create(this.orderRequest).subscribe(
       (res) => {
           this._router.navigate(['/invoice']);
       },
