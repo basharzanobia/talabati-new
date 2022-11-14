@@ -3780,6 +3780,76 @@ export class ServerequestServiceProxy {
 }
 
 @Injectable()
+export class SuborderServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    list(): Observable<SubOrderModel[]> {
+        let url_ = this.baseUrl + "/api/suborder/list";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processList(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processList(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<SubOrderModel[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<SubOrderModel[]>;
+        }));
+    }
+
+    protected processList(response: HttpResponseBase): Observable<SubOrderModel[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(SubOrderModel.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<SubOrderModel[]>(null as any);
+    }
+}
+
+@Injectable()
 export class UserapiServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -6910,7 +6980,7 @@ export class OrderDetailRequest implements IOrderDetailRequest {
     price: number;
     amount: number;
     varientId: number;
-    vendorId: string;
+    vendorId: string | undefined;
 
     constructor(data?: IOrderDetailRequest) {
         if (data) {
@@ -6967,7 +7037,7 @@ export interface IOrderDetailRequest {
     price: number;
     amount: number;
     varientId: number;
-    vendorId: string;
+    vendorId: string | undefined;
 }
 
 export class OrderRequestModel implements IOrderRequestModel {
@@ -6983,9 +7053,12 @@ export class OrderRequestModel implements IOrderRequestModel {
     city: string;
     houseNo: string;
     paymentMode: number;
+    paymentCompanyId: number;
+    paymentReferenceCode: number;
     shippingAmount: number;
     state: string;
     address: string;
+    addressType: AddressType;
     lastName: string;
     middleName: string;
     orderNotes: string | undefined;
@@ -7018,9 +7091,12 @@ export class OrderRequestModel implements IOrderRequestModel {
             this.city = _data["city"];
             this.houseNo = _data["houseNo"];
             this.paymentMode = _data["paymentMode"];
+            this.paymentCompanyId = _data["paymentCompanyId"];
+            this.paymentReferenceCode = _data["paymentReferenceCode"];
             this.shippingAmount = _data["shippingAmount"];
             this.state = _data["state"];
             this.address = _data["address"];
+            this.addressType = _data["addressType"];
             this.lastName = _data["lastName"];
             this.middleName = _data["middleName"];
             this.orderNotes = _data["orderNotes"];
@@ -7057,9 +7133,12 @@ export class OrderRequestModel implements IOrderRequestModel {
         data["city"] = this.city;
         data["houseNo"] = this.houseNo;
         data["paymentMode"] = this.paymentMode;
+        data["paymentCompanyId"] = this.paymentCompanyId;
+        data["paymentReferenceCode"] = this.paymentReferenceCode;
         data["shippingAmount"] = this.shippingAmount;
         data["state"] = this.state;
         data["address"] = this.address;
+        data["addressType"] = this.addressType;
         data["lastName"] = this.lastName;
         data["middleName"] = this.middleName;
         data["orderNotes"] = this.orderNotes;
@@ -7096,9 +7175,12 @@ export interface IOrderRequestModel {
     city: string;
     houseNo: string;
     paymentMode: number;
+    paymentCompanyId: number;
+    paymentReferenceCode: number;
     shippingAmount: number;
     state: string;
     address: string;
+    addressType: AddressType;
     lastName: string;
     middleName: string;
     orderNotes: string | undefined;
@@ -8953,6 +9035,85 @@ export interface ISubOrder {
     tracking: Tracking[] | undefined;
 }
 
+export class SubOrderModel implements ISubOrderModel {
+    id: number;
+    tid: number;
+    orderId: number;
+    vendorId: string | undefined;
+    userId: string | undefined;
+    totalQty: number;
+    totalAmount: number;
+    taxPercent: number;
+    taxAmount: number;
+    grandTotal: number;
+
+    constructor(data?: ISubOrderModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tid = _data["tid"];
+            this.orderId = _data["orderId"];
+            this.vendorId = _data["vendorId"];
+            this.userId = _data["userId"];
+            this.totalQty = _data["totalQty"];
+            this.totalAmount = _data["totalAmount"];
+            this.taxPercent = _data["taxPercent"];
+            this.taxAmount = _data["taxAmount"];
+            this.grandTotal = _data["grandTotal"];
+        }
+    }
+
+    static fromJS(data: any): SubOrderModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new SubOrderModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tid"] = this.tid;
+        data["orderId"] = this.orderId;
+        data["vendorId"] = this.vendorId;
+        data["userId"] = this.userId;
+        data["totalQty"] = this.totalQty;
+        data["totalAmount"] = this.totalAmount;
+        data["taxPercent"] = this.taxPercent;
+        data["taxAmount"] = this.taxAmount;
+        data["grandTotal"] = this.grandTotal;
+        return data;
+    }
+
+    clone(): SubOrderModel {
+        const json = this.toJSON();
+        let result = new SubOrderModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISubOrderModel {
+    id: number;
+    tid: number;
+    orderId: number;
+    vendorId: string | undefined;
+    userId: string | undefined;
+    totalQty: number;
+    totalAmount: number;
+    taxPercent: number;
+    taxAmount: number;
+    grandTotal: number;
+}
+
 export class SubSubCategory implements ISubSubCategory {
     id: number;
     tid: number;
@@ -9169,6 +9330,7 @@ export class UserAddress implements IUserAddress {
     area: string | undefined;
     city: string | undefined;
     houseNo: string | undefined;
+    type: AddressType;
     status: boolean;
     latitude: number;
     longitude: number;
@@ -9192,6 +9354,7 @@ export class UserAddress implements IUserAddress {
             this.area = _data["area"];
             this.city = _data["city"];
             this.houseNo = _data["houseNo"];
+            this.type = _data["type"];
             this.status = _data["status"];
             this.latitude = _data["latitude"];
             this.longitude = _data["longitude"];
@@ -9215,6 +9378,7 @@ export class UserAddress implements IUserAddress {
         data["area"] = this.area;
         data["city"] = this.city;
         data["houseNo"] = this.houseNo;
+        data["type"] = this.type;
         data["status"] = this.status;
         data["latitude"] = this.latitude;
         data["longitude"] = this.longitude;
@@ -9238,6 +9402,7 @@ export interface IUserAddress {
     area: string | undefined;
     city: string | undefined;
     houseNo: string | undefined;
+    type: AddressType;
     status: boolean;
     latitude: number;
     longitude: number;
