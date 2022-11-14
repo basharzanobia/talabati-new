@@ -149,17 +149,17 @@
           </ion-radio-group>
 
           <ion-list style="width: 80%;padding-right: 20%;">
-            <ion-radio-group value="com">
+            <ion-radio-group [(ngModel)]="orderRequest.paymentCompanyId">
               <ng-container *ngFor="let company of PaymentCompanies">
                <ion-item>
                 <ion-img style="width: 30px;" size="3" src="https://talabak-b-y.com/{{ company.logo }}"></ion-img>
                 <ion-col>{{ company.name }} </ion-col>
                 <ion-col>{{ company.accountNumber }} </ion-col>
-                <ion-radio slot="end" value="{{ company.name }}"></ion-radio>
+                <ion-radio slot="end" value="{{ company.id }}"></ion-radio>
                </ion-item>
               </ng-container>
             </ion-radio-group>
-            <ion-input type="text" placeholder="ادخل الرقم المرجعي لعملية التحويل   ..."> </ion-input> 
+            <ion-input [(ngModel)]="orderRequest.paymentReferenceCode" type="text" placeholder="ادخل الرقم المرجعي لعملية التحويل   ..."> </ion-input> 
           </ion-list>
 
         </ion-list>
