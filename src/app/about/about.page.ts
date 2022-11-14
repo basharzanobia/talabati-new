@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DynamicPageModel, DynamicpagesServiceProxy } from 'src/shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-about',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AboutPage implements OnInit {
 
-  constructor() { }
+  page: DynamicPageModel = new DynamicPageModel();
+
+  constructor(private _dynamicpagesService: DynamicpagesServiceProxy) { }
 
   ngOnInit() {
+    this._dynamicpagesService.getbyslug("about").subscribe((res: DynamicPageModel) => this.page = res);
   }
 
 }
