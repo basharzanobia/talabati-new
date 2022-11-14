@@ -109,6 +109,8 @@ export class Tab3Page {
     this.orderRequest.lastName="zSFg";
     this.orderRequest.middleName="SDGvzs";
     this.orderRequest.state="sfg";
+    this.orderRequest.grandTotal= this.cart.Total;
+    this.orderRequest.totalQty=this.items_len;
     this.orderRequest.orderDetail = [];
     this.cart.Items.forEach(element => {
       const orderDetail = new OrderDetailRequest();
@@ -116,7 +118,8 @@ export class Tab3Page {
         productId: element.product.id,
         qty: element.quantity,
         price: element.product.price,
-        vendorId:"58705507-ccad-4088-8a72-2be7263773fa",      
+        amount:element.product.price*element.quantity,  
+        varientId:element.product.varient[0].id?element.product.varient[0].id:0
       });
       this.orderRequest.orderDetail.push(orderDetail);
     });
