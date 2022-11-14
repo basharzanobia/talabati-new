@@ -13,15 +13,15 @@
       </ion-buttons>  
     </ion-col>
   </ion-row>
- 
   <!-- FAQ -->
   <ion-card>
-    <ion-row >
-      <div [innerHTML]="page.content" ></div>
-    </ion-row>
-    
     <ion-card-header >
       <img class="card-logo" src="assets/img/logo.png" />
+
+      <ion-row >
+        <div [innerHTML]="page.content" ></div>
+      </ion-row>
+      
       <ion-card-title> الاسئلة الشائعة   </ion-card-title>
     </ion-card-header>
   
