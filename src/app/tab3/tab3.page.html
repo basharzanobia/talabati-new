@@ -126,6 +126,42 @@
            </ion-col>
       </ion-row>
 
+      <ion-row class="order-notes" >
+        <ion-col size="12"> 
+          <ion-label>الاسم الأوسط</ion-label>
+        </ion-col>
+        <ion-col size="12"> 
+          <ion-textarea type="text" 
+            placeholder="ادخل الاسم الأوسط ..."
+            [(ngModel)]="orderRequest.middleName"> </ion-textarea> 
+          <br> <br>
+           </ion-col>
+      </ion-row>
+
+      <ion-row class="order-notes" >
+        <ion-col size="12"> 
+          <ion-label>الاسم الأخير</ion-label>
+        </ion-col>
+        <ion-col size="12"> 
+          <ion-textarea type="text" 
+            placeholder="ادخل الاسم الأخير ..."
+            [(ngModel)]="orderRequest.lastName"> </ion-textarea> 
+          <br> <br>
+           </ion-col>
+      </ion-row>
+
+      <ion-row class="order-notes" >
+        <ion-col size="12"> 
+          <ion-label>الولاية</ion-label>
+        </ion-col>
+        <ion-col size="12"> 
+          <ion-textarea type="text" 
+            placeholder="ادخل الولاية ..."
+            [(ngModel)]="orderRequest.state"> </ion-textarea> 
+          <br> <br>
+           </ion-col>
+      </ion-row>
+
       <ion-row class="order-pay" >
         <ion-col size="12" class="pay-title">
           <ion-label> طريقة الدفع</ion-label>
