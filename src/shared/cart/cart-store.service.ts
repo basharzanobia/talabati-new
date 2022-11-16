@@ -29,7 +29,7 @@ export class CartStoreService {
   }
 
   get Total() {
-    const sum = this.items.reduce((sum, current) => sum + current.product.price * current.quantity, 0);
+    const sum = this.items.reduce((sum, current) => sum + (current.varientId!=0?current.varient.price:current.product.price) * current.quantity, 0);
     return sum;
   }
 

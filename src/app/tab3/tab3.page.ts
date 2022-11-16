@@ -99,19 +99,13 @@ export class Tab3Page {
     this.orderRequest.orderDetail = [];
     this.cart.Items.forEach(element => {
       const orderDetail = new OrderDetailRequest();
-      var vId;
-      if(element.product.varient[0]!=null){
-        vId=element.product.varient[0].id;
-      }
-      else{
-        vId=0;
-      }
+      var elementPrice =element.varientId!=0?element.varient.price:element.product.price;
       orderDetail.init({
         productId: element.product.id,
         qty: element.quantity,
-        price: element.product.price,
-        amount:element.product.price*element.quantity,  
-        varientId:vId
+        price: elementPrice,
+        amount:elementPrice*element.quantity,  
+        varientId:element.varientId
       });
       this.orderRequest.orderDetail.push(orderDetail);
     });

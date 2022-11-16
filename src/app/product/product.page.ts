@@ -7,6 +7,7 @@ import { AlertController } from '@ionic/angular';
 
 import {
   Product,
+  Varient,
   ProductapiServiceProxy,
   WishlistapiServiceProxy,
   Wishlist,
@@ -24,7 +25,8 @@ from 'src/shared/service-proxies/service-proxies';
 export class ProductPage implements OnInit {
   quantity = 1;
   productId = 1;
-  product: Product;
+  varientId = 0;
+  product: Product = new Product();
   AppConsts = AppConsts;
   productlist;
   isFav:boolean=false;
@@ -49,16 +51,28 @@ export class ProductPage implements OnInit {
             this.getReview(this.product.review);
           });
           this.isFavProduct();
-         
+       
+          console.log('product', this.product);
   }
 
-  addToCart() {
+  addToCart() {   
     this.cart.addToCart({
       productId: this.productId,
       quantity: this.quantity,
-      product: this.product
+      product: this.product,
+      varientId : this.varientId,
+      varient : this.getVarientById(this.product,this.varientId)
     });
     
+  }
+ getVarientById(product,id) : Varient{
+  var v:Varient = new Varient();
+    product.varient.forEach(element => {
+      if (element.id==id) {
+        v=element;
+      }
+    });
+    return v;
   }
   async  showAlert(msg) {  
     const alert = await this.alertCtrl.create({  

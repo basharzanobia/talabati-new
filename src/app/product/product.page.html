@@ -51,10 +51,10 @@
       <ion-col size="6">
         <ion-list>     
           <ion-item>
-            <ion-select placeholder="حدد احد الخيارات">
-              <ion-select-option value="f">صغير</ion-select-option>
-              <ion-select-option value="m">وسط</ion-select-option>
-              <ion-select-option value="m">كبير</ion-select-option>
+            <ion-select [(ngModel)]="varientId" placeholder="حدد احد الخيارات">
+              <ng-container *ngFor="let varient of product.varient">
+                <ion-select-option value="{{varient.id}}">{{varient.color.name}}-{{varient.size.name}}</ion-select-option>
+              </ng-container>
             </ion-select>
           </ion-item>
         </ion-list>
