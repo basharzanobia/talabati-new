@@ -84,30 +84,18 @@ export class Tab3Page {
   sendOrder() {
     this.withAlert("هل أنت متأكد من تثبيت الطلب؟", () =>{
      
-
-    /*const order = new OrderRequestModel();
-    order.init({
-      address: '12, street, , sanaa, sss, 123456',
-      area: 'area',
-      city: 'city',
-      houseNo: 'houseNo',
-      state: 1,
-      name: 'name',
-      middleName: 'middle name',
-      lastName: 'lastname',
-      mobile: 'mobile',
-      orderNotes: this.notes,
-      grandTotal: this.cart.Total,
-      paymentMode : this.PaymentMode,
-      orderDetail : []
+    var totalQty=0;
+    this.cart.Items.forEach(element => {
+      totalQty+=element.quantity;
     });
-    */
+
     this.orderRequest.area=this.userAddress.area;
     this.orderRequest.city=this.userAddress.city;
     this.orderRequest.houseNo=this.userAddress.houseNo;
     this.orderRequest.address=this.userAddress.address;
+    this.orderRequest.totalAmount= this.cart.Total;
     this.orderRequest.grandTotal= this.cart.Total;
-    this.orderRequest.totalQty=this.items_len;
+    this.orderRequest.totalQty=totalQty;
     this.orderRequest.orderDetail = [];
     this.cart.Items.forEach(element => {
       const orderDetail = new OrderDetailRequest();
