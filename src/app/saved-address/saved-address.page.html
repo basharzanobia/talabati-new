@@ -34,7 +34,7 @@
       <ion-col size="12">
         <h1> العنوان الحالي </h1>
         <ion-list lines="none">
-          <ion-item  *ngFor="let userAddress of userAddresses" >
+          <ion-item  *ngFor="let userAddress of this.addressDataService.getAddresses()" >
               <ion-item *ngIf=" userAddress !== null ">
               <ion-label  class="location-titlle"> {{userAddress?.address}} / {{userAddress?.area}} / {{userAddress?.city}} /  {{userAddress?.houseNo}} </ion-label>
                 <!--  Edite Address info  -->

@@ -3,6 +3,7 @@ import { UserAddress, AddressapiServiceProxy } from 'src/shared/service-proxies/
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { AppConsts } from 'src/shared/AppConsts';
 import { Router } from '@angular/router';
+import { AddressDataService } from '../services/address-data.service';
 
 @Component({
   selector: 'app-addres',
@@ -20,6 +21,7 @@ constructor(
   private _session: AppSessionService,
   private _router: Router,
   private _addressService: AddressapiServiceProxy,
+  public addressDataService: AddressDataService
 ) { }
 
 
@@ -38,6 +40,8 @@ constructor(
      
       this._addressService.createaddress(address).subscribe(
         (res) => {
+
+          this._addressService.getrequestsbyuserid(this._session.userId).subscribe((res: UserAddress[]) => this.addressDataService.initAddresses(res));
             this._router.navigate(['/saved-address']);
           console.log('الرسالة ', 'تم إدخال العنوان');
         },
