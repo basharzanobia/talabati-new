@@ -11,6 +11,7 @@ import { AppSessionService } from 'src/shared/session/app-session.service';
   styleUrls: ['tab3.page.scss']
 })
 export class Tab3Page {
+  paymentCompaniesVisible=false;
   address = "";
   notes = "";
   PaymentMode = "";
@@ -35,6 +36,14 @@ export class Tab3Page {
     this.items_len=this.cart.Items.length;
     this._addressApiService.getrequestsbyuserid(this._session.userId).subscribe((res: UserAddress[]) => this.userAddresses = res);
     this._paymentCompanyService.getallcompanies().subscribe((res: PaymentCompany[]) => this.PaymentCompanies = res);
+  }
+
+  showPaymentCompanies(){
+    this.paymentCompaniesVisible=true;
+  }
+
+  hidePaymentCompanies(){
+    this.paymentCompaniesVisible=false;
   }
 
   decItem(i: number) {

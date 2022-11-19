@@ -176,20 +176,21 @@
 
         <ion-list style="width: 100%;">
           <ion-radio-group [(ngModel)]="orderRequest.paymentMode">
-             <ion-item>
+             <ion-item (click)="hidePaymentCompanies()">
               <ion-label> الدفع عبر المحفظة</ion-label>
               <ion-radio slot="end" value="1"></ion-radio>
              </ion-item>
-             <ion-item>
+             <ion-item (click)="hidePaymentCompanies()">
               <ion-label> الدفع عند الاستلام</ion-label>
               <ion-radio slot="end" value="2"></ion-radio>
              </ion-item>
-             <ion-item>
+             <ion-item (click)="showPaymentCompanies()">
               <ion-label> الدفع عبر البطاقة</ion-label>
               <ion-radio slot="end" value="3"></ion-radio>              
              </ion-item>
           </ion-radio-group>
 
+          <ng-container *ngIf="paymentCompaniesVisible">
           <ion-list style="width: 80%;padding-right: 20%;">
             <ion-radio-group [(ngModel)]="orderRequest.paymentCompanyId">
               <ng-container *ngFor="let company of PaymentCompanies">
@@ -203,6 +204,8 @@
             </ion-radio-group>
             <ion-input [(ngModel)]="orderRequest.paymentReferenceCode" type="text" placeholder="ادخل الرقم المرجعي لعملية التحويل   ..."> </ion-input> 
           </ion-list>
+        </ng-container>
+
 
         </ion-list>
 
