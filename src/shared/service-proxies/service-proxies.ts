@@ -4277,6 +4277,69 @@ export class SuborderapiServiceProxy {
         }
         return _observableOf<SubOrder[]>(null as any);
     }
+
+    /**
+     * @param driverId (optional) 
+     * @return Success
+     */
+    getdriverdoneorders(driverId: string | undefined): Observable<SubOrder[]> {
+        let url_ = this.baseUrl + "/api/suborderapi/getdriverdoneorders?";
+        if (driverId === null)
+            throw new Error("The parameter 'driverId' cannot be null.");
+        else if (driverId !== undefined)
+            url_ += "driverId=" + encodeURIComponent("" + driverId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetdriverdoneorders(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetdriverdoneorders(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<SubOrder[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<SubOrder[]>;
+        }));
+    }
+
+    protected processGetdriverdoneorders(response: HttpResponseBase): Observable<SubOrder[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(SubOrder.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<SubOrder[]>(null as any);
+    }
 }
 
 @Injectable()
@@ -5046,6 +5109,115 @@ export class UserapiServiceProxy {
             }));
         }
         return _observableOf<ApplicationUser>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    edituser(body: EditUserAccount | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/userapi/edituser";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processEdituser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processEdituser(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processEdituser(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
+
+    /**
+     * @param currentPass (optional) 
+     * @return Success
+     */
+    checkpassword(currentPass: string | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/userapi/checkpassword?";
+        if (currentPass === null)
+            throw new Error("The parameter 'currentPass' cannot be null.");
+        else if (currentPass !== undefined)
+            url_ += "currentPass=" + encodeURIComponent("" + currentPass) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCheckpassword(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCheckpassword(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<boolean>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<boolean>;
+        }));
+    }
+
+    protected processCheckpassword(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(null as any);
     }
 }
 
@@ -7210,6 +7382,69 @@ export interface IDynamicPageModel {
     publishedBy: string | undefined;
     slug: string | undefined;
     isPublished: boolean;
+}
+
+export class EditUserAccount implements IEditUserAccount {
+    name: string | undefined;
+    email: string | undefined;
+    phone: string | undefined;
+    currentPassword: string | undefined;
+    newPassword: string | undefined;
+    confirmPassword: string | undefined;
+
+    constructor(data?: IEditUserAccount) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.email = _data["email"];
+            this.phone = _data["phone"];
+            this.currentPassword = _data["currentPassword"];
+            this.newPassword = _data["newPassword"];
+            this.confirmPassword = _data["confirmPassword"];
+        }
+    }
+
+    static fromJS(data: any): EditUserAccount {
+        data = typeof data === 'object' ? data : {};
+        let result = new EditUserAccount();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["email"] = this.email;
+        data["phone"] = this.phone;
+        data["currentPassword"] = this.currentPassword;
+        data["newPassword"] = this.newPassword;
+        data["confirmPassword"] = this.confirmPassword;
+        return data;
+    }
+
+    clone(): EditUserAccount {
+        const json = this.toJSON();
+        let result = new EditUserAccount();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IEditUserAccount {
+    name: string | undefined;
+    email: string | undefined;
+    phone: string | undefined;
+    currentPassword: string | undefined;
+    newPassword: string | undefined;
+    confirmPassword: string | undefined;
 }
 
 export class EWallet implements IEWallet {

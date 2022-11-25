@@ -2,25 +2,25 @@ import { OrderStatusType } from './service-proxies/service-proxies';
 
 
 export class AppOrderStatusType {
-    static Pending: number = OrderStatusType._1;
-    static InTransit: number = OrderStatusType._2;
-    static Failed: number = OrderStatusType._3;
-    static Delivered: number = OrderStatusType._4;
-    static Returned: number = OrderStatusType._5;
-    static Temp: number = OrderStatusType._6;
+    static Pending: number = OrderStatusType.Pending;
+    static InTransit: number = OrderStatusType.InTransit;
+    static Failed: number = OrderStatusType.Failed;
+    static Delivered: number = OrderStatusType.Delivered;
+    static Returned: number = OrderStatusType.Returned;
+    static Temp: number = OrderStatusType.Temp;
     static getName(val: OrderStatusType) {
         switch (val) {
-            case OrderStatusType._1:
+            case OrderStatusType.Pending:
                 return 'بالانتظار';
-            case OrderStatusType._2:
+            case OrderStatusType.InTransit:
                 return 'في النقل';
-            case OrderStatusType._3:
+            case OrderStatusType.Failed:
                 return 'فشل';
-            case OrderStatusType._4:
+            case OrderStatusType.Delivered:
                 return 'تم التسليم';
-            case OrderStatusType._5:
+            case OrderStatusType.Returned:
                 return 'تم الإعادة';
-            case OrderStatusType._6:
+            case OrderStatusType.Temp:
                 return 'مؤقت';
             default:
                 return '';
