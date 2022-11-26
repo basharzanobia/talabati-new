@@ -3,7 +3,7 @@
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
-      "url": "https://talabak-b-y.com/swagger/v2/swagger.json",
+     "url": "https://localhost:44384/swagger/v2/swagger.json",
       "output": null
     }
   },

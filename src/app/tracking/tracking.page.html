@@ -76,7 +76,7 @@
       </ion-row>
     <br>
 
-     
+
   
 
     <ion-row class="order-cutomer" *ngFor="let orderDetail of order?.orderDetail" >
@@ -117,7 +117,12 @@
     
       <br>
      
-
+<ion-row>
+  <ion-col size="12">
+    <div #map id="map">
+    </div>
+  </ion-col>
+</ion-row>
       <ion-row class="order-cutomer" >  
         <ion-col size="12"> تتبع الطلب :</ion-col> 
       </ion-row>
@@ -153,7 +158,7 @@
       </ion-col>
       
     </ion-row>
-   
+  
     <br>
     <ion-row class="order-action" >
       <ion-col size="6" class="order-cancel" routerLink="/order-canceled"> 

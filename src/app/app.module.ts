@@ -16,7 +16,7 @@ import { AppHttpInterceptor } from '../shared/auth/app-http.interceptor';
 import { AppAuthService } from 'src/shared/auth/app-auth.service';
 import { CartStoreService } from 'src/shared/cart/cart-store.service';
 import { AppSessionService } from 'src/shared/session/app-session.service';
-
+import { SuborderapiServiceProxy,UserlocationapiServiceProxy } from 'src/shared/service-proxies/service-proxies';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -34,6 +34,8 @@ import { AppSessionService } from 'src/shared/session/app-session.service';
     CartStoreService,
     AppAuthService,
     AppSessionService,
+    SuborderapiServiceProxy,
+    UserlocationapiServiceProxy
   ],
   bootstrap: [AppComponent],
 })
