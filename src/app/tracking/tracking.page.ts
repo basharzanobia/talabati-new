@@ -75,7 +75,7 @@ export class TrackingPage implements OnInit {
         this.locations.push(marker);
         marker.setMap(this.map);
     
-        const contentString ='<div id="infowindow" style="margin-right:30px;">' + `${name}`+"</div>"; ;
+        const contentString ='<div id="infowindow" style="margin-right:30px;font-weight:bold">' + `${name}`+"</div>"; ;
             
         const infowindow = new google.maps.InfoWindow({
             content: contentString,
