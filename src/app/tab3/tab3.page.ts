@@ -87,7 +87,9 @@ export class Tab3Page {
       this.userAddress.houseNo="";
       this.userAddress.area="";
     }
+    else{
     this._addressApiService.getbyid(id).subscribe((res: UserAddress) => this.userAddress = res);   
+    }
   }
 
   sendOrder() {
