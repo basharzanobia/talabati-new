@@ -25,7 +25,17 @@
       <ion-row 
         *ngFor="let item of cart.Items; let i = index"
         class="table-count" >
-        <ion-col> {{ item.product.name }} </ion-col>
+        <ion-col> {{ item.product.name }} 
+        <ng-container *ngIf="item.varientId!=null">
+          <ng-container *ngIf="item.varient.colorId!=null">
+            {{item.varient.color.name}}
+          </ng-container>
+          <ng-container *ngIf="item.varient.sizeId!=null">
+          {{item.varient.size.name}}
+        </ng-container>
+      </ng-container>
+    </ion-col>
+
         <ng-container *ngIf="item.varientId!=0;then content else other_content"></ng-container>
         <ng-template #content>
         <ion-col>{{ item.varient.price }}$</ion-col>
