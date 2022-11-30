@@ -53,7 +53,7 @@
           <ion-item>
             <ion-select [(ngModel)]="varientId" placeholder="حدد احد الخيارات">
               <ng-container *ngFor="let varient of product.varient">
-                <ion-select-option value="{{varient.id}}">{{varient.color.name}}-{{varient.size.name}}</ion-select-option>
+                <ion-select-option value="{{varient.id}}">{{varient.color!=null?varient.color.name:""}}-{{varient.size!=null?varient.size.name:""}}</ion-select-option>
               </ng-container>
             </ion-select>
           </ion-item>
