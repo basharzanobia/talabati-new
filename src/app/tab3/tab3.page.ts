@@ -123,7 +123,8 @@ export class Tab3Page {
     });
     this._orderService.create(this.orderRequest).subscribe(
       (res) => {
-          this._router.navigate(['/invoice']);
+          console.log('res is ', res);
+          this._router.navigate(['/invoice',res]);
       },
       async (error) => {
         // Unexpected result!

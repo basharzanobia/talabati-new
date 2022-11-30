@@ -16,17 +16,18 @@
 
   <ion-grid class="ion-margin table">
     <ion-row class="order-head" >
-      <ion-col size="3">المطعم:</ion-col>
-      <ion-col size="3">حضرموت </ion-col>
       <ion-col size="3">رقم الطلب: </ion-col>
-      <ion-col size="3">066566</ion-col>
+      <ion-col size="3">{{order.id}}</ion-col>
+      <ion-col size="3">التاريخ:</ion-col>
+      <ion-col size="3">{{this.orderDate}}</ion-col>
     </ion-row>
 
     <ion-row class="order-cutomer" >
       <ion-col size="3">العميل:</ion-col>
-      <ion-col size="3">خالد حمد </ion-col>
-      <ion-col size="3">التاريخ:</ion-col>
-      <ion-col size="3">01/01/2020 </ion-col>
+      <ion-col size="3">{{order.name}} {{order.middleName}} {{order.lastName}}</ion-col>
+      <ion-col size="3">العنوان:</ion-col>
+      <ion-col size="3">{{order.address}}</ion-col>
+
     </ion-row>
     <ion-row class="table-head" >
       <ion-col>البيانات</ion-col>
@@ -34,18 +35,28 @@
       <ion-col>الكمية</ion-col>
       <ion-col>الاجمالي</ion-col>
     </ion-row>
+
     <ion-row class="table-count" >
-      <ion-col> سلة بحريات </ion-col>
-      <ion-col>15 $</ion-col>
-      <ion-col>
-        01
-      </ion-col>
-      <ion-col>15 $</ion-col>
+      <ng-container *ngFor="let item of order.orderDetail">
+        <ion-col>{{item.product.name}}
+          <ng-container *ngIf="item.varientId!=null">
+            <ng-container *ngIf="item.varient.colorId!=null">
+              {{item.varient.color.name}}
+            </ng-container>
+            <ng-container *ngIf="item.varient.sizeId!=null">
+            {{item.varient.size.name}}
+          </ng-container>
+        </ng-container>
+        </ion-col>
+        <ion-col>{{item.price}} $</ion-col>
+        <ion-col>{{item.qty}}</ion-col>
+        <ion-col>{{item.amount}} $</ion-col>
+      </ng-container>
     </ion-row>
 
     <ion-row class="order-total" >
       <ion-col size="6"> اجمالي قيمة الفاتورة:</ion-col>
-      <ion-col size="6">15 $ </ion-col>
+      <ion-col size="6">{{order.grandTotal}} $ </ion-col>
     </ion-row>
 
     <br>      
