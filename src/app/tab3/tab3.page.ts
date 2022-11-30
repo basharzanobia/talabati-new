@@ -116,7 +116,8 @@ export class Tab3Page {
         qty: element.quantity,
         price: elementPrice,
         amount:elementPrice*element.quantity,  
-        varientId:element.varientId
+        varientId:element.varientId,
+        vendorId:element.product.createdBy
       });
       this.orderRequest.orderDetail.push(orderDetail);
     });
