@@ -26,6 +26,7 @@ export class ProductPage implements OnInit {
   quantity = 1;
   productId = 1;
   varientId = 0;
+  varientNumber = 0;
   product: Product = new Product();
   AppConsts = AppConsts;
   productlist;
@@ -49,10 +50,9 @@ export class ProductPage implements OnInit {
           .subscribe((res: Product) => {
             this.product = res;
             this.getReview(this.product.review);
+            this.varientNumber = this.product.varient.length;
           });
-          this.isFavProduct();
-       
-          console.log('product', this.product);
+          this.isFavProduct();   
   }
 
   addToCart() {   
