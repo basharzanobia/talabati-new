@@ -124,6 +124,7 @@ export class Tab3Page {
     this._orderService.create(this.orderRequest).subscribe(
       (res) => {
           console.log('res is ', res);
+          this.cart.clearCart();
           this._router.navigate(['/invoice',res]);
       },
       async (error) => {

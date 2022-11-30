@@ -36,8 +36,8 @@
       <ion-col>الاجمالي</ion-col>
     </ion-row>
 
+    <ng-container *ngFor="let item of order.orderDetail">
     <ion-row class="table-count" >
-      <ng-container *ngFor="let item of order.orderDetail">
         <ion-col>{{item.product.name}}
           <ng-container *ngIf="item.varientId!=null">
             <ng-container *ngIf="item.varient.colorId!=null">
@@ -51,8 +51,8 @@
         <ion-col>{{item.price}} $</ion-col>
         <ion-col>{{item.qty}}</ion-col>
         <ion-col>{{item.amount}} $</ion-col>
-      </ng-container>
     </ion-row>
+  </ng-container>
 
     <ion-row class="order-total" >
       <ion-col size="6"> اجمالي قيمة الفاتورة:</ion-col>
