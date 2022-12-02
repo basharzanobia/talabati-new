@@ -12,6 +12,7 @@ import { AppSessionService } from 'src/shared/session/app-session.service';
 })
 export class Tab3Page {
   paymentCompaniesVisible=false;
+  showDetailes=false;
   address = "";
   notes = "";
   PaymentMode = "";
@@ -92,6 +93,15 @@ export class Tab3Page {
     }
   }
 
+  ShowDetailes(e){
+    console.log(e);
+    if(e.detail.checked){
+      this.showDetailes = true;
+    }
+    else{
+      this.showDetailes = false;
+    }
+  }
   sendOrder() {
     this.withAlert("هل أنت متأكد من تثبيت الطلب؟", () =>{
      

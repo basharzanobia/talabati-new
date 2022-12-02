@@ -142,7 +142,12 @@
            </ion-col>
       </ion-row>
 
-      <ion-checkbox (ionChange)="ShowDetailes($event)">إرسال إلى شخص اخر</ion-checkbox>
+      <ion-row class="order-notes" >
+        <ion-col size="12"> 
+          <ion-label>إرسال إلى شخص اخر</ion-label>
+          <ion-checkbox (ionChange)="ShowDetailes($event)"></ion-checkbox>
+        </ion-col>
+      </ion-row>
 
       <ng-container *ngIf="showDetailes">
       <ion-row class="order-notes" >
@@ -168,7 +173,6 @@
           <br> <br>
            </ion-col>
       </ion-row>
-2
     </ng-container>
 
 
