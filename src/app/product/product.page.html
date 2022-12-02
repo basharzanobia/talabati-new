@@ -52,7 +52,7 @@
       <ion-col size="6">
         <ion-list>     
           <ion-item>
-            <ion-select [(ngModel)]="varientId" placeholder="حدد احد الخيارات">
+            <ion-select [(ngModel)]="varientId" placeholder="حدد احد الخيارات" (ionChange)="ChangeVarient(varientId)">
               <ng-container *ngFor="let varient of product.varient">
                 <ion-select-option value="{{varient.id}}">{{varient.color!=null?varient.color.name:""}}-{{varient.size!=null?varient.size.name:""}}</ion-select-option>
               </ng-container>
@@ -120,7 +120,14 @@
     <ion-row>
       <ion-col size="6" class="item-cost">        
         <ion-icon name="cash-outline"></ion-icon>
-            <ion-label color="secondry" class="item-price">{{ product?.price }} $</ion-label> 
+
+        <ng-container *ngIf="varientId!=0;then content else other_content"></ng-container>
+        <ng-template #content>
+          <ion-label color="secondry" class="item-price">{{ varient?.price }} $</ion-label> 
+        </ng-template>
+        <ng-template #other_content>
+          <ion-label color="secondry" class="item-price">{{ product?.price }} $</ion-label> 
+          </ng-template> 
             
       </ion-col>
       <ion-col size="6" class="item-order" routerLink="/tabs/tab3">

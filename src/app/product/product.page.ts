@@ -28,6 +28,7 @@ export class ProductPage implements OnInit {
   varientId = 0;
   varientNumber = 0;
   product: Product = new Product();
+  varient: Varient = new Varient();
   AppConsts = AppConsts;
   productlist;
   isFav:boolean=false;
@@ -53,6 +54,11 @@ export class ProductPage implements OnInit {
             this.varientNumber = this.product.varient.length;
           });
           this.isFavProduct();   
+  }
+
+  ChangeVarient(varientId){
+    console.log(this.product.productImage);
+    this.varient = this.product.varient.find(x=>x.id==varientId);
   }
 
   addToCart() {   
