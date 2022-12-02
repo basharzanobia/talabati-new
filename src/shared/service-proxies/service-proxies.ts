@@ -5468,6 +5468,57 @@ export class UserapiServiceProxy {
     }
 
     /**
+     * @return Success
+     */
+    currentuserdetailes(): Observable<UserDetails> {
+        let url_ = this.baseUrl + "/api/userapi/currentuserdetailes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCurrentuserdetailes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCurrentuserdetailes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<UserDetails>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<UserDetails>;
+        }));
+    }
+
+    protected processCurrentuserdetailes(response: HttpResponseBase): Observable<UserDetails> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = UserDetails.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UserDetails>(null as any);
+    }
+
+    /**
      * @param currentPass (optional) 
      * @return Success
      */
@@ -8859,7 +8910,7 @@ export class Order implements IOrder {
     area: string;
     landmark: string | undefined;
     city: string;
-    state: string;
+    state: string | undefined;
     orderNotes: string | undefined;
     statements: boolean;
     paymentMode: PaymentModeType;
@@ -9034,7 +9085,7 @@ export interface IOrder {
     area: string;
     landmark: string | undefined;
     city: string;
-    state: string;
+    state: string | undefined;
     orderNotes: string | undefined;
     statements: boolean;
     paymentMode: PaymentModeType;
@@ -9261,11 +9312,13 @@ export class OrderRequestModel implements IOrderRequestModel {
     paymentCompanyId: number;
     paymentReferenceCode: number;
     shippingAmount: number;
-    state: string;
+    state: string | undefined;
     address: string;
     addressType: AddressType;
-    lastName: string;
-    middleName: string;
+    mobile: string | undefined;
+    firstName: string | undefined;
+    lastName: string | undefined;
+    middleName: string | undefined;
     orderNotes: string | undefined;
     pincode: string | undefined;
     shippingPincode: string | undefined;
@@ -9302,6 +9355,8 @@ export class OrderRequestModel implements IOrderRequestModel {
             this.state = _data["state"];
             this.address = _data["address"];
             this.addressType = _data["addressType"];
+            this.mobile = _data["mobile"];
+            this.firstName = _data["firstName"];
             this.lastName = _data["lastName"];
             this.middleName = _data["middleName"];
             this.orderNotes = _data["orderNotes"];
@@ -9344,6 +9399,8 @@ export class OrderRequestModel implements IOrderRequestModel {
         data["state"] = this.state;
         data["address"] = this.address;
         data["addressType"] = this.addressType;
+        data["mobile"] = this.mobile;
+        data["firstName"] = this.firstName;
         data["lastName"] = this.lastName;
         data["middleName"] = this.middleName;
         data["orderNotes"] = this.orderNotes;
@@ -9383,11 +9440,13 @@ export interface IOrderRequestModel {
     paymentCompanyId: number;
     paymentReferenceCode: number;
     shippingAmount: number;
-    state: string;
+    state: string | undefined;
     address: string;
     addressType: AddressType;
-    lastName: string;
-    middleName: string;
+    mobile: string | undefined;
+    firstName: string | undefined;
+    lastName: string | undefined;
+    middleName: string | undefined;
     orderNotes: string | undefined;
     pincode: string | undefined;
     shippingPincode: string | undefined;
