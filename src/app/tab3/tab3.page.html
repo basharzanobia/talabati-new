@@ -142,9 +142,12 @@
            </ion-col>
       </ion-row>
 
+      <ion-checkbox (ionChange)="ShowDetailes($event)">إرسال إلى شخص اخر</ion-checkbox>
+
+      <ng-container *ngIf="showDetailes">
       <ion-row class="order-notes" >
         <ion-col size="12"> 
-          <ion-label>الاسم الأوسط</ion-label>
+          <ion-label>الاسم</ion-label>
         </ion-col>
         <ion-col size="12"> 
           <ion-textarea type="text" 
@@ -165,18 +168,9 @@
           <br> <br>
            </ion-col>
       </ion-row>
+2
+    </ng-container>
 
-      <ion-row class="order-notes" >
-        <ion-col size="12"> 
-          <ion-label>الولاية</ion-label>
-        </ion-col>
-        <ion-col size="12"> 
-          <ion-textarea type="text" 
-            placeholder="ادخل الولاية ..."
-            [(ngModel)]="orderRequest.state"> </ion-textarea> 
-          <br> <br>
-           </ion-col>
-      </ion-row>
 
       <ion-row class="order-pay" >
         <ion-col size="12" class="pay-title">
