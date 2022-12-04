@@ -4,13 +4,25 @@ import { CartStoreService } from 'src/shared/cart/cart-store.service';
 import { OrderapiServiceProxy,UserAddress,AddressType,AddressapiServiceProxy,Order, OrderDetail, OrderDetailRequest, OrderRequestModel, PaymentCompany,PaymentcompanyapiServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { AlertController } from '@ionic/angular';  
 import { AppSessionService } from 'src/shared/session/app-session.service';
-
+import { Geolocation} from '@capacitor/geolocation';
+declare var google;
 @Component({
   selector: 'app-tab3',
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss']
 })
 export class Tab3Page {
+  items: any;
+  autocomplete: any;
+  acService: any;
+  placesService: any;
+  selectedItem: any;
+  buttonDisabled = true;
+  sessionToken: any;
+  currentLon: any;
+  currentLat: any;
+  destinationCity : string;
+  zipCode : string="";
   paymentCompaniesVisible=false;
   showDetailes=false;
   address = "";
@@ -21,7 +33,9 @@ export class Tab3Page {
   PaymentCompanies: PaymentCompany[] = [];
   userAddress:UserAddress=new UserAddress();
   userAddresses:UserAddress[]=[];
+  googleAddress;
   orderRequest: OrderRequestModel=new OrderRequestModel();
+  showGoogleMap =false;
   constructor(
     private _session: AppSessionService,
     public cart: CartStoreService,
@@ -30,7 +44,7 @@ export class Tab3Page {
     private _paymentCompanyService: PaymentcompanyapiServiceProxy,
     private _addressApiService : AddressapiServiceProxy,
     public alertController: AlertController,
-  ) { }
+  ) { this.initPage()}
 
   ngOnInit() {
     console.log('cart ', this.cart.Items);
@@ -38,7 +52,104 @@ export class Tab3Page {
     this._addressApiService.getrequestsbyuserid(this._session.userId).subscribe((res: UserAddress[]) => this.userAddresses = res);
     this._paymentCompanyService.getallcompanies().subscribe((res: PaymentCompany[]) => this.PaymentCompanies = res);
   }
+  initPage() {
+    // Create a new session token.
+    this.sessionToken = new google.maps.places.AutocompleteSessionToken();
+    this.acService = new google.maps.places.AutocompleteService();
+    this.items = [];
+    this.autocomplete = {
+      query: ''
+    };
+  }
 
+  async ionViewWillEnter() {
+    this.items=[]
+    this.autocomplete.query=""
+    
+    const position = await Geolocation.getCurrentPosition();
+     
+     if (position) {
+      console.log(position)
+       this.currentLat = position.coords.latitude
+       this.currentLon = position.coords.longitude
+     }
+    
+  } 
+  chooseItem(item: any) {
+    console.log('modal > chooseItem > item > ', item);
+    console.log(item)
+    this.selectedItem = item;
+    this.items = [];
+    this.autocomplete.query = item.structured_formatting.main_text + " - " + item.structured_formatting.secondary_text;
+    console.log("description "+item.description)
+    this.googleAddress = item.description;
+    this.buttonDisabled = false;
+    if (item.structured_formatting.secondary_text.indexOf(",")>0){
+      let lieuSplitted = item.structured_formatting.secondary_text.split(",",1); 
+      this.destinationCity  = lieuSplitted[0]
+    }
+    else{
+      this.destinationCity  = item.structured_formatting.main_text
+    }
+  }
+
+  updateSearch() {
+    console.log('modal > updateSearch '+this.autocomplete.query);
+    if (this.autocomplete.query == '') {
+      this.items = [];
+      this.buttonDisabled = true
+      return;
+    }
+    let self = this;
+    let config: any;
+    if (this.currentLat) {
+      let myLatLng = new google.maps.LatLng({lat: this.currentLat, lng: this.currentLon}); 
+      config = {
+        types: ['geocode'], // other types available in the API: 'establishment', 'regions', and 'cities'
+        input: this.autocomplete.query,
+        sessionToken: this.sessionToken,
+        language: "AR",
+        location: myLatLng,
+        radius: 500 * 100 ,//50Km
+        componentRestrictions: { country: 'YE' } 
+      }
+
+    }
+    else {
+      config = {
+        types: ['geocode'], // other types available in the API: 'establishment', 'regions', and 'cities'
+        input: this.autocomplete.query,
+        sessionToken: this.sessionToken,
+        language:"EN"
+        //location: {lat: -34, lng: 151},
+        //radius: 1000 * 100 //100Km
+        //, 
+        //componentRestrictions: { country: 'FR,ES,BE' } 
+      }
+
+    }
+
+    console.log(config)
+    this.acService.getPlacePredictions(config, function (predictions, status) {
+      //console.log('modal > getPlacePredictions > status > ', status);
+      self.items = [];
+      //console.log("predictions "+JSON .stringify(predictions)) 
+      if (predictions) {
+        predictions.forEach(function (prediction) {
+          self.items.push(prediction);
+        });
+      }
+    });
+
+  }
+  dismiss() {
+    console.log("Clear search")
+    this.items = [];
+    this.autocomplete = {
+      query: ''
+    };
+   
+  }
   showPaymentCompanies(){
     this.paymentCompaniesVisible=true;
   }
@@ -83,6 +194,7 @@ export class Tab3Page {
 
   selectAddress(id:number){
     if( id==0){
+      this.showGoogleMap = true;
       this.userAddress.address="";
       this.userAddress.city="";
       this.userAddress.houseNo="";
@@ -90,6 +202,7 @@ export class Tab3Page {
     }
     else{
     this._addressApiService.getbyid(id).subscribe((res: UserAddress) => this.userAddress = res);   
+    this.showGoogleMap = false;
     }
   }
 
@@ -114,6 +227,9 @@ export class Tab3Page {
     this.orderRequest.city=this.userAddress.city;
     this.orderRequest.houseNo=this.userAddress.houseNo;
     this.orderRequest.address=this.userAddress.address;
+    if(Boolean(this.googleAddress)){
+      this.orderRequest.address=this.googleAddress;
+    }
     this.orderRequest.totalAmount= this.cart.Total;
     this.orderRequest.grandTotal= this.cart.Total;
     this.orderRequest.totalQty=totalQty;
