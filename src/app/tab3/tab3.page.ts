@@ -120,7 +120,7 @@ export class Tab3Page {
         types: ['geocode'], // other types available in the API: 'establishment', 'regions', and 'cities'
         input: this.autocomplete.query,
         sessionToken: this.sessionToken,
-        language:"EN"
+        language:"AR"
         //location: {lat: -34, lng: 151},
         //radius: 1000 * 100 //100Km
         //, 

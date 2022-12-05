@@ -24,7 +24,9 @@ export class SavedAddressPage implements OnInit {
     public addressDataService: AddressDataService) {
 
   }
-
+  locateMe(){
+    this._router.navigate(['/locate-me']);
+  }
   ngOnInit(): void {
     this._addressService.getrequestsbyuserid(this._session.userId).subscribe((res: UserAddress[]) => this.addressDataService.initAddresses(res));
   }

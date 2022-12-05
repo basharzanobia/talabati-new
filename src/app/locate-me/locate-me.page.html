@@ -1,0 +1,56 @@
+<ion-header [translucent]="true">
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-row class="user-bar">
+    <ion-col size="2" class="logo-head" routerLink="/tabs/tab1/1" routerDirection="root">       
+      <img src="assets/img/logo.png">
+</ion-col>
+    <ion-col size="8" class="page-head">
+      <ion-label class="rest-title"> موقعي</ion-label>   
+    </ion-col>
+
+    <ion-col size="2" class="page-head">
+      <ion-buttons>  
+        <ion-menu-button></ion-menu-button>   
+      </ion-buttons>  
+    </ion-col>
+  </ion-row>
+  <ion-row style="height:20px"></ion-row>
+  <!--<div>
+    <input type="text" class="my-search-box" (keydown.enter)="$event.preventDefault()" placeholder="Search Location"
+      type="text" #search />
+  </div>-->
+
+  <google-map #myGoogleMap height="550px" width="100%" [zoom]="zoom" [center]="center" [options]="options"
+    (mapClick)="eventHandler($event,'mapClick')" (mapDblclick)="eventHandler($event,'mapDblclick')"
+    (mapDrag)="eventHandler($event,'mapDrag')" (mapDragend)="eventHandler($event,'mapDragend')"
+    (mapRightclick)="eventHandler($event,'mapRightclick')"
+    (positionChanged)="eventHandler($event,'marker_positionChanged')"
+    (zoomChanged)="eventHandler($event,'zoomChanged')">
+
+    <map-marker #markerElem="mapMarker" *ngFor="let marker of markers" [position]="marker.position"
+      [label]="marker.label" [title]="marker.title" [options]="marker.options"
+      (mapDrag)="eventHandler($event,'mapDragMarker')" (mapDragend)="eventHandler($event,'mapDragend')">
+    </map-marker>
+    <div class="action-buttons">
+      <ion-button  (click)="saveAddress()"> التالي</ion-button>
+    </div>
+   
+  </google-map>
+  <ion-row>
+  
+  </ion-row>
+  <!-- <h6 *ngIf="address">{{address}}</h6>-->
+  <!--<ion-row style="height:20px"></ion-row>
+  <ion-grid>
+    <ion-row class="ion-align-items-center">
+      <ion-col size="12" >
+        <ion-text color="danger">{{noAddressError}}</ion-text>
+      </ion-col>
+      <ion-col size="12" class="ion-text-center">
+        <ion-button (click)="saveAddress()"> التالي</ion-button>
+      </ion-col>
+   
+    </ion-row>
+  </ion-grid>-->
+</ion-content>

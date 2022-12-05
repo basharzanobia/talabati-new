@@ -19,7 +19,7 @@
   <section class="map-section">
        <div class="map-block">
          <ion-item class="map-header">
-          <ion-icon  name="locate" class="location"></ion-icon>
+          <ion-icon  name="locate" class="location" (click)="locateMe()"></ion-icon>
           <ion-label *ngIf="userAddresses.length" class="location-titlle"> </ion-label>
          </ion-item>
        </div>
@@ -32,7 +32,7 @@
   <ion-grid class="Address-info">
     <ion-row>
       <ion-col size="12">
-        <h1> العنوان الحالي </h1>
+       
         <ion-list lines="none">
           <ion-item  *ngFor="let userAddress of this.addressDataService.getAddresses()" >
               <ion-item *ngIf=" userAddress !== null ">
@@ -53,7 +53,11 @@
          اضافة عنوان جديد
         </ion-button>
       </ion-col>
-
+      <ion-col size="12">
+        <ion-button  expand="block" class="add-new"  routerLink="/locate-me">
+         اضافة موقعي الحالي
+        </ion-button>
+      </ion-col>
            <!-- Add Address  -->
     </ion-row>
   </ion-grid>

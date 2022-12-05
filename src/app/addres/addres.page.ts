@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserAddress, AddressapiServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { AppConsts } from 'src/shared/AppConsts';
-import { Router } from '@angular/router';
+import { Router ,ActivatedRoute} from '@angular/router';
 import { AddressDataService } from '../services/address-data.service';
 import { Geolocation} from '@capacitor/geolocation';
 declare var google;
@@ -29,8 +29,12 @@ export class AddresPage implements OnInit {
   city: string;
   houseNo: string;
   AppConsts = AppConsts;
-
+latitude;
+longitude;
+addr;
+myPosition;
 constructor(  
+  private route: ActivatedRoute,
   private _session: AppSessionService,
   private _router: Router,
   private _addressService: AddressapiServiceProxy,
@@ -136,14 +140,31 @@ dismiss() {
  
 }
   ngOnInit() {
+    console.log("latitude "+this.route.snapshot.paramMap.get('lat'));
+    this.latitude = this.route.snapshot.paramMap.get('lat');
+    console.log("longitude "+this.route.snapshot.paramMap.get('lang'));
+    this.longitude = this.route.snapshot.paramMap.get('lang');
+    console.log("adddre "+this.route.snapshot.paramMap.get('addr'));
+    this.addr = this.route.snapshot.paramMap.get('addr');
+    if(Boolean(this.addr)){
+this.myPosition = true;
+    }
   }
   saveAddress()
   { 
+    console.log ("google addr b "+ this.googleAddress);
       const address = new UserAddress();
+      if(!Boolean(this.googleAddress)){
+this.googleAddress = this.addr;
+console.log ("google addr"+ this.googleAddress);
+
+      }
       address.init({
         userId:this._session.userId,
        // address: this.address,
         address :this.googleAddress,
+        latitude:this.latitude ?? 0,
+        longitude : this.longitude ?? 0,
         area:this.area,
         city: this.city,
         houseNo: this.houseNo, 

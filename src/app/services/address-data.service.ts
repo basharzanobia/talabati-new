@@ -17,7 +17,7 @@ export class AddressDataService {
   }
  
   getAddresses():UserAddress[]{
-    console.log("get");
+    //console.log("get");
     return this._addressess;
   }
 

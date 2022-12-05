@@ -164,8 +164,16 @@ const routes: Routes = [
   {
     path: 'splash',
     loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)
-  }
+  },
+  {
+    path: 'locate-me',
+    loadChildren: () => import('./locate-me/locate-me.module').then( m => m.LocateMePageModule)
+  },
 
+  {
+    path: 'addres/:lat/:lang/:addr',
+    loadChildren: () => import('./addres/addres.module').then( m => m.AddresPageModule)
+  }
 
 
 

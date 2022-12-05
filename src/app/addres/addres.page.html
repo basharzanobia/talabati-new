@@ -14,25 +14,11 @@
     </ion-col>
   </ion-row>
 
-
-
-
-  <!-- map-->
-  <section class="map-section">
-       <div class="map-block">
-         <ion-item class="map-header">
-          <ion-icon name="locate" class="location"></ion-icon>
-          <ion-label class="location-titlle"> </ion-label>
-         </ion-item>
-       </div>
-  </section>
- <!-- End map-->
-
  <!--Address Info-->
 
 <section class="address-info" >
   <ion-grid class="sevices">
-    <ion-row>
+    <ion-row *ngIf="!myPosition">
       <p>الرجاء ادخال العنوان الذي ترغب به</p>
       <ion-searchbar class="location-search" mode="ios" [(ngModel)]="autocomplete.query" show-cancel-button="never" (ionInput)="updateSearch()"
       (ionCancel)="dismiss()" (ionClear)="dismiss()" placeholder="">
