@@ -33,7 +33,25 @@
 <section class="address-info" >
   <ion-grid class="sevices">
     <ion-row>
-      <ion-col size="6">
+      <p>الرجاء ادخال العنوان الذي ترغب به</p>
+      <ion-searchbar class="location-search" mode="ios" [(ngModel)]="autocomplete.query" show-cancel-button="never" (ionInput)="updateSearch()"
+      (ionCancel)="dismiss()" (ionClear)="dismiss()" placeholder="">
+    </ion-searchbar>
+    <p class="small" *ngIf="selectedItem">{{autocomplete.query}}</p>
+    <ion-list lines="full">
+ 
+      <ion-item  *ngFor="let item of items" (click)="chooseItem(item)">
+        <ion-icon slot="end" color="success" size="small" class="wg-arrow-line-left">
+        </ion-icon>
+        <ion-label text-wrap>
+       <h2>{{item.structured_formatting.main_text}}</h2>
+          <p>{{item.structured_formatting.secondary_text}}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
         <ion-list lines="none">
           <ion-item >
             <ion-label class="booking-date" > المدينة</ion-label>
@@ -43,7 +61,7 @@
           </ion-item>
         </ion-list>
       </ion-col>
-      <ion-col size="6">
+      <ion-col size="12">
         <ion-list lines="none">
           <ion-item >
             <ion-label class="booking-time"> المنطقة </ion-label>
@@ -53,7 +71,7 @@
           </ion-item>
         </ion-list>
       </ion-col>
-      <ion-col size="6">
+   <!--  <ion-col size="6">
         <ion-list lines="none">
           <ion-item >
             <ion-label class="booking-date"> العنوان</ion-label>
@@ -62,8 +80,9 @@
             <ion-input type="text" [(ngModel)]="address" placeholder="address"></ion-input>
           </ion-item>
         </ion-list>
-      </ion-col>
-      <ion-col size="6">
+      </ion-col>-->
+      
+      <ion-col size="12">
         <ion-list lines="none">
           <ion-item >
             <ion-label class="booking-time">  رقم البناء </ion-label>
