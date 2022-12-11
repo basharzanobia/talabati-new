@@ -30,8 +30,8 @@ const routes: Routes = [
     loadChildren: () => import('./verify/verify.module').then( m => m.VerifyPageModule)
   },
   {
-    path: 'reset-passowrd',
-    loadChildren: () => import('./reset-passowrd/reset-passowrd.module').then( m => m.ResetPassowrdPageModule)
+    path: 'reset-password',
+    loadChildren: () => import('./reset-password/reset-password.module').then( m => m.ResetPasswordPageModule)
   },
   {
     path: 'new-password',
@@ -173,7 +173,16 @@ const routes: Routes = [
   {
     path: 'addres/:lat/:lang/:addr',
     loadChildren: () => import('./addres/addres.module').then( m => m.AddresPageModule)
+  },
+  {
+    path: 'reset-password',
+    loadChildren: () => import('./reset-password/reset-password.module').then( m => m.ResetPasswordPageModule)
+  },
+  {
+    path: 'reset-token',
+    loadChildren: () => import('./reset-token/reset-token.module').then( m => m.ResetTokenPageModule)
   }
+
 
 
 

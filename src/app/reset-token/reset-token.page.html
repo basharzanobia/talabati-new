@@ -1,0 +1,71 @@
+
+<!--
+<ion-header>
+  <ion-toolbar>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header>
+-->
+
+<!--- Form  header -->
+<ion-content>
+  <section class = "logos-container">
+    <div class="row logos">
+      <div class="col-4">
+      </div>
+      <div class="col-4 tittle">
+        <img src="assets/img/logo.png" />
+        <h1>اعادة تعيين كلمة المرور </h1>
+
+      </div>
+      <div class="col-4">
+      </div>
+    </div>
+<!--- End Form  header -->
+
+<!---  Form  -->
+<form [formGroup]="tokenForm">
+    <ion-row class="login-form">
+      <ion-col>
+        <ion-list lines="none" >
+          <ion-item>
+            <ion-label slot="end">
+            
+            </ion-label>
+            <ion-input formControlName="token"  placeholder="رمز التفعيل" ></ion-input>
+         
+          </ion-item>
+          <div class="validation-errors">
+          <ng-container *ngFor="let validation of validation_messages.token">
+            <div *ngIf="tokenForm.get('token').invalid && (tokenForm.get('token').dirty || tokenForm.get('token').touched)">
+              {{ validation.message }}
+            </div> 
+            </ng-container>
+            </div>
+          <div class="validation-errors">
+            <ng-container>
+              <div class="error-message" *ngIf="errorMsg">
+                <ion-icon name="information-circle-outline"></ion-icon> {{ errorMsg }}
+              </div>
+            </ng-container>
+          </div>
+
+        </ion-list>
+
+       
+         <!---  log in button  -->
+    
+  
+            <ion-button expand="block" (click)="checkToken()" class="continue-button" [disabled]="!tokenForm.valid">
+          ادخال الكود 
+          </ion-button>
+     
+  
+        <!---  End log in button  -->
+      </ion-col>
+    </ion-row>
+    <!--- End Form   -->
+  </form>
+  </section>
+
+<ion-content>

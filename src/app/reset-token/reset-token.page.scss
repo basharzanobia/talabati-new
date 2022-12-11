@@ -1,0 +1,75 @@
+.scroll-y, .scroll-x {
+    z-index: 0;
+    will-change: scroll-position;
+    display: flex!important;
+    flex-direction: column;
+    align-content: space-around;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+/*  Form  header Title */
+
+.logos {
+    text-align: center;
+    margin-top: 30px;
+}
+
+
+.tittle {
+    margin-top: 30px;
+}
+
+h1 {
+    color: #292562;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+
+/*  Form  */
+.login-form {
+    border: #ededed;
+    border-style: solid;
+    border-radius:20px;
+    margin: 6%;
+}
+
+ion-label {
+    color: #292562!important;
+}
+
+/*  Form Feild */ 
+.item-input {
+    padding-bottom: 20px;
+    padding-top: 20px;
+    font-size: 18px;
+}
+
+
+/*  login Button  */
+.continue-button {
+    align-items: center;
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 5%;
+}
+
+
+ .login-icon {
+    font-size: 50px;
+    color: #292562;
+}
+
+
+.new-account {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.forget {
+    font-size: 16px;
+    font-weight: 600;
+}
