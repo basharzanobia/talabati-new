@@ -132,7 +132,7 @@ export class TrackingPage implements OnInit {
     this.hideMarkers();
     this.deleteLocations(); 
     setInterval(()=> {
-      this.UpdateUsersLocation(); }, 2 * 60000); // every two min update drivers pins
+      this.UpdateUsersLocation(); },  60000); // every two min update drivers pins
   };
   hideMarkers() {
     console.log("hideMarkers >>");
