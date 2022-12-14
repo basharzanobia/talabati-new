@@ -4910,6 +4910,69 @@ export class SuborderapiServiceProxy {
     }
 
     /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getbycreatorid(id: string | undefined): Observable<SubOrderModel[]> {
+        let url_ = this.baseUrl + "/api/suborderapi/getbycreatorid?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetbycreatorid(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetbycreatorid(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<SubOrderModel[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<SubOrderModel[]>;
+        }));
+    }
+
+    protected processGetbycreatorid(response: HttpResponseBase): Observable<SubOrderModel[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(SubOrderModel.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<SubOrderModel[]>(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return Success
      */
@@ -5926,6 +5989,58 @@ export class UserapiServiceProxy {
             }));
         }
         return _observableOf<boolean>(null as any);
+    }
+
+    /**
+     * @param email (optional) 
+     * @return Success
+     */
+    testemailgmail(email: string | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/userapi/testemailgmail?";
+        if (email === null)
+            throw new Error("The parameter 'email' cannot be null.");
+        else if (email !== undefined)
+            url_ += "email=" + encodeURIComponent("" + email) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processTestemailgmail(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processTestemailgmail(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processTestemailgmail(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
     }
 
     /**
@@ -12514,6 +12629,7 @@ export class UserAddress implements IUserAddress {
     userId: string | undefined;
     user: ApplicationUser;
     address: string;
+    addressTitle: string | undefined;
     area: string | undefined;
     city: string | undefined;
     houseNo: string | undefined;
@@ -12538,6 +12654,7 @@ export class UserAddress implements IUserAddress {
             this.userId = _data["userId"];
             this.user = _data["user"] ? ApplicationUser.fromJS(_data["user"]) : <any>undefined;
             this.address = _data["address"];
+            this.addressTitle = _data["addressTitle"];
             this.area = _data["area"];
             this.city = _data["city"];
             this.houseNo = _data["houseNo"];
@@ -12562,6 +12679,7 @@ export class UserAddress implements IUserAddress {
         data["userId"] = this.userId;
         data["user"] = this.user ? this.user.toJSON() : <any>undefined;
         data["address"] = this.address;
+        data["addressTitle"] = this.addressTitle;
         data["area"] = this.area;
         data["city"] = this.city;
         data["houseNo"] = this.houseNo;
@@ -12586,6 +12704,7 @@ export interface IUserAddress {
     userId: string | undefined;
     user: ApplicationUser;
     address: string;
+    addressTitle: string | undefined;
     area: string | undefined;
     city: string | undefined;
     houseNo: string | undefined;
@@ -12782,7 +12901,8 @@ export class UserFile implements IUserFile {
     tid: number;
     userId: string | undefined;
     user: ApplicationUser;
-    filePath: string;
+    name: string | undefined;
+    filePath: string | undefined;
     status: boolean;
     createdDate: moment.Moment;
     createdBy: string | undefined;
@@ -12805,6 +12925,7 @@ export class UserFile implements IUserFile {
             this.tid = _data["tid"];
             this.userId = _data["userId"];
             this.user = _data["user"] ? ApplicationUser.fromJS(_data["user"]) : <any>undefined;
+            this.name = _data["name"];
             this.filePath = _data["filePath"];
             this.status = _data["status"];
             this.createdDate = _data["createdDate"] ? moment(_data["createdDate"].toString()) : <any>undefined;
@@ -12828,6 +12949,7 @@ export class UserFile implements IUserFile {
         data["tid"] = this.tid;
         data["userId"] = this.userId;
         data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        data["name"] = this.name;
         data["filePath"] = this.filePath;
         data["status"] = this.status;
         data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
@@ -12851,7 +12973,8 @@ export interface IUserFile {
     tid: number;
     userId: string | undefined;
     user: ApplicationUser;
-    filePath: string;
+    name: string | undefined;
+    filePath: string | undefined;
     status: boolean;
     createdDate: moment.Moment;
     createdBy: string | undefined;
