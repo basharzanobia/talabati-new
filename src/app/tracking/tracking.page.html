@@ -20,6 +20,17 @@
       <ion-label class="track-title"></ion-label>
       <ion-col size="6">رقم الطلب :</ion-col>
       <ion-col size="6">{{order?.id}} </ion-col>
+
+      <ion-col size="6">تقييم السائق  :</ion-col>
+      <ion-col size="6">
+        <div>
+          <ion-icon class="stars"  (click)="addDriverReview(1)" [ngClass]="{'checked' : driverRating >= 1}" name="star" ></ion-icon>
+          <ion-icon class="stars"  (click)="addDriverReview(2)" [ngClass]="{'checked' : driverRating >= 2}"  name="star" ></ion-icon>
+          <ion-icon class="stars" (click)="addDriverReview(3)" [ngClass]="{'checked' : driverRating >= 3}" name="star" ></ion-icon>
+          <ion-icon class="stars" (click)="addDriverReview(4)"  [ngClass]="{'checked' : driverRating >= 4}" name="star" ></ion-icon>
+         <ion-icon class="stars"  (click)="addDriverReview(5)"  [ngClass]="{'checked' : driverRating >= 5}" name="star" ></ion-icon>
+        </div>
+      </ion-col>
     </ion-row>
 
     <ion-row class="order-cutomer small" >

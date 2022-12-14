@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppOrderStatusType } from 'src/shared/AppEnums';
-import { Order, OrderapiServiceProxy,SubOrderModel ,UserlocationapiServiceProxy ,Location} from 'src/shared/service-proxies/service-proxies';
+import { Order,UserReview,ReviewuserapiServiceProxy, OrderapiServiceProxy,SubOrderModel ,UserlocationapiServiceProxy ,Location} from 'src/shared/service-proxies/service-proxies';
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { AppConsts } from 'src/shared/AppConsts';
 import { ActivatedRoute } from '@angular/router';
@@ -23,12 +23,14 @@ export class TrackingPage implements OnInit {
   driversData = [];
   AppConsts = AppConsts;
   AppOrderStatusType = AppOrderStatusType;
+  driverRating;
 
   @ViewChild('map',{read: ElementRef,static:false}) mapRef:ElementRef;
   constructor(private _session: AppSessionService,
     private route: ActivatedRoute,
     private _userLocation :UserlocationapiServiceProxy,
     private _subOrderService :SuborderapiServiceProxy,
+    private _reviewUserapiService:ReviewuserapiServiceProxy,
     private _orderService: OrderapiServiceProxy) {
     
   }
@@ -44,6 +46,38 @@ export class TrackingPage implements OnInit {
       
 
   }
+
+  getReview(Review){
+    var sum=0;
+            var number=0;
+            Review.forEach(element=>{
+              sum+=element.rating;
+              number++
+             });
+            var rating=sum/number;
+            this.driverRating=Math.round(rating);
+  }
+
+  addDriverReview(rate){
+    
+    const review = new UserReview();
+    review.init({
+      userId:this.order.userId,
+      raterId:this._session.userId,
+      rating:rate
+    });
+
+    this._reviewUserapiService.create(review).subscribe(
+      (res) => {    
+        this.getReview(review);
+      },
+      async (error) => {
+        // Unexpected result!
+        // await this.presentAlert('فشل', 'حدث خطأ حاول مرة أخرى', null);
+        console.log('error ', error);
+      });
+}
+
   ngAfterViewInit():void{
     this.initMap();
   }
