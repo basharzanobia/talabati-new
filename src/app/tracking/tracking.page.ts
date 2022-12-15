@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AppOrderStatusType } from 'src/shared/AppEnums';
-import { Order,UserReview,ReviewuserapiServiceProxy, OrderapiServiceProxy,SubOrderModel ,UserlocationapiServiceProxy ,Location} from 'src/shared/service-proxies/service-proxies';
+import { Order, SuborderapiServiceProxy,SubOrder,UserReview,ReviewuserapiServiceProxy, OrderapiServiceProxy,SubOrderModel ,UserlocationapiServiceProxy ,Location} from 'src/shared/service-proxies/service-proxies';
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { AppConsts } from 'src/shared/AppConsts';
 import { ActivatedRoute } from '@angular/router';
 import { ViewChild, ElementRef } from '@angular/core';
-import { SuborderapiServiceProxy } from 'src/shared/service-proxies/service-proxies';
+
 import { interval } from 'rxjs';
 declare var google:any;
 @Component({
@@ -16,7 +16,7 @@ declare var google:any;
 export class TrackingPage implements OnInit {
   map: any;
   customFormatter;
-  order:Order;
+  order:SubOrder;
   orderId = 1;
   driverIds: string[] = [];
   locations = [];
@@ -39,9 +39,10 @@ export class TrackingPage implements OnInit {
   
   ngOnInit():void {
     this.orderId =  Number(this.route.snapshot.paramMap.get('orderId'));
-     this._orderService.single(this.orderId)
-          .subscribe((res:Order) => {
+     this._subOrderService.getbyid(this.orderId)
+          .subscribe((res:SubOrder) => {
             this.order = res;
+            console.log(this.order);
           });
       
 

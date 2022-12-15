@@ -47,7 +47,7 @@
         طريقة الدفع  :
        </ion-col>
         <ion-col size="8" >
-           {{order?.paymentMode }}
+           {{order?.order?.paymentMode }}
         </ion-col>
       
      <br>
@@ -56,7 +56,7 @@
         العنوان  :
        </ion-col>
         <ion-col size="8" class="focus" >
-           {{order?.addressMarge }}
+           {{order?.order?.addressMarge }}
         </ion-col>
       
      <br>
@@ -65,16 +65,16 @@
         تاريخ الطلب :
         </ion-col>
          <ion-col size="8" >
-              {{order?.createdDate.toDate() |date:'medium'}}
+              {{order?.order?.createdDate.toDate() |date:'medium'}}
          </ion-col>   
      
     <br>
 
-    <ion-col *ngIf="order.pincode !== null" size="4" >
+    <ion-col *ngIf="order.order?.pincode !== null" size="4" >
      الرمز:
       </ion-col>
        <ion-col size="8" >
-        {{ order?.pincode }}
+        {{ order?.order?.pincode }}
        </ion-col>   
     </ion-row>
   <br>
@@ -113,10 +113,10 @@
             </ion-row>
 
                
-    <ion-row  *ngIf="order.orderNotes !== null" class="order-action" >  
+    <ion-row  *ngIf="order.order?.orderNotes !== null" class="order-action" >  
       <ion-col size="6">ملاحظات الشحن :</ion-col> 
       <ion-col size="6" > 
-        {{ order.orderNotes  }}
+        {{ order.order?.orderNotes  }}
         </ion-col>
     </ion-row>
       <br>

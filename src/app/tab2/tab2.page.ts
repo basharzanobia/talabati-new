@@ -11,8 +11,8 @@ import { AppConsts } from 'src/shared/AppConsts';
 })
 export class Tab2Page implements OnInit {
   customFormatter;
-  orders: Order[] = [];
-  subOrders: SubOrder[] = [];
+  //orders: Order[] = [];
+  orders: SubOrder[] = [];
 
   AppConsts = AppConsts;
   AppOrderStatusType = AppOrderStatusType;
@@ -24,7 +24,8 @@ export class Tab2Page implements OnInit {
   }
 
   ngOnInit(): void {
-    this._orderService.getrequestsbycreatorid(this._session.userId).subscribe((res: Order[]) => this.orders = res);
+    //this._orderService.getrequestsbycreatorid(this._session.userId).subscribe((res: Order[]) => this.orders = res);
+    this._subOrderService.getbycreatorid(this._session.userId).subscribe((res: SubOrder[]) => this.orders = res);
   }
 
 }
