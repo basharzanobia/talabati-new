@@ -72,7 +72,7 @@
               <ion-item>
                 <ion-select placeholder="عنوان التسليم" [(ngModel)]="AddressId" (ionChange)="selectAddress(AddressId)">
                   <ng-container *ngFor="let ad of userAddresses">
-                    <ion-select-option value={{ad?.id}} >{{ad?.address}} / {{ad?.area}} / {{ad?.city}} /  {{ad?.houseNo}}</ion-select-option>
+                    <ion-select-option value={{ad?.id}} >{{ad?.addressTitle}}</ion-select-option>
                    </ng-container>
                   <ion-select-option value="0">عنوان اخر</ion-select-option>
                 </ion-select>

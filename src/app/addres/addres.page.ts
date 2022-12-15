@@ -24,6 +24,7 @@ export class AddresPage implements OnInit {
   destinationCity : string;
   zipCode : string="";
   googleAddress;
+  addressTitle: string;
   address: string;
   area: string;
   city: string;
@@ -161,7 +162,7 @@ console.log ("google addr"+ this.googleAddress);
       }
       address.init({
         userId:this._session.userId,
-       // address: this.address,
+        addressTitle: this.addressTitle,
         address :this.googleAddress,
         latitude:this.latitude ?? 0,
         longitude : this.longitude ?? 0,

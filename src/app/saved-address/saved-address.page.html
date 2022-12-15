@@ -36,7 +36,7 @@
         <ion-list lines="none">
           <ion-item  *ngFor="let userAddress of this.addressDataService.getAddresses()" >
               <ion-item *ngIf=" userAddress !== null ">
-              <ion-label  class="location-titlle"> {{userAddress?.address}} / {{userAddress?.area}} / {{userAddress?.city}} /  {{userAddress?.houseNo}} </ion-label>
+              <ion-label  class="location-titlle">{{userAddress?.addressTitle}} : {{userAddress?.address}} / {{userAddress?.area}} / {{userAddress?.city}} /  {{userAddress?.houseNo}} </ion-label>
                 <!--  Edite Address info  -->
               <ion-icon class="edite-location" name="create"  routerLink="/edit-addres/{{userAddress?.id}}" ><span>تعديل</span></ion-icon>
               <ion-icon class="edite-location" name="trash"  (click)="deleteAddress(userAddress?.id)" ><span>حذف</span></ion-icon>

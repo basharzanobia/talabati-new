@@ -11,6 +11,7 @@ import { AddressDataService } from '../services/address-data.service';
   styleUrls: ['./edit-addres.page.scss'],
 })
 export class EditAddresPage implements OnInit {
+  addressTitle: string;
   address: string;
   area: string;
   city: string;
@@ -30,6 +31,7 @@ constructor(
 
   ngOnInit() {
     if (this.route.snapshot.data['address']) {
+      this.addressTitle = this.route.snapshot.data['address'].addressTitle;
       this.address = this.route.snapshot.data['address'].address;
       this.area = this.route.snapshot.data['address'].area;
       this.city = this.route.snapshot.data['address'].city;
@@ -44,6 +46,7 @@ constructor(
       address.init({
         id:this.id,
         userId:this.userId,
+        addressTitle : this.addressTitle,
         address: this.address,
         area:this.area,
         city: this.city,
