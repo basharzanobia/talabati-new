@@ -14,6 +14,7 @@ export class Tab2Page implements OnInit {
   //orders: Order[] = [];
   orders: SubOrder[] = [];
   driverRating : number[] = [];
+  vendorRating : number[] = [];
 
   AppConsts = AppConsts;
   AppOrderStatusType = AppOrderStatusType;
@@ -30,16 +31,28 @@ export class Tab2Page implements OnInit {
     this._subOrderService.getbycreatorid(this._session.userId).subscribe((res: SubOrder[]) => {
       this.orders = res;
       this.orders .forEach(or => {
-        this.getReview(or.userId);
+        this.getDriverReview(or.userId);
+        this.getVendorReview(or.vendorId);
       });
     });
   }
 
-  getReview(userId){
+  getDriverReview(userId){
     this._reviewUserapiService.getratingofuser(userId).subscribe(
       (res) => {    
         console.log(res);
         this.driverRating[userId] = res;
+      },
+      async (error) => {
+        console.log('error ', error);
+      });
+  }
+
+  getVendorReview(vendorId){
+    this._reviewUserapiService.getratingofuser(vendorId).subscribe(
+      (res) => {    
+        console.log(res);
+        this.vendorRating[vendorId] = res;
       },
       async (error) => {
         console.log('error ', error);
@@ -57,13 +70,34 @@ export class Tab2Page implements OnInit {
 
     this._reviewUserapiService.create(review).subscribe(
       (res) => {    
-        this.getReview(userId);
+        this.getDriverReview(userId);
       },
       async (error) => {
         // Unexpected result!
         // await this.presentAlert('فشل', 'حدث خطأ حاول مرة أخرى', null);
         console.log('error ', error);
       });
-}
 
+    }
+
+    addVendorReview(rate,vendorId){
+    
+      const review = new UserReview();
+      review.init({
+        userId:vendorId,
+        raterId:this._session.userId,
+        rating:rate
+      });
+  
+      this._reviewUserapiService.create(review).subscribe(
+        (res) => {    
+          this.getVendorReview(vendorId);
+        },
+        async (error) => {
+          // Unexpected result!
+          // await this.presentAlert('فشل', 'حدث خطأ حاول مرة أخرى', null);
+          console.log('error ', error);
+        });
+  
+      }
 }

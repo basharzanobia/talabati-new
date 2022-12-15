@@ -144,6 +144,17 @@
          <ion-icon class="stars"  (click)="addDriverReview(5,order.userId)"  [ngClass]="{'checked' : driverRating[order.userId] >= 5}" name="star" ></ion-icon>
         </div>
       </ion-col>
+
+      <ion-col size="6">تقييم الطلب  :</ion-col>
+      <ion-col size="6">
+        <div>
+          <ion-icon class="stars"  (click)="addVendorReview(1,order.vendorId)" [ngClass]="{'checked' : vendorRating[order.vendorId] >= 1}" name="star" ></ion-icon>
+          <ion-icon class="stars"  (click)="addVendorReview(2,order.vendorId)" [ngClass]="{'checked' : vendorRating[order.vendorId] >= 2}"  name="star" ></ion-icon>
+          <ion-icon class="stars" (click)="addVendorReview(3,order.vendorId)"  [ngClass]="{'checked' : vendorRating[order.vendorId] >= 3}" name="star" ></ion-icon>
+          <ion-icon class="stars" (click)="addVendorReview(4,order.vendorId)"  [ngClass]="{'checked' : vendorRating[order.vendorId] >= 4}" name="star" ></ion-icon>
+         <ion-icon class="stars"  (click)="addVendorReview(5,order.vendorId)"  [ngClass]="{'checked' : vendorRating[order.vendorId] >= 5}" name="star" ></ion-icon>
+        </div>
+      </ion-col>
       </ion-row>
 
       <ion-row class="order-cutomer" *ngFor="let orderDetail of order.orderDetail">
