@@ -4668,7 +4668,7 @@ export class SuborderapiServiceProxy {
      * @param id (optional) 
      * @return Success
      */
-    getbyid(id: number | undefined): Observable<SubOrderModel> {
+    getbyid(id: number | undefined): Observable<SubOrder> {
         let url_ = this.baseUrl + "/api/suborderapi/getbyid?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
@@ -4691,14 +4691,14 @@ export class SuborderapiServiceProxy {
                 try {
                     return this.processGetbyid(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<SubOrderModel>;
+                    return _observableThrow(e) as any as Observable<SubOrder>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<SubOrderModel>;
+                return _observableThrow(response_) as any as Observable<SubOrder>;
         }));
     }
 
-    protected processGetbyid(response: HttpResponseBase): Observable<SubOrderModel> {
+    protected processGetbyid(response: HttpResponseBase): Observable<SubOrder> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4709,7 +4709,7 @@ export class SuborderapiServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = SubOrderModel.fromJS(resultData200);
+            result200 = SubOrder.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -4717,7 +4717,7 @@ export class SuborderapiServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<SubOrderModel>(null as any);
+        return _observableOf<SubOrder>(null as any);
     }
 
     /**
@@ -4913,7 +4913,7 @@ export class SuborderapiServiceProxy {
      * @param id (optional) 
      * @return Success
      */
-    getbycreatorid(id: string | undefined): Observable<SubOrderModel[]> {
+    getbycreatorid(id: string | undefined): Observable<SubOrder[]> {
         let url_ = this.baseUrl + "/api/suborderapi/getbycreatorid?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
@@ -4936,14 +4936,14 @@ export class SuborderapiServiceProxy {
                 try {
                     return this.processGetbycreatorid(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<SubOrderModel[]>;
+                    return _observableThrow(e) as any as Observable<SubOrder[]>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<SubOrderModel[]>;
+                return _observableThrow(response_) as any as Observable<SubOrder[]>;
         }));
     }
 
-    protected processGetbycreatorid(response: HttpResponseBase): Observable<SubOrderModel[]> {
+    protected processGetbycreatorid(response: HttpResponseBase): Observable<SubOrder[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4957,7 +4957,7 @@ export class SuborderapiServiceProxy {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200.push(SubOrderModel.fromJS(item));
+                    result200.push(SubOrder.fromJS(item));
             }
             else {
                 result200 = <any>null;
@@ -4969,7 +4969,7 @@ export class SuborderapiServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<SubOrderModel[]>(null as any);
+        return _observableOf<SubOrder[]>(null as any);
     }
 
     /**
