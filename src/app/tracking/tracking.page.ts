@@ -42,21 +42,22 @@ export class TrackingPage implements OnInit {
      this._subOrderService.getbyid(this.orderId)
           .subscribe((res:SubOrder) => {
             this.order = res;
+            this.getReview();
             console.log(this.order);
           });
       
 
   }
 
-  getReview(Review){
-    var sum=0;
-            var number=0;
-            Review.forEach(element=>{
-              sum+=element.rating;
-              number++
-             });
-            var rating=sum/number;
-            this.driverRating=Math.round(rating);
+  getReview(){
+    this._reviewUserapiService.getratingofuser(this.order.userId).subscribe(
+      (res) => {    
+        console.log(res);
+        this.driverRating = res;
+      },
+      async (error) => {
+        console.log('error ', error);
+      });
   }
 
   addDriverReview(rate){
@@ -70,7 +71,7 @@ export class TrackingPage implements OnInit {
 
     this._reviewUserapiService.create(review).subscribe(
       (res) => {    
-        this.getReview(review);
+        this.getReview();
       },
       async (error) => {
         // Unexpected result!
