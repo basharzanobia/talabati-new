@@ -23,7 +23,7 @@
     </ion-row>
 
     <ng-container *ngFor="let order of orders">
-    <ng-container *ngIf="order.orderStatus !== 5">
+    <ng-container *ngIf="order.orderStatus !== 15">
       <ion-row class="track-head">
         <ion-label class="track-title"></ion-label>
         <ion-col size="6">رقم الطلب :</ion-col>
@@ -126,13 +126,24 @@
     <ion-label class="track-title"></ion-label>
     <ion-col size="12">طلبات مكتملة</ion-col>
   </ion-row>
-  <ng-container *ngFor="let order of orders">
-    <ng-container *ngIf="order.orderStatus === 5">
+  <ng-container *ngFor="let order of orders; let i = index">
+    <ng-container *ngIf="order.orderStatus === 15">
 
       <ion-row class="track-head">
         <ion-label class="track-title"></ion-label>
         <ion-col size="6">رقم الطلب :</ion-col>
         <ion-col size="6">{{ order.id }} </ion-col>
+
+        <ion-col size="6">تقييم السائق  :</ion-col>
+      <ion-col size="6">
+        <div>
+          <ion-icon class="stars"  (click)="addDriverReview(1,order.userId)" [ngClass]="{'checked' : driverRating[order.userId] >= 1}" name="star" ></ion-icon>
+          <ion-icon class="stars"  (click)="addDriverReview(2,order.userId)" [ngClass]="{'checked' : driverRating[order.userId] >= 2}"  name="star" ></ion-icon>
+          <ion-icon class="stars" (click)="addDriverReview(3,order.userId)"  [ngClass]="{'checked' : driverRating[order.userId] >= 3}" name="star" ></ion-icon>
+          <ion-icon class="stars" (click)="addDriverReview(4,order.userId)"  [ngClass]="{'checked' : driverRating[order.userId] >= 4}" name="star" ></ion-icon>
+         <ion-icon class="stars"  (click)="addDriverReview(5,order.userId)"  [ngClass]="{'checked' : driverRating[order.userId] >= 5}" name="star" ></ion-icon>
+        </div>
+      </ion-col>
       </ion-row>
 
       <ion-row class="order-cutomer" *ngFor="let orderDetail of order.orderDetail">
