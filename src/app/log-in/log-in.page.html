@@ -46,11 +46,15 @@
             <ion-label slot="end">
               <ion-icon name="key-outline"></ion-icon>
             </ion-label>
+            
+            <ion-icon (click)="password()" class="show-option" [hidden]="show" name="eye-off-outline"></ion-icon>
+            <ion-icon (click)="password()" class="hide-option" [hidden]="!show" name="eye-outline"></ion-icon>
             <ion-input
               [(ngModel)]="authService.authenticateModel.password"
               placeholder="كلمة المرور"
-              type="password">
+              [type]="show ? 'text' : 'password'">
             </ion-input>
+
           </ion-item>
           <ion-item>
             <ion-label slot="end" class="forget" routerLink="/reset-password">

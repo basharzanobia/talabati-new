@@ -8,6 +8,7 @@ import { AppAuthService } from 'src/shared/auth/app-auth.service';
 })
 export class LogInPage implements OnInit {
   submitting = false;
+  show: boolean = false;
 
   constructor(public authService: AppAuthService) { 
 
@@ -20,5 +21,9 @@ export class LogInPage implements OnInit {
     this.submitting = true;
     this.authService.authenticate(() => (this.submitting = false));
   }
+
+  password() {
+    this.show = !this.show;
+}
 
 }
