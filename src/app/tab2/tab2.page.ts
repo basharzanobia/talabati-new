@@ -15,6 +15,7 @@ export class Tab2Page implements OnInit {
   orders: SubOrder[] = [];
   driverRating : number[] = [];
   vendorRating : number[] = [];
+  orderList : Order[] = [];
 
   AppConsts = AppConsts;
   AppOrderStatusType = AppOrderStatusType;
@@ -30,9 +31,13 @@ export class Tab2Page implements OnInit {
     //this._orderService.getrequestsbycreatorid(this._session.userId).subscribe((res: Order[]) => this.orders = res);
     this._subOrderService.getbycreatorid(this._session.userId).subscribe((res: SubOrder[]) => {
       this.orders = res;
-      this.orders .forEach(or => {
-        this.getDriverReview(or.userId);
-        this.getVendorReview(or.vendorId);
+      this.orders.forEach(or => {
+        console.log(or.orderId);
+        this._orderService.single(or.orderId).subscribe((res2: Order) =>{
+          this.orderList[or.id]=res2;
+          this.getDriverReview(or.userId);
+          this.getVendorReview(or.vendorId);
+        });
       });
     });
   }
