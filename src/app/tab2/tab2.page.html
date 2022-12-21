@@ -97,7 +97,7 @@
       </ion-row>
       <ion-row class="table-head" >
         <ion-col size="12" class="item-statu">
-          <ion-range min="0" max="100" step="20" snaps="true" [pinFormatter]="customFormatter" [pin]="true" color="tertiary" [value]="order.orderStatus * 10"></ion-range>
+          <ion-range style = "pointer-events:none" min="0" max="100" step="20" snaps="true" [pinFormatter]="customFormatter" [pin]="true" color="tertiary" [value]="order.orderStatus * 10"></ion-range>
           <p class="item-hint">{{ AppOrderStatusType.getName(order.orderStatus) }} </p>
         </ion-col>
         
