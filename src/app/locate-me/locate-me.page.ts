@@ -23,14 +23,15 @@ export class LocateMePage implements OnInit {
   address = '';
   latitude!: any;
   longitude!: any;
-  zoom = 14;
-  maxZoom = 15;
+  zoom = 18;
+  maxZoom = 18;
   minZoom = 8;
   center!: google.maps.LatLngLiteral;
   options: google.maps.MapOptions = {
     zoomControl: true,
     scrollwheel: false,
     disableDoubleClickZoom: true,
+    disableDefaultUI: true,
     mapTypeId: 'roadmap',
   };
 
@@ -133,7 +134,7 @@ export class LocateMePage implements OnInit {
       .subscribe((addr: MapGeocoderResponse) => {
         if (addr.status === 'OK') {
           if (addr.results[0]) {
-            this.zoom = 12;
+            this.zoom = 18;
             this.address = addr.results[0].formatted_address;
             console.log(addr);
             console.log(addr.results[0].formatted_address);
@@ -154,7 +155,6 @@ export class LocateMePage implements OnInit {
     console.log(this.address);
     if(this.address==''){
       this.noAddressError = "الرجاء اختيار موقع من الخريطة";
-      console.log("ssssss");
     }
     else{
       this._router.navigate(['/addres',this.latitude,this.longitude,this.address]);
