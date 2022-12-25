@@ -44,7 +44,6 @@ export class AppComponent {
   ) {
     
     this.initializeApp();
-  
   }
   initializeApp() {
     App.addListener('backButton', () => {
