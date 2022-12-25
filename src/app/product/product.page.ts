@@ -56,6 +56,13 @@ export class ProductPage implements OnInit {
           this.isFavProduct();   
   }
 
+  handleRefresh(event) {
+    setTimeout(() => {
+      // Any calls to load data go here
+      event.target.complete();
+    }, 2000);
+  };
+  
   ChangeVarient(varientId){
     console.log(this.product.productImage);
     this.varient = this.product.varient.find(x=>x.id==varientId);

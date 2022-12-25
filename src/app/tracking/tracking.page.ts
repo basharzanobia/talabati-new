@@ -16,7 +16,7 @@ declare var google:any;
 export class TrackingPage implements OnInit {
   map: any;
   customFormatter;
-  order:SubOrder;
+  order:SubOrder = new SubOrder();
   orderId = 1;
   driverIds: string[] = [];
   locations = [];
@@ -38,6 +38,7 @@ export class TrackingPage implements OnInit {
 
   
   ngOnInit():void {
+    console.log(this.route);
     this.orderId =  Number(this.route.snapshot.paramMap.get('orderId'));
      this._subOrderService.getbyid(this.orderId)
           .subscribe((res:SubOrder) => {
@@ -129,6 +130,14 @@ export class TrackingPage implements OnInit {
   
    this.ResetMap();
   };  
+
+  handleRefresh(event) {
+    setTimeout(() => {
+      // Any calls to load data go here
+      event.target.complete();
+    }, 2000);
+  };
+  
   ResetMap() {
     console.log("ResetMap >>");
     this.hideMarkers();

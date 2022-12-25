@@ -26,6 +26,11 @@ export class NotificationPage {
     this._notificationService.getmessagesnotificationsbyuserid(this._session.userId).subscribe((res: ChatLogListBaseResponse ) => this.messageNotifications= res.data);
 }
 
- 
+handleRefresh(event) {
+  setTimeout(() => {
+    // Any calls to load data go here
+    event.target.complete();
+  }, 2000);
+};
 
 }

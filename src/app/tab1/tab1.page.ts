@@ -19,8 +19,8 @@ export class Tab1Page implements OnInit {
   subcats$: Observable<VendorSubCategory[]>;
   vendors$: Observable<UserResponseModel[]>;
   catSlideOpts = {
-    slidesPerView: 5.7,
-    spaceBetween: 5,
+    slidesPerView: 3.8,
+    spaceBetween: 8,
   };
 
   AppConsts = AppConsts;
@@ -43,5 +43,12 @@ export class Tab1Page implements OnInit {
       })
     );
   }
+
+  handleRefresh(event) {
+    setTimeout(() => {
+      // Any calls to load data go here
+      event.target.complete();
+    }, 2000);
+  };
 
 }

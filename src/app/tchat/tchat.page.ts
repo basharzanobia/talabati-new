@@ -50,6 +50,13 @@ export class TchatPage implements OnInit {
   // console.log(this.RecieverId);
   }
 
+  handleRefresh(event) {
+    setTimeout(() => {
+      // Any calls to load data go here
+      event.target.complete();
+    }, 2000);
+  };
+  
   sendMessage() {
     const message = new ChatLog();
     message.init({

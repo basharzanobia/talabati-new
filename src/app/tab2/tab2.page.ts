@@ -64,6 +64,13 @@ export class Tab2Page implements OnInit {
       });
   }
 
+  handleRefresh(event) {
+    setTimeout(() => {
+      // Any calls to load data go here
+      event.target.complete();
+    }, 2000);
+  };
+  
   addDriverReview(rate,userId){
     
     const review = new UserReview();

@@ -206,6 +206,13 @@ export class Tab3Page {
     }
   }
 
+  handleRefresh(event) {
+    setTimeout(() => {
+      // Any calls to load data go here
+      event.target.complete();
+    }, 2000);
+  };
+  
   ShowDetailes(e){
     console.log(e);
     if(e.detail.checked){

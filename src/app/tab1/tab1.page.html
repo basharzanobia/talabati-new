@@ -1,4 +1,9 @@
 <ion-content [fullscreen]="true">
+
+  <ion-refresher slot="fixed" [pullFactor]="0.5" [pullMin]="100" [pullMax]="200" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  
   <ion-row class="user-bar">
     <ion-col size="2" class="logo-head" routerLink="/tabs/tab1">       
       <img src="assets/img/logo.png">
@@ -17,14 +22,14 @@
 
   <div class="row gate-bar">
     <ion-slides [options]="catSlideOpts">
-      <ion-col size="3" class="gat-swp">
-      <ion-slide *ngFor="let subcat of subcats$ | async as list">
+
+      <ion-slide class="slide-element" *ngFor="let subcat of subcats$ | async as list">
           <button ion-button round color="light" class="scroll-click">
             <ion-img [src]="AppConsts.appBaseUrl + '/' + subcat.imagePath" class="scroll-item selectable-icon"></ion-img>
             <ion-label class="rest-id">{{ subcat.name }}</ion-label>
           </button>
       </ion-slide>
-    </ion-col>
+
     </ion-slides>
 
 </div>

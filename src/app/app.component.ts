@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import {  NavController, ToastController } from '@ionic/angular';
 import { Location } from '@angular/common';
 import { App } from '@capacitor/app';
+import { AppSessionService } from 'src/shared/session/app-session.service';
+import { AppConsts } from 'src/shared/AppConsts';
 
 
 
@@ -25,7 +27,9 @@ import { App } from '@capacitor/app';
 export class AppComponent {
   private lastTimeBackButtonWasPressed = 1000;
    private timePeriodToAction =0;
-  
+   userId;
+   adminId; 
+
   constructor(
        private platform: Platform,
       // private splashScreen: SplashScreen,
@@ -35,6 +39,7 @@ export class AppComponent {
       private router: Router,
       private navController: NavController,
       private toastController: ToastController,
+      private _session: AppSessionService,
     @Optional() private routerOutlet?: IonRouterOutlet
   ) {
     
@@ -55,7 +60,11 @@ export class AppComponent {
   ); 
 }
   
-
+openChat(){
+  this.adminId = AppConsts.adminId; 
+  this.userId=this._session.userId; 
+  this.router.navigate(['/tchat',this.userId,this.adminId]);
+}
   
     async withAlert(message: string, action: () => void) {
       const alert = await this.alertController.create({

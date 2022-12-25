@@ -31,6 +31,13 @@ export class SavedAddressPage implements OnInit {
     this._addressService.getrequestsbyuserid(this._session.userId).subscribe((res: UserAddress[]) => this.addressDataService.initAddresses(res));
   }
 
+  handleRefresh(event) {
+    setTimeout(() => {
+      // Any calls to load data go here
+      event.target.complete();
+    }, 2000);
+  };
+  
   deleteAddress(id)
   {  
       this._addressService.deleteaddress(id).subscribe(

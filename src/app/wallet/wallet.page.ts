@@ -32,6 +32,13 @@ export class WalletPage implements OnInit {
     console.log(result);  
   }  
 
+  handleRefresh(event) {
+    setTimeout(() => {
+      // Any calls to load data go here
+      event.target.complete();
+    }, 2000);
+  };
+  
   deposit(){
     const eWallet = new EWallet();
     eWallet.init({

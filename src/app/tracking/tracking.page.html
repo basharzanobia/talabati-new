@@ -1,5 +1,16 @@
 
 <ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" [pullFactor]="0.5" [pullMin]="100" [pullMax]="200" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed" routerLink="/tabs/tab2" routerDirection="root" class="fa-boton">
+    <ion-fab-button>
+      <ion-icon class="fa-ico" name="home"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  
   <ion-row class="user-bar">
     <ion-col size="2" class="logo-head" routerLink="/tabs/tab1/1" routerDirection="root">       
       <img src="assets/img/logo.png">

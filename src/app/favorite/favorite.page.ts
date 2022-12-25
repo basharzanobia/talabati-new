@@ -38,6 +38,13 @@ export class FavoritePage implements OnInit {
 
   }
   
+  handleRefresh(event) {
+    setTimeout(() => {
+      // Any calls to load data go here
+      event.target.complete();
+    }, 2000);
+  };
+  
 getWishList(){
   this._wishListService.getwishlist(this._session.userId).subscribe((res:WishListModel[])=>{ this.productlist = res;
      this.productlist.forEach(element=>{

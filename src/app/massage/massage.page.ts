@@ -37,5 +37,11 @@ ngOnInit(): void {
   
 }
 
+handleRefresh(event) {
+  setTimeout(() => {
+    // Any calls to load data go here
+    event.target.complete();
+  }, 2000);
+};
 
 }
