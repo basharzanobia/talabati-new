@@ -77,6 +77,8 @@ getVendorsWishList(){
 
   ngOnInit(): void {
     
+    this.favProducts = [];
+    this.favVendors = [];
     this.getVendorsWishList();
     this.getWishList();
     
