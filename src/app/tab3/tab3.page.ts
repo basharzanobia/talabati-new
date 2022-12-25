@@ -208,7 +208,7 @@ export class Tab3Page {
 
   handleRefresh(event) {
     setTimeout(() => {
-      // Any calls to load data go here
+      this.ngOnInit();
       event.target.complete();
     }, 2000);
   };
