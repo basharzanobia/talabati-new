@@ -24,7 +24,7 @@ export class TrackingPage implements OnInit {
   AppConsts = AppConsts;
   AppOrderStatusType = AppOrderStatusType;
   driverRating;
-
+  orderAddress;
   @ViewChild('map',{read: ElementRef,static:false}) mapRef:ElementRef;
   constructor(private _session: AppSessionService,
     private route: ActivatedRoute,
@@ -40,13 +40,17 @@ export class TrackingPage implements OnInit {
   ngOnInit():void {
     console.log(this.route);
     this.orderId =  Number(this.route.snapshot.paramMap.get('orderId'));
+    console.log(this.orderId);
      this._subOrderService.getbyid(this.orderId)
           .subscribe((res:SubOrder) => {
             this.order = res;
             this.getReview();
             console.log(this.order);
+            this._orderService.single(res.orderId).subscribe((res:Order) => {
+              this.orderAddress = res.address;
+            });
           });
-      
+         
 
   }
 
@@ -85,33 +89,36 @@ export class TrackingPage implements OnInit {
     this.initMap();
   }
   initMap(){
-    console.log("initMap");
+   
     const options ={
-      center:{ lat: 15.3694, lng: 44.191 },
-      zoom:5,
+     // center:{ lat: 15.3694, lng: 44.191 },
+     center: this.orderAddress,
+      zoom:18,
       disableDefaultUI:true
     }
     this.map = new google.maps.Map(this.mapRef.nativeElement,options);
     this.UpdateUsersLocation();
    }
    UpdateUsersLocation() {
+    const directionsRenderer = new google.maps.DirectionsRenderer();
+    const directionsService = new google.maps.DirectionsService();
+    
+    directionsRenderer.setMap(this.map);
     console.log("UpdateUsersLocation");
     var loc;
     var i = 0;  
-    console.log("UpdateUsersLocation " + i);
     this._userLocation.getlocationsfororderdrivers(this.orderId).subscribe((res :Location[]) =>{
    
       res.forEach( LocationData => {
-        console.log("forEach >>");
         i++;
-        console.log("getlocationsfororderdrivers subscribe " + i);
+        console.log("inside subscribe ");
         var name = LocationData.driver;
         loc = { lat: LocationData.lat, lng: LocationData.lang };
-       
+        var driverNow = new google.maps.LatLng(LocationData.lat, LocationData.lang);
         const marker = this.createMarker({ position: loc });
         this.locations.push(marker);
         marker.setMap(this.map);
-    
+        //this.map.panTo(marker.getPosition());
         const contentString ='<div id="infowindow" style="margin-right:30px;font-weight:bold">' + `${name}`+"</div>"; ;
             
         const infowindow = new google.maps.InfoWindow({
@@ -122,6 +129,17 @@ export class TrackingPage implements OnInit {
               anchor: marker,
               shouldFocus: false,
           });
+      });
+      console.log(this.orderAddress);
+      var request = {
+        origin: driverNow,
+        destination: this.orderAddress,
+        travelMode: 'DRIVING'
+      };
+      directionsService.route(request, function(result, status) {
+        if (status == 'OK') {
+          directionsRenderer.setDirections(result);
+        }
       });
        
     });
@@ -138,30 +156,44 @@ export class TrackingPage implements OnInit {
     }, 2000);
   };
   
+
+  
   ResetMap() {
-    console.log("ResetMap >>");
     this.hideMarkers();
     this.deleteLocations(); 
     setInterval(()=> {
-      this.UpdateUsersLocation(); },  60000); // every two min update drivers pins
+      this.UpdateUsersLocation(); },  30000); // every min update drivers pins
   };
   hideMarkers() {
-    console.log("hideMarkers >>");
     for (let i = 0; i < this.locations.length; i++) {
         this.locations[i].setMap(null);
     }
   }
   deleteLocations() {
-    console.log("deleteLocations >>");
     this.locations = [];
   }
    createMarker = ({ position }) => {
-    console.log("createMarker >>");
+    console.log("marker creating ..");
     return new google.maps.Marker({position});
   };
   
 }
  
 
-
+function calculateAndDisplayRoute(directionsService: any, directionsRenderer: any,source:any,dest:any) {
+  directionsService
+  .route({
+      origin: {
+          query: source,
+      },
+      destination: {
+          query: dest,
+      },
+      travelMode: google.maps.TravelMode.DRIVING,
+  })
+  .then((response) => {
+      directionsRenderer.setDirections(response);
+  })
+  .catch((e) => window.alert("Directions request failed"));
+}
 
