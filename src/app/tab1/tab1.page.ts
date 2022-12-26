@@ -8,6 +8,7 @@ import {
   VendorapiServiceProxy,
   VendorSubCategory } 
 from 'src/shared/service-proxies/service-proxies';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tab1',
@@ -42,6 +43,33 @@ export class Tab1Page implements OnInit {
         return this._vendorService.vendorsbycatid(this.catId);
       })
     );
+  }
+
+  search(event: Event){
+    const query = (event.target as HTMLInputElement).value;
+    console.log(query);
+
+    if (!query) { // revert back to the original array if no query
+      this.vendors$ = this.vendors$;
+    } else { // filter array by query
+      this.vendors$.forEach(obj => {
+        obj.forEach(childObj=> {
+          //childObj.name = "";
+          console.log(childObj.name);
+       });
+      });
+    }
+
+
+    /*
+     if (!query) { // revert back to the original array if no query
+      this.usersArrayFiltered = [...this.usersArray];
+    } else { // filter array by query
+      this.usersArrayFiltered = this.usersArray.filter((user) => {
+        return (user.name.includes(query) || user.email.includes(query) || user.phone.includes(query));
+      })
+    }
+    */
   }
 
   handleRefresh(event) {

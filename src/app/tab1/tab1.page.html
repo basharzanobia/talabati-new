@@ -38,7 +38,8 @@
   <ion-grid class="main">
     <ion-row class="tool-bar">
       <ion-col size="10" class="search-item">
-    <ion-searchbar animated></ion-searchbar>
+    <ion-searchbar (search)="search($event)" 
+    placeholder="ابحث هنا" animated></ion-searchbar>
       </ion-col>
       <ion-col size="2" class="filter-item"> 
         <ion-icon name="options-outline" color="primary"></ion-icon>
