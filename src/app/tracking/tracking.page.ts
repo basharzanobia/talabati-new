@@ -186,7 +186,11 @@ export class TrackingPage implements OnInit {
             var end =new google.maps.Marker({
               position: leg.end_location,
               map: m,
-              title: "me"
+              label: {
+                color: 'white',
+                fontWeight: 'bold',
+                text: 'me',
+              },
               });
               _locations.push(end);
         }
