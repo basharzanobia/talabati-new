@@ -57,6 +57,13 @@ export class TrackingPage implements OnInit {
 
   }
 
+  handleRefresh(event) {
+    setTimeout(() => {
+      this.ngOnInit();
+      event.target.complete();
+    }, 2000);
+  };
+  
   getReview(){
     this._reviewUserapiService.getratingofuser(this.order.userId).subscribe(
       (res) => {    
