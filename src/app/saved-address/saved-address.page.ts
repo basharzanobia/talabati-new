@@ -4,7 +4,7 @@ import { AppSessionService } from 'src/shared/session/app-session.service';
 import { AppConsts } from 'src/shared/AppConsts';
 import { ActivatedRoute ,Router} from '@angular/router';
 import { AddressDataService } from '../services/address-data.service';
-
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-saved-address',
@@ -21,7 +21,8 @@ export class SavedAddressPage implements OnInit {
     private route: ActivatedRoute,
     private _router: Router,
     private _addressService: AddressapiServiceProxy,
-    public addressDataService: AddressDataService) {
+    public addressDataService: AddressDataService,
+     private alertController: AlertController,) {
 
   }
   locateMe(){
@@ -50,5 +51,30 @@ export class SavedAddressPage implements OnInit {
           console.log('error ', error);
         });
     }  
-
+    async alertDeleteAddress(id) {
+      const alert = await this.alertController.create({
+        header: 'تأكيد ',
+        subHeader : 'هل تريد بالتأكيد حذف هذا العنوان؟',
+        buttons: [
+          {
+            text: 'موافق',
+                handler: () => { //takes the data 
+           
+                this.deleteAddress(id);
+                
+                }   
+        },
+        {
+          text: 'الغاء',
+          role: 'cancel',
+          handler: () => {
+           
+          },
+        }, 
+        ],
+    
+      });
+    
+      await alert.present();
+    }
 }
