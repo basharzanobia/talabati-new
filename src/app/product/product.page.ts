@@ -25,6 +25,7 @@ from 'src/shared/service-proxies/service-proxies';
 export class ProductPage implements OnInit {
   quantity = 1;
   productId = 1;
+  restId = "0";
   varientId = 0;
   varientNumber = 0;
   product: Product = new Product();
@@ -52,6 +53,7 @@ export class ProductPage implements OnInit {
             this.product = res;
             this.getReview(this.product.review);
             this.varientNumber = this.product.varient.length;
+            this.restId = this.product.createdBy;
           });
           this.isFavProduct();   
   }

@@ -31,7 +31,7 @@ constructor(
 
 ngOnInit(): void {
   this.userId=this._session.userId;
-  this._chatService.getmessagesbyuserid(this._session.userId).subscribe((res: ChatLog[] ) => 
+  this._chatService.getlastmessages(this._session.userId).subscribe((res: ChatLog[] ) => 
   {
     this.chats= res;
     const length = this.chats.length;

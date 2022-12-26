@@ -5,6 +5,7 @@
     static appBaseHref: string; // returns angular's base-href parameter value if used during the publish
     static logoAssetBaseUrl: string;
     static adminId: string = "11111111-1111-1111-1111-111111111111";
+    static currency = "ريال" ;
 
     static localeMappings: any = [];
 

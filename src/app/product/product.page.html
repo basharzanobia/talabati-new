@@ -127,10 +127,10 @@
 
         <ng-container *ngIf="varientId!=0;then content else other_content"></ng-container>
         <ng-template #content>
-          <ion-label color="secondry" class="item-price">{{ varient?.price }} $</ion-label> 
+          <ion-label color="secondry" class="item-price">{{ varient?.price }} {{AppConsts.currency}}</ion-label> 
         </ng-template>
         <ng-template #other_content>
-          <ion-label color="secondry" class="item-price">{{ product?.price }} $</ion-label> 
+          <ion-label color="secondry" class="item-price">{{ product?.price }} {{AppConsts.currency}}</ion-label> 
           </ng-template> 
             
       </ion-col>
@@ -145,4 +145,11 @@
     </ion-row>
 
     </section>
+
+    <ion-fab vertical="bottom" horizontal="center" slot="fixed" routerLink="/resturant/{{restId}}" routerDirection="root" class="fa-boton">
+      <ion-fab-button>
+        <ion-icon class="fa-ico" name="arrow-back"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
 </ion-content>

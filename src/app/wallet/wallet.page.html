@@ -38,7 +38,7 @@
 
  <ion-col size="6">
   <ion-item >
-      <ion-label class="booking-date">$ {{total_amount}}</ion-label>
+      <ion-label class="booking-date">{{total_amount}}{{AppConsts.currency}} </ion-label>
   </ion-item>
 </ion-col>
 
@@ -64,7 +64,7 @@
          
           <ion-col size="6">
             <ion-item>
-              <ion-input type="number" [(ngModel)]="amount" class="amount" placeholder="0000">$</ion-input>
+              <ion-input type="number" [(ngModel)]="amount" class="amount" placeholder="0000">{{AppConsts.currency}}</ion-input>
             </ion-item>
          </ion-col>
          

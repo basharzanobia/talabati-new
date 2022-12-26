@@ -17,8 +17,9 @@ import { filter } from 'rxjs/operators';
 })
 export class Tab1Page implements OnInit {
   catId:number;
-  subcats$: Observable<VendorSubCategory[]>;
-  vendors$: Observable<UserResponseModel[]>;
+  subcats$: VendorSubCategory[] = [];
+  vendors$: UserResponseModel[] = [];
+  filteredVendors : UserResponseModel[] = [];
   catSlideOpts = {
     slidesPerView: 3.8,
     spaceBetween: 8,
@@ -30,46 +31,33 @@ export class Tab1Page implements OnInit {
     private _vendorService: VendorapiServiceProxy) {}
   
   ngOnInit(): void {
-    this.subcats$ = this.route.paramMap.pipe(
-      switchMap(params => {
-        this.catId = Number(params.get('catId'));
-        return this._vendorService.subcategories(this.catId);
-      })
-    );
 
-    this.vendors$ = this.route.paramMap.pipe(
-      switchMap(params => {
-        this.catId = Number(params.get('catId'));
-        return this._vendorService.vendorsbycatid(this.catId);
-      })
+    this.catId =  Number(this.route.snapshot.paramMap.get('catId'));
+    this._vendorService.subcategories(this.catId).subscribe(
+      (res: VendorSubCategory[]) => {
+        this.subcats$ = res;
+        this._vendorService.vendorsbycatid(this.catId).subscribe(
+          (res1: UserResponseModel[])=>{
+            this.vendors$ = res1;
+            this.filteredVendors = res1;
+          }
+        );
+      }
     );
   }
 
   search(event: Event){
     const query = (event.target as HTMLInputElement).value;
-    console.log(query);
 
-    if (!query) { // revert back to the original array if no query
-      this.vendors$ = this.vendors$;
-    } else { // filter array by query
-      this.vendors$.forEach(obj => {
-        obj.forEach(childObj=> {
-          //childObj.name = "";
-          console.log(childObj.name);
-       });
-      });
-    }
-
-
-    /*
-     if (!query) { // revert back to the original array if no query
-      this.usersArrayFiltered = [...this.usersArray];
-    } else { // filter array by query
-      this.usersArrayFiltered = this.usersArray.filter((user) => {
-        return (user.name.includes(query) || user.email.includes(query) || user.phone.includes(query));
+     if (query) { 
+      this.filteredVendors = this.vendors$.filter((item) => {
+        return (item.name.includes(query) || item.region.includes(query));
       })
     }
-    */
+    else{
+      this.filteredVendors = this.vendors$;
+    }
+   
   }
 
   handleRefresh(event) {
