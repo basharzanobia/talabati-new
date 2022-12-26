@@ -24,7 +24,7 @@
     <ion-slides [options]="catSlideOpts">
 
       <ion-slide class="slide-element" *ngFor="let subcat of subcats$">
-          <button ion-button round color="light" class="scroll-click">
+          <button ion-button round color="light" class="scroll-click" (click)="filterVendorsBySlider(subcat.id)">
             <ion-img [src]="AppConsts.appBaseUrl + '/' + subcat.imagePath" class="scroll-item selectable-icon"></ion-img>
             <ion-label class="rest-id">{{ subcat.name }}</ion-label>
           </button>
@@ -42,10 +42,36 @@
     placeholder="ابحث هنا" animated></ion-searchbar>
       </ion-col>
       <ion-col size="2" class="filter-item"> 
-        <ion-icon name="options-outline" color="primary"></ion-icon>
+        
+        <ion-button id="open-modal" expand="block" fill="clear"> 
+          <ion-icon name="options-outline" color="primary" style="font-size: large;"></ion-icon></ion-button>
       </ion-col>
     </ion-row>
-
+    <ion-modal #modal trigger="open-modal">
+      <ng-template>
+        <ion-content>
+          <ion-toolbar>
+            <ion-title>تصنيفات</ion-title>
+            <ion-buttons slot="end">
+              <ion-button color="light" (click)="modal.dismiss()">الغاء</ion-button>
+            </ion-buttons>
+            <ion-buttons slot="start">
+              <ion-button color="light" (click)="filerVendorsByFilter()">موافق</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+          <ion-list>
+            <ion-item *ngFor="let sub of SubCatsOpts; index as i">
+              <ion-checkbox checked slot="start"  [(ngModel)]="sub.checked"></ion-checkbox>
+                <ion-img [src]="AppConsts.appBaseUrl + '/' + sub.imagePath" class="scroll-item selectable-icon" style="margin:10px;"></ion-img>
+              <ion-label checked>
+                <h2>{{sub.name}}</h2>
+              </ion-label>
+             
+            </ion-item>
+          </ion-list>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
     <!---  card -->
     <ion-row class="intro">
       <ion-col *ngFor="let vendor of filteredVendors" size="6" class="intro-item">

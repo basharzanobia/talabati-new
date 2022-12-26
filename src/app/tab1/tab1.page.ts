@@ -6,8 +6,9 @@ import { AppConsts } from 'src/shared/AppConsts';
 import { 
   UserResponseModel,
   VendorapiServiceProxy,
-  VendorSubCategory } 
+  VendorSubCategory} 
 from 'src/shared/service-proxies/service-proxies';
+import { ModalController } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -26,9 +27,10 @@ export class Tab1Page implements OnInit {
   };
 
   AppConsts = AppConsts;
-
+ SubCatsOpts = [];
   constructor(private route: ActivatedRoute,
-    private _vendorService: VendorapiServiceProxy) {}
+    private _vendorService: VendorapiServiceProxy,
+    private modalCtrl: ModalController) {}
   
   ngOnInit(): void {
 
@@ -44,8 +46,31 @@ export class Tab1Page implements OnInit {
         );
       }
     );
+  this._vendorService.subcategories(this.catId).subscribe((res)=>{
+    res.forEach((el)=>{
+      this.SubCatsOpts.push({"name" : el.name ,"id":el.id,"imagePath":el.imagePath ,"checked":true })
+    })
+   
+  })
   }
-
+  filterVendorsBySlider(id){
+    this._vendorService.vendorsbysubcatid(id).subscribe((res)=>{
+    this.filteredVendors = res;
+    })
+  }
+  filerVendorsByFilter(){
+    this.filteredVendors = [];
+    this.SubCatsOpts.forEach((el)=>{
+   // console.log(" el.id "+el.id+" el.checked "+ el.checked);
+      if(el.checked === true){
+           // console.log(" el.id "+el.id+" el.checked "+ el.checked);
+        this._vendorService.vendorsbysubcatid(el.id).subscribe((res)=>{
+          this.filteredVendors  =  this.filteredVendors.concat(res);
+        });
+      }
+    });
+    return this.modalCtrl.dismiss(null, 'confirm');
+  }
   search(event: Event){
     const query = (event.target as HTMLInputElement).value;
 
