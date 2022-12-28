@@ -35,7 +35,6 @@ export class TrackingPage implements OnInit {
     private _subOrderService :SuborderapiServiceProxy,
     private _reviewUserapiService:ReviewuserapiServiceProxy,
     private _orderService: OrderapiServiceProxy) {
-    
   }
 
 
@@ -49,12 +48,9 @@ export class TrackingPage implements OnInit {
             this.order = res;
             this.getReview();
             console.log(this.order);
-            this._orderService.single(res.orderId).subscribe((res:Order) => {
-              this.orderAddress = res.address;
-            });
+          
           });
-         
-
+        
   }
 
   handleRefresh(event) {
@@ -95,23 +91,32 @@ export class TrackingPage implements OnInit {
       });
 }
 
-  ngAfterViewInit():void{
-    this.initMap();
+ionViewDidEnter(){
+    this._subOrderService.getbyid(this.orderId)
+    .subscribe((res:SubOrder) => {
+      this._orderService.single(res.orderId).subscribe((res:Order) => {
+        this.orderAddress = res.address;
+        this.initMap();
+      }); 
+    
+    });
   }
   initMap(){
-   
-    const options ={
-     // center:{ lat: 15.3694, lng: 44.191 },
-     center: this.orderAddress,
-      zoom:22,
-      disableDefaultUI:true
-    }
-    this.map = new google.maps.Map(this.mapRef.nativeElement,options);
-    this.UpdateUsersLocation();
-    this.trackingInterval = setInterval(()=> {
-      this.UpdateUsersLocation(); },  30000); // every half minute update driver pins
+    this._userLocation.getlocationforsuborderdriver(this.orderId).subscribe((dLoc :Location) =>{
+      this.driverLocation = dLoc;
+      let lat = dLoc.lat;   let lang = dLoc.lang;
+      const options ={
+        center: {lat ,lang},
+        zoom:22,
+        disableDefaultUI:true
+      }
+      this.map = new google.maps.Map(this.mapRef.nativeElement,options);
+      this.UpdateUsersLocation(); });
+      
+
    }
    UpdateUsersLocation() {
+    console.log(this.orderAddress);
     var  directionsService = new google.maps.DirectionsService();
     var m = this.map;
     var _locations  = [];
@@ -196,6 +201,8 @@ export class TrackingPage implements OnInit {
         }
       });
       this.locations = _locations;
+      this.trackingInterval = setInterval(()=> {
+        this.UpdateUsersLocation(); },  30000); // every half minute update driver pins
   };  
    makeMarker( position, title ) {
     new google.maps.Marker({
