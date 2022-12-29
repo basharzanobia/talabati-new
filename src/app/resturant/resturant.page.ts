@@ -38,6 +38,7 @@ export class ResturantPage implements OnInit {
     spaceBetween: 5,
   };
   rating;
+  currentUserId = "";
   selectedCategory;
   vendorlist :VendorWishListResponseModel[]=[];
   isFav:boolean=false;
@@ -60,7 +61,7 @@ export class ResturantPage implements OnInit {
   
 
   ngOnInit() {
-    
+    this.currentUserId = this._session.userId;
     this.vendor$ = this.route.paramMap.pipe(
       switchMap(params => {
         this.vendorId = params.get('vendorId');

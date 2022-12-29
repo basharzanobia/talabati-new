@@ -62,20 +62,26 @@
   </ion-row>
 
   <ion-row>
-    <ion-col size="4" class="res-start" > 
+    <ion-col size="6" class="res-start" > 
       <ion-icon name="time"></ion-icon>
         <ion-label color="secondry">  {{ (vendor$ | async)?.startTime }} </ion-label>  
         
     </ion-col>
-    <ion-col size="4" class="res-end">        
+    <ion-col size="6" class="res-end">        
       <ion-icon name="time"></ion-icon>
           <ion-label color="danger">{{ (vendor$ | async)?.endTime }}</ion-label> 
           
     </ion-col>
-    <ion-col size="4" class="res-call">
+    <ion-col size="6" class="res-call">
       <a button icon-start ion-button full [href]="'tel://' + (vendor$ | async)?.phoneNumber">
         <strong>اتصال</strong>
         <ion-icon name="call"></ion-icon>
+      </a>
+    </ion-col>
+    <ion-col size="6" class="res-call">
+      <a button icon-start ion-button full [routerLink]="['/tchat',currentUserId,(vendor$ | async)?.id]">
+        <strong>مراسلة</strong>
+        <ion-icon name="chatbox"></ion-icon>
       </a>
     </ion-col>
   </ion-row>

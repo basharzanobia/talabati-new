@@ -48,15 +48,15 @@
           </ng-container>
         </ng-container>
         </ion-col>
-        <ion-col>{{item.price}} $</ion-col>
+        <ion-col>{{item.price}} {{AppConsts.currency}}</ion-col>
         <ion-col>{{item.qty}}</ion-col>
-        <ion-col>{{item.amount}} $</ion-col>
+        <ion-col>{{item.amount}} {{AppConsts.currency}}</ion-col>
     </ion-row>
   </ng-container>
 
     <ion-row class="order-total" >
       <ion-col size="6"> اجمالي قيمة الفاتورة:</ion-col>
-      <ion-col size="6">{{order.grandTotal}} $ </ion-col>
+      <ion-col size="6">{{order.grandTotal}} {{AppConsts.currency}} </ion-col>
     </ion-row>
 
     <br>      

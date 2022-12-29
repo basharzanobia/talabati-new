@@ -5,6 +5,8 @@ import { OrderapiServiceProxy,UserAddress,AddressType,AddressapiServiceProxy,Ord
 import { AlertController } from '@ionic/angular';  
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { Geolocation} from '@capacitor/geolocation';
+import { AppConsts } from 'src/shared/AppConsts';
+
 declare var google;
 @Component({
   selector: 'app-tab3',
@@ -36,6 +38,8 @@ export class Tab3Page {
   googleAddress;
   orderRequest: OrderRequestModel=new OrderRequestModel();
   showGoogleMap =false;
+  AppConsts = AppConsts;
+  
   constructor(
     private _session: AppSessionService,
     public cart: CartStoreService,

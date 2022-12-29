@@ -41,10 +41,10 @@
 
         <ng-container *ngIf="item.varientId!=0;then content else other_content"></ng-container>
         <ng-template #content>
-        <ion-col>{{ item.varient.price }}$</ion-col>
+        <ion-col>{{ item.varient.price }} {{AppConsts.currency}}</ion-col>
         </ng-template>
         <ng-template #other_content>
-          <ion-col>{{ item.product.price }}$</ion-col>
+          <ion-col>{{ item.product.price }} {{AppConsts.currency}}</ion-col>
           </ng-template>
         <ion-col>
           <ion-icon name="remove-circle-outline" color="danger" (click)="decItem(i)"></ion-icon>
@@ -66,7 +66,7 @@
   
       <ion-row class="order-total" >
         <ion-col size="6">الاجمالي</ion-col>
-        <ion-col size="6">{{ cart.Total }}$  </ion-col>
+        <ion-col size="6">{{ cart.Total }} {{AppConsts.currency}}  </ion-col>
       </ion-row>
   
       <ion-row class="order-addres" >
