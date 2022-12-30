@@ -179,7 +179,7 @@ ionViewDidEnter(){
         if (status == 'OK') {
           g.setDirections(result);
           var leg = result.routes[ 0 ].legs[ 0 ];
-          var start = new google.maps.Marker({
+         /* var start = new google.maps.Marker({
             position: leg.start_location,
             map: m,
             icon: {
@@ -197,7 +197,7 @@ ionViewDidEnter(){
             
             title: "driver"
             });
-            _locations.push(start);
+            _locations.push(start);*/
             var end =new google.maps.Marker({
               position: leg.end_location,
               map: m,
