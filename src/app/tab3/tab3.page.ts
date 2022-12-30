@@ -6,6 +6,8 @@ import { AlertController } from '@ionic/angular';
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { Geolocation} from '@capacitor/geolocation';
 import { AppConsts } from 'src/shared/AppConsts';
+
+import { ActionSheetController } from '@ionic/angular';
 declare var google;
 @Component({
   selector: 'app-tab3',
@@ -42,6 +44,7 @@ export class Tab3Page {
   currentPosition = false;
   hasAddress= false;
   addressId;
+  deliverAddress;
   AppConsts = AppConsts;
   
   constructor(
@@ -51,14 +54,79 @@ export class Tab3Page {
     private _orderService: OrderapiServiceProxy,
     private _paymentCompanyService: PaymentcompanyapiServiceProxy,
     private _addressApiService : AddressapiServiceProxy,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private actionSheetCtrl: ActionSheetController
   ) { this.initPage();}
+  async presentActionSheet() {
+    let radio_options = [];
+    for(let i=0;i<this.userAddresses.length;++i){
+       radio_options.push({
+        text : this.userAddresses[i].addressTitle,
+        handler: () => {
+          this.selectAddress(this.userAddresses[i].id)
+        }
+      });
+    }
+    radio_options.push({
+      text: 'موقعي الآن',
+      icon : 'navigate-outline',
+      handler: () => {
+        this.selectAddress(0)
+      }
+    });
+    radio_options.push({
+      text: 'اضافة عنوان جديد',
+      icon : 'add-outline',
+      handler: () => {
+        this.selectAddress('new')
+      }
+    });
+  
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: ' التوصيل إلى',
+      buttons:   radio_options,
+  
+      
+    });
 
+    await actionSheet.present();
+
+    const result = await actionSheet.onDidDismiss();
+  }
   ngOnInit() {
     console.log('cart ', this.cart.Items); 
     this.items_len=this.cart.Items.length;
     this._addressApiService.getrequestsbyuserid(this._session.userId).subscribe((res: UserAddress[]) => this.userAddresses = res);
     this._paymentCompanyService.getallcompanies().subscribe((res: PaymentCompany[]) => this.PaymentCompanies = res);
+  }
+  async presentAlert() {
+    let radio_options = [];
+    for(let i=0;i<this.userAddresses.length;++i){
+       radio_options.push({
+        type: 'radio',
+        label : this.userAddresses[i].addressTitle,
+        value : this.userAddresses[i].id,
+       checked : i === 0
+      });
+    }
+    radio_options.push({
+      type: 'radio',
+      label : "موقعي الآن"+ '<ion-icon name="navigate-outline"></ion-icon>',
+      value : 0,
+    });
+    radio_options.push({
+      type: 'radio',
+      label : "اضافة عنوان جديد",
+      value : "new",
+    });
+    const alert = await this.alertController.create({
+      header: 'معلومات اضافية',
+      message: '',
+     
+      inputs : radio_options,
+    });
+  
+    await alert.present();
   }
   initPage() {
     // Create a new session token.
@@ -206,7 +274,7 @@ export class Tab3Page {
     }*/
     this.hasAddress = false;
     if( id == 0){
-     
+     this.deliverAddress ="موقعي الآن";
       console.log(id);
       const options = {
         enableHighAccuracy: true,
@@ -240,7 +308,11 @@ export class Tab3Page {
       this.hasAddress = true;
       console.log(id);
       this.addressId=id;
-      this._addressApiService.getbyid(id).subscribe((res: UserAddress) => this.userAddress = res);   
+      this._addressApiService.getbyid(id).subscribe((res: UserAddress) => 
+      {this.userAddress = res;
+        this.deliverAddress = res.addressTitle;
+      });  
+     
       }
   }
 
