@@ -27,7 +27,7 @@ export class TrackingPage implements OnInit {
   orderAddress;
   orderLatitude;
   orderLongitude;
-  trackingInterval;
+  trackingIntervals = [];
    driverLocation = new Location();
     directionsRenderer = new google.maps.DirectionsRenderer();
     orderInTransit = false;
@@ -131,13 +131,8 @@ ionViewDidEnter(){
     if (this.directionsRenderer != null) {
       this.directionsRenderer.setMap(null);
       this.directionsRenderer = null;
-      
-      for (let i = 0; i < this.locations.length; i++) {
-        console.log("i"+i);
-       this.locations[i].setMap(null);
-    }
-    this.locations = [];
-  }
+  
+   
    this.directionsRenderer = new google.maps.DirectionsRenderer({suppressMarkers: true});
     this.directionsRenderer.setMap(this.map);
     var g = this.directionsRenderer;
@@ -174,7 +169,12 @@ ionViewDidEnter(){
         destination: dest,
         travelMode: 'DRIVING'
       };
- 
+      for (var i = 0; i < this.locations.length; i++ ) {
+        console.log(this.locations[i])
+        this.locations[i].setMap(null);
+      }
+      this.locations.length = 0;
+    }
       directionsService.route(request, function(result, status) {
         if (status == 'OK') {
           g.setDirections(result);
@@ -211,8 +211,9 @@ ionViewDidEnter(){
         }
       });
       this.locations = _locations;
-      this.trackingInterval = setInterval(()=> {
+      let trackingInterval = setInterval(()=> {
         this.UpdateUsersLocation(); },  30000); // every half minute update driver pins
+        this.trackingIntervals.push(trackingInterval);
   };  
    makeMarker( position, title ) {
     new google.maps.Marker({
@@ -234,8 +235,10 @@ ionViewDidEnter(){
     return new google.maps.Marker({position});
   };
   ionViewWillLeave(){
-    console.log("this.trackingInterval "+ this.trackingInterval);
-    clearInterval(this.trackingInterval);
+    for (var i = 0; i < this.trackingIntervals.length; i++ ) {
+      console.log(this.trackingIntervals[i]);
+      clearInterval( this.trackingIntervals[i]);
+    }
   }
 }
  
