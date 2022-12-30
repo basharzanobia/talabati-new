@@ -10356,6 +10356,10 @@ export class Order implements IOrder {
     createdBy: string | undefined;
     updatedDate: moment.Moment;
     updatedBy: string | undefined;
+    deliverLatitude: number;
+    deliverLongitude: number;
+    addressId: number | undefined;
+    userAddress: UserAddress;
     orderDetail: OrderDetail[] | undefined;
     tracking: Tracking[] | undefined;
     readonly addressMarge: string | undefined;
@@ -10409,6 +10413,10 @@ export class Order implements IOrder {
             this.createdBy = _data["createdBy"];
             this.updatedDate = _data["updatedDate"] ? moment(_data["updatedDate"].toString()) : <any>undefined;
             this.updatedBy = _data["updatedBy"];
+            this.deliverLatitude = _data["deliverLatitude"];
+            this.deliverLongitude = _data["deliverLongitude"];
+            this.addressId = _data["addressId"];
+            this.userAddress = _data["userAddress"] ? UserAddress.fromJS(_data["userAddress"]) : <any>undefined;
             if (Array.isArray(_data["orderDetail"])) {
                 this.orderDetail = [] as any;
                 for (let item of _data["orderDetail"])
@@ -10470,6 +10478,10 @@ export class Order implements IOrder {
         data["createdBy"] = this.createdBy;
         data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
         data["updatedBy"] = this.updatedBy;
+        data["deliverLatitude"] = this.deliverLatitude;
+        data["deliverLongitude"] = this.deliverLongitude;
+        data["addressId"] = this.addressId;
+        data["userAddress"] = this.userAddress ? this.userAddress.toJSON() : <any>undefined;
         if (Array.isArray(this.orderDetail)) {
             data["orderDetail"] = [];
             for (let item of this.orderDetail)
@@ -10531,6 +10543,10 @@ export interface IOrder {
     createdBy: string | undefined;
     updatedDate: moment.Moment;
     updatedBy: string | undefined;
+    deliverLatitude: number;
+    deliverLongitude: number;
+    addressId: number | undefined;
+    userAddress: UserAddress;
     orderDetail: OrderDetail[] | undefined;
     tracking: Tracking[] | undefined;
     addressMarge: string | undefined;
@@ -10747,6 +10763,9 @@ export class OrderRequestModel implements IOrderRequestModel {
     statements: string | undefined;
     createdBy: string | undefined;
     orderDetail: OrderDetailRequest[] | undefined;
+    deliverLatitude: number;
+    deliverLongitude: number;
+    addressId: number | undefined;
 
     constructor(data?: IOrderRequestModel) {
         if (data) {
@@ -10791,6 +10810,9 @@ export class OrderRequestModel implements IOrderRequestModel {
                 for (let item of _data["orderDetail"])
                     this.orderDetail.push(OrderDetailRequest.fromJS(item));
             }
+            this.deliverLatitude = _data["deliverLatitude"];
+            this.deliverLongitude = _data["deliverLongitude"];
+            this.addressId = _data["addressId"];
         }
     }
 
@@ -10835,6 +10857,9 @@ export class OrderRequestModel implements IOrderRequestModel {
             for (let item of this.orderDetail)
                 data["orderDetail"].push(item.toJSON());
         }
+        data["deliverLatitude"] = this.deliverLatitude;
+        data["deliverLongitude"] = this.deliverLongitude;
+        data["addressId"] = this.addressId;
         return data;
     }
 
@@ -10875,6 +10900,9 @@ export interface IOrderRequestModel {
     statements: string | undefined;
     createdBy: string | undefined;
     orderDetail: OrderDetailRequest[] | undefined;
+    deliverLatitude: number;
+    deliverLongitude: number;
+    addressId: number | undefined;
 }
 
 export enum OrderStatusType {

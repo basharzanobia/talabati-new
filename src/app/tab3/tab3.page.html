@@ -41,10 +41,10 @@
 
         <ng-container *ngIf="item.varientId!=0;then content else other_content"></ng-container>
         <ng-template #content>
-        <ion-col>{{ item.varient.price }}$</ion-col>
+        <ion-col>{{ item.varient.price }} {{AppConsts.currency}}</ion-col>
         </ng-template>
         <ng-template #other_content>
-          <ion-col>{{ item.product.price }}$</ion-col>
+          <ion-col>{{ item.product.price }} {{AppConsts.currency}}</ion-col>
           </ng-template>
         <ion-col>
           <ion-icon name="remove-circle-outline" color="danger" (click)="decItem(i)"></ion-icon>
@@ -66,23 +66,34 @@
   
       <ion-row class="order-total" >
         <ion-col size="6">الاجمالي</ion-col>
-        <ion-col size="6">{{ cart.Total }}$  </ion-col>
+        <ion-col size="6">{{ cart.Total }} {{AppConsts.currency}}  </ion-col>
       </ion-row>
   
       <ion-row class="order-addres" >
-           <ion-col size="12">
+           <!--<ion-col size="12">
             <ion-list>     
               <ion-item>
-                <ion-select placeholder="عنوان التسليم" [(ngModel)]="AddressId" (ionChange)="selectAddress(AddressId)">
+                <ion-select interface="action-sheet" [interfaceOptions]="{ cssClass: 'popover-wide' }" placeholder="عنوان التسليم" [(ngModel)]="AddressId" (ionChange)="selectAddress(AddressId)" cancelText="الغاء">
                   <ng-container *ngFor="let ad of userAddresses">
-                    <ion-select-option value={{ad?.id}} >{{ad?.addressTitle}}</ion-select-option>
+                    <ion-select-option value={{ad?.id}} 
+                    >{{ad?.addressTitle}}</ion-select-option>
                    </ng-container>
-                  <ion-select-option value="0">عنوان اخر</ion-select-option>
+                   <ion-select-option value="0"  class="position-now" >
+                     موقعي الآن </ion-select-option>
+                   <ion-select-option value="new">اضافة عنوان جديد </ion-select-option> 
                 </ion-select>
               </ion-item>
             </ion-list>
+          </ion-col>-->
+          <ion-col  size="6">
+            <ion-button fill="outline" (click)="presentActionSheet()">عنوان التسليم</ion-button>
+         
           </ion-col>
-      <ion-row *ngIf="showGoogleMap">
+          <ion-col  size="6">
+          {{deliverAddress}}
+         
+          </ion-col>
+     <!-- <ion-row *ngIf="showGoogleMap">
         <p>الرجاء ادخال العنوان الذي ترغب به</p>
         <ion-searchbar class="location-search" mode="ios" [(ngModel)]="autocomplete.query" show-cancel-button="never" (ionInput)="updateSearch()"
         (ionCancel)="dismiss()" (ionClear)="dismiss()" placeholder="">
@@ -99,10 +110,10 @@
           </ion-label>
         </ion-item>
       </ion-list>
-      </ion-row>
+      </ion-row>-->
        
       </ion-row>
-          <ion-grid class="sevices">
+        <!--  <ion-grid class="sevices">
             <ion-row>
               <ion-col size="6">
                 <ion-list lines="none">
@@ -144,11 +155,11 @@
                   </ion-item>
                 </ion-list>
               </ion-col>
-               <!-- End Address Info-->       
+                
             </ion-row>
           </ion-grid>
 
-  
+           End Address Info--> 
       <ion-row class="order-notes" >
         <ion-col size="12"> 
           <ion-label>ملاحظات</ion-label>

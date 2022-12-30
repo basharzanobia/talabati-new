@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppOrderStatusType } from 'src/shared/AppEnums';
-import { Order, SuborderapiServiceProxy,SubOrder,UserReview,ReviewuserapiServiceProxy, OrderapiServiceProxy,SubOrderModel ,UserlocationapiServiceProxy ,Location} from 'src/shared/service-proxies/service-proxies';
+import { Order, SuborderapiServiceProxy,SubOrder,UserReview,ReviewuserapiServiceProxy, OrderapiServiceProxy,SubOrderModel ,UserlocationapiServiceProxy ,Location, OrderStatusType} from 'src/shared/service-proxies/service-proxies';
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { AppConsts } from 'src/shared/AppConsts';
 import { ActivatedRoute } from '@angular/router';
@@ -25,9 +25,12 @@ export class TrackingPage implements OnInit {
   AppOrderStatusType = AppOrderStatusType;
   driverRating;
   orderAddress;
-  trackingInterval;
+  orderLatitude;
+  orderLongitude;
+  trackingIntervals = [];
    driverLocation = new Location();
     directionsRenderer = new google.maps.DirectionsRenderer();
+    orderInTransit = false;
   @ViewChild('map',{read: ElementRef,static:false}) mapRef:ElementRef;
   constructor(private _session: AppSessionService,
     private route: ActivatedRoute,
@@ -35,7 +38,6 @@ export class TrackingPage implements OnInit {
     private _subOrderService :SuborderapiServiceProxy,
     private _reviewUserapiService:ReviewuserapiServiceProxy,
     private _orderService: OrderapiServiceProxy) {
-    
   }
 
 
@@ -49,12 +51,9 @@ export class TrackingPage implements OnInit {
             this.order = res;
             this.getReview();
             console.log(this.order);
-            this._orderService.single(res.orderId).subscribe((res:Order) => {
-              this.orderAddress = res.address;
-            });
+          
           });
-         
-
+        
   }
 
   handleRefresh(event) {
@@ -95,41 +94,52 @@ export class TrackingPage implements OnInit {
       });
 }
 
-  ngAfterViewInit():void{
-    this.initMap();
+ionViewDidEnter(){
+    this._subOrderService.getbyid(this.orderId)
+    .subscribe((res:SubOrder) => {
+      this._orderService.single(res.orderId).subscribe((res:Order) => {
+        this.orderAddress = res.address;
+        this.orderLatitude = res.deliverLatitude;
+        this.orderLongitude = res.deliverLongitude;
+       
+          this.initMap();
+        
+       
+      }); 
+    
+    });
   }
   initMap(){
-   
-    const options ={
-     // center:{ lat: 15.3694, lng: 44.191 },
-     center: this.orderAddress,
-      zoom:22,
-      disableDefaultUI:true
-    }
-    this.map = new google.maps.Map(this.mapRef.nativeElement,options);
-    this.UpdateUsersLocation();
-    this.trackingInterval = setInterval(()=> {
-      this.UpdateUsersLocation(); },  30000); // every half minute update driver pins
+    this._userLocation.getlocationforsuborderdriver(this.orderId).subscribe((dLoc :Location) =>{
+      this.driverLocation = dLoc;
+      let lat = dLoc.lat;   let lang = dLoc.lang;
+      const options ={
+        center: {lat ,lang},
+        zoom:22,
+        disableDefaultUI:true
+      }
+      this.map = new google.maps.Map(this.mapRef.nativeElement,options);
+      this.UpdateUsersLocation(); });
+      
+
    }
    UpdateUsersLocation() {
+   // console.log(this.orderAddress);
     var  directionsService = new google.maps.DirectionsService();
     var m = this.map;
     var _locations  = [];
     if (this.directionsRenderer != null) {
       this.directionsRenderer.setMap(null);
       this.directionsRenderer = null;
-      
-      for (let i = 0; i < this.locations.length; i++) {
-       this.locations[i].setMap(null);
-    }
-    this.locations = [];
-  }
+  
+   
    this.directionsRenderer = new google.maps.DirectionsRenderer({suppressMarkers: true});
     this.directionsRenderer.setMap(this.map);
     var g = this.directionsRenderer;
     this._userLocation.getlocationforsuborderdriver(this.orderId).subscribe((dLoc :Location) =>{
       this.driverLocation = dLoc; });
         var driverNow = new google.maps.LatLng(this.driverLocation .lat, this.driverLocation .lang);
+        var dest =  new google.maps.LatLng(this.orderLatitude, this.orderLongitude);
        /* 
        var loc;
         loc = { lat: this.driverLocation .lat, lng: this.driverLocation .lang };
@@ -153,18 +163,23 @@ export class TrackingPage implements OnInit {
               shouldFocus: false,
           });
       });*/
-      console.log(this.orderAddress);
+      //console.log(this.orderAddress);
       var request = {
         origin: driverNow,
-        destination: this.orderAddress,
+        destination: dest,
         travelMode: 'DRIVING'
       };
- 
+      for (var i = 0; i < this.locations.length; i++ ) {
+        console.log(this.locations[i])
+        this.locations[i].setMap(null);
+      }
+      this.locations.length = 0;
+    }
       directionsService.route(request, function(result, status) {
         if (status == 'OK') {
           g.setDirections(result);
           var leg = result.routes[ 0 ].legs[ 0 ];
-          var start = new google.maps.Marker({
+         /* var start = new google.maps.Marker({
             position: leg.start_location,
             map: m,
             icon: {
@@ -182,7 +197,7 @@ export class TrackingPage implements OnInit {
             
             title: "driver"
             });
-            _locations.push(start);
+            _locations.push(start);*/
             var end =new google.maps.Marker({
               position: leg.end_location,
               map: m,
@@ -196,6 +211,9 @@ export class TrackingPage implements OnInit {
         }
       });
       this.locations = _locations;
+      let trackingInterval = setInterval(()=> {
+        this.UpdateUsersLocation(); },  30000); // every half minute update driver pins
+        this.trackingIntervals.push(trackingInterval);
   };  
    makeMarker( position, title ) {
     new google.maps.Marker({
@@ -217,8 +235,10 @@ export class TrackingPage implements OnInit {
     return new google.maps.Marker({position});
   };
   ionViewWillLeave(){
-    console.log("this.trackingInterval "+ this.trackingInterval);
-    clearInterval(this.trackingInterval);
+    for (var i = 0; i < this.trackingIntervals.length; i++ ) {
+      console.log(this.trackingIntervals[i]);
+      clearInterval( this.trackingIntervals[i]);
+    }
   }
 }
  
