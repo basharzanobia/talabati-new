@@ -73,16 +73,19 @@
            <ion-col size="12">
             <ion-list>     
               <ion-item>
-                <ion-select placeholder="عنوان التسليم" [(ngModel)]="AddressId" (ionChange)="selectAddress(AddressId)">
+                <ion-select  interface="action-sheet" placeholder="عنوان التسليم" [(ngModel)]="AddressId" (ionChange)="selectAddress(AddressId)" cancelText="الغاء">
                   <ng-container *ngFor="let ad of userAddresses">
-                    <ion-select-option value={{ad?.id}} >{{ad?.addressTitle}}</ion-select-option>
+                    <ion-select-option value={{ad?.id}} 
+                    >{{ad?.addressTitle}}</ion-select-option>
                    </ng-container>
-                  <ion-select-option value="0">عنوان اخر</ion-select-option>
+                   <ion-select-option value="0">
+                     موقعي الآن </ion-select-option>
+                   <ion-select-option value="new">اضافة عنوان جديد </ion-select-option> 
                 </ion-select>
               </ion-item>
             </ion-list>
           </ion-col>
-      <ion-row *ngIf="showGoogleMap">
+     <!-- <ion-row *ngIf="showGoogleMap">
         <p>الرجاء ادخال العنوان الذي ترغب به</p>
         <ion-searchbar class="location-search" mode="ios" [(ngModel)]="autocomplete.query" show-cancel-button="never" (ionInput)="updateSearch()"
         (ionCancel)="dismiss()" (ionClear)="dismiss()" placeholder="">
@@ -99,10 +102,10 @@
           </ion-label>
         </ion-item>
       </ion-list>
-      </ion-row>
+      </ion-row>-->
        
       </ion-row>
-          <ion-grid class="sevices">
+        <!--  <ion-grid class="sevices">
             <ion-row>
               <ion-col size="6">
                 <ion-list lines="none">
@@ -144,11 +147,11 @@
                   </ion-item>
                 </ion-list>
               </ion-col>
-               <!-- End Address Info-->       
+                
             </ion-row>
           </ion-grid>
 
-  
+           End Address Info--> 
       <ion-row class="order-notes" >
         <ion-col size="12"> 
           <ion-label>ملاحظات</ion-label>

@@ -6,7 +6,6 @@ import { AlertController } from '@ionic/angular';
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { Geolocation} from '@capacitor/geolocation';
 import { AppConsts } from 'src/shared/AppConsts';
-
 declare var google;
 @Component({
   selector: 'app-tab3',
@@ -38,6 +37,11 @@ export class Tab3Page {
   googleAddress;
   orderRequest: OrderRequestModel=new OrderRequestModel();
   showGoogleMap =false;
+  userLatitude=0;
+  userLongitude=0;
+  currentPosition = false;
+  hasAddress= false;
+  addressId;
   AppConsts = AppConsts;
   
   constructor(
@@ -47,11 +51,11 @@ export class Tab3Page {
     private _orderService: OrderapiServiceProxy,
     private _paymentCompanyService: PaymentcompanyapiServiceProxy,
     private _addressApiService : AddressapiServiceProxy,
-    public alertController: AlertController,
-  ) { this.initPage()}
+    public alertController: AlertController
+  ) { this.initPage();}
 
   ngOnInit() {
-    console.log('cart ', this.cart.Items);
+    console.log('cart ', this.cart.Items); 
     this.items_len=this.cart.Items.length;
     this._addressApiService.getrequestsbyuserid(this._session.userId).subscribe((res: UserAddress[]) => this.userAddresses = res);
     this._paymentCompanyService.getallcompanies().subscribe((res: PaymentCompany[]) => this.PaymentCompanies = res);
@@ -67,17 +71,13 @@ export class Tab3Page {
   }
 
   async ionViewWillEnter() {
-    this.items=[]
-    this.autocomplete.query=""
-    
-    const position = await Geolocation.getCurrentPosition();
-     
-     if (position) {
-      console.log(position)
-       this.currentLat = position.coords.latitude
-       this.currentLon = position.coords.longitude
-     }
-    
+    this.items=[];
+    this.autocomplete.query="";
+   
+     navigator.geolocation.getCurrentPosition((position) => {
+      this.currentLat = position.coords.latitude
+      this.currentLon = position.coords.longitude
+             });  
   } 
   chooseItem(item: any) {
     console.log('modal > chooseItem > item > ', item);
@@ -196,18 +196,52 @@ export class Tab3Page {
     await alert.present();
   }
 
-  selectAddress(id:number){
-    if( id==0){
+  async selectAddress(id:any){
+   /* if( id==0){
       this.showGoogleMap = true;
       this.userAddress.address="";
       this.userAddress.city="";
       this.userAddress.houseNo="";
       this.userAddress.area="";
+    }*/
+    this.hasAddress = false;
+    if( id == 0){
+     
+      console.log(id);
+      const options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+      };
+  
+     navigator.geolocation.getCurrentPosition((pos)=>{
+      const crd = pos.coords;
+      
+      console.log('Your current position is:');
+      console.log(`Latitude : ${crd.latitude}`);
+      console.log(`Longitude: ${crd.longitude}`);
+      console.log(`More or less ${crd.accuracy} meters.`);
+      this.userLatitude = crd.latitude;
+      this.userLongitude = crd.longitude;
+      console.log(this.userLatitude,this.userLongitude);
+      this.currentPosition = true;
+      this.hasAddress = true;
+     } ,
+     (err)=>{console.warn(`ERROR(${err.code}): ${err.message}`);
+     this.hasAddress = false;
+    }, options);
+     
     }
-    else{
-    this._addressApiService.getbyid(id).subscribe((res: UserAddress) => this.userAddress = res);   
-    this.showGoogleMap = false;
+    else if( id==='new'){
+      console.log(id);
+      this._router.navigate(['/locate-me'])
     }
+    else {
+      this.hasAddress = true;
+      console.log(id);
+      this.addressId=id;
+      this._addressApiService.getbyid(id).subscribe((res: UserAddress) => this.userAddress = res);   
+      }
   }
 
   handleRefresh(event) {
@@ -226,21 +260,38 @@ export class Tab3Page {
       this.showDetailes = false;
     }
   }
-  sendOrder() {
-    this.withAlert("هل أنت متأكد من تثبيت الطلب؟", () =>{
+  async sendOrder() {
+    console.log(this.userLatitude,this.userLongitude);
+    if(this.hasAddress)
+    {
+   this.withAlert("هل أنت متأكد من تثبيت الطلب؟", () =>{
      
     var totalQty=0;
     this.cart.Items.forEach(element => {
       totalQty+=element.quantity;
     });
-
+   if(this.currentPosition){
+    this.orderRequest.area="unidentified";
+    this.orderRequest.city="unidentified";
+    this.orderRequest.houseNo="unidentified";
+    this.orderRequest.address="unidentified";
+    this.orderRequest.deliverLatitude=this.userLatitude;
+    this.orderRequest.deliverLongitude=this.userLongitude;
+    //this.orderRequest.addressId = null;
+   }
+   else{
     this.orderRequest.area=this.userAddress.area;
     this.orderRequest.city=this.userAddress.city;
     this.orderRequest.houseNo=this.userAddress.houseNo;
     this.orderRequest.address=this.userAddress.address;
+    this.orderRequest.deliverLatitude=this.userAddress.latitude;
+    this.orderRequest.deliverLongitude=this.userAddress.longitude;
+    this.orderRequest.addressId = this.addressId;
     if(Boolean(this.googleAddress)){
       this.orderRequest.address=this.googleAddress;
     }
+   }
+
     this.orderRequest.totalAmount= this.cart.Total;
     this.orderRequest.grandTotal= this.cart.Total;
     this.orderRequest.totalQty=totalQty;
@@ -270,6 +321,27 @@ export class Tab3Page {
         console.log('error ', error);
       });
     });
+    }
+    else{
+      const alert = await this.alertController.create({
+        header: 'تأكيد ',
+        subHeader : "الرجاء ادخال عنوان استلام",
+        buttons: [
+          {
+            text: 'حسنا',
+                handler: () => { //takes the data 
+           
+                
+                }   
+        },
+       
+        ],
+    
+      });
+    
+      await alert.present();
+    }
+ 
   }
 
 }
