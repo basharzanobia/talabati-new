@@ -6,7 +6,7 @@ import { AlertController } from '@ionic/angular';
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { Geolocation} from '@capacitor/geolocation';
 import { AppConsts } from 'src/shared/AppConsts';
-
+import { BackgroundGeolocationService } from '../services/background-geolocation.service';
 import { ActionSheetController } from '@ionic/angular';
 declare var google;
 @Component({
@@ -55,7 +55,8 @@ export class Tab3Page {
     private _paymentCompanyService: PaymentcompanyapiServiceProxy,
     private _addressApiService : AddressapiServiceProxy,
     public alertController: AlertController,
-    private actionSheetCtrl: ActionSheetController
+    private actionSheetCtrl: ActionSheetController,
+    private bgGeolocation:BackgroundGeolocationService
   ) { this.initPage();}
   async presentActionSheet() {
     let radio_options = [];
@@ -274,6 +275,7 @@ export class Tab3Page {
     }*/
     this.hasAddress = false;
     if( id == 0){
+      this.bgGeolocation.askToTurnOnGPS();
      this.deliverAddress ="موقعي الآن";
       console.log(id);
       const options = {

@@ -17,6 +17,7 @@ import { AppAuthService } from 'src/shared/auth/app-auth.service';
 import { CartStoreService } from 'src/shared/cart/cart-store.service';
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { SuborderapiServiceProxy,UserlocationapiServiceProxy } from 'src/shared/service-proxies/service-proxies';
+import { BackgroundGeolocationService } from './services/background-geolocation.service';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -35,7 +36,8 @@ import { SuborderapiServiceProxy,UserlocationapiServiceProxy } from 'src/shared/
     AppAuthService,
     AppSessionService,
     SuborderapiServiceProxy,
-    UserlocationapiServiceProxy
+    UserlocationapiServiceProxy,
+    BackgroundGeolocationService
   ],
   bootstrap: [AppComponent],
 })

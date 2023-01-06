@@ -6,6 +6,7 @@ import {
   MapGeocoderResponse,
 } from '@angular/google-maps';
 import { ActivatedRoute ,Router} from '@angular/router';
+import { BackgroundGeolocationService } from '../services/background-geolocation.service';
 @Component({
   selector: 'app-locate-me',
   templateUrl: './locate-me.page.html',
@@ -37,7 +38,10 @@ export class LocateMePage implements OnInit {
 
   markers = [] as any;
 
-  constructor(private ngZone: NgZone, private geoCoder: MapGeocoder,private _router: Router,) {
+  constructor(private ngZone: NgZone, 
+    private geoCoder: MapGeocoder,
+    private _router: Router,
+    private bgGeolocation:BackgroundGeolocationService) {
    /* this.height = (document.documentElement.clientHeight-100)+"px";*/
   }
 
@@ -78,6 +82,7 @@ export class LocateMePage implements OnInit {
   }*/
 
   ngOnInit() {
+    this.bgGeolocation.askToTurnOnGPS();
     navigator.geolocation.getCurrentPosition((position) => {
       this.latitude = position.coords.latitude;
       this.longitude = position.coords.longitude;
