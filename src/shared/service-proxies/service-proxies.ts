@@ -18,233 +18,6 @@ import * as moment from 'moment';
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 @Injectable()
-export class ServiceProxy {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
-    }
-
-    /**
-     * @return Success
-     */
-    forgetpasswordPost(email: string): Observable<void> {
-        let url_ = this.baseUrl + "/forgetpassword?";
-        if (email === undefined || email === null)
-            throw new Error("The parameter 'email' must be defined and cannot be null.");
-        else
-            url_ += "Email=" + encodeURIComponent("" + email) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processForgetpasswordPost(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processForgetpasswordPost(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processForgetpasswordPost(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<void>(null as any);
-    }
-
-    /**
-     * @return Success
-     */
-    forgetpasswordGet(): Observable<void> {
-        let url_ = this.baseUrl + "/forgetpassword";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processForgetpasswordGet(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processForgetpasswordGet(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processForgetpasswordGet(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<void>(null as any);
-    }
-
-    /**
-     * @param token (optional) 
-     * @param email (optional) 
-     * @param newPassword (optional) 
-     * @param confirmPassword (optional) 
-     * @return Success
-     */
-    resetpasswordPost(token: string | undefined, email: string | undefined, newPassword: string | undefined, confirmPassword: string | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/resetpassword";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = new FormData();
-        if (token === null || token === undefined)
-            throw new Error("The parameter 'token' cannot be null.");
-        else
-            content_.append("token", token.toString());
-        if (email === null || email === undefined)
-            throw new Error("The parameter 'email' cannot be null.");
-        else
-            content_.append("Email", email.toString());
-        if (newPassword === null || newPassword === undefined)
-            throw new Error("The parameter 'newPassword' cannot be null.");
-        else
-            content_.append("NewPassword", newPassword.toString());
-        if (confirmPassword === null || confirmPassword === undefined)
-            throw new Error("The parameter 'confirmPassword' cannot be null.");
-        else
-            content_.append("ConfirmPassword", confirmPassword.toString());
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processResetpasswordPost(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processResetpasswordPost(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processResetpasswordPost(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<void>(null as any);
-    }
-
-    /**
-     * @return Success
-     */
-    resetpasswordGet(): Observable<void> {
-        let url_ = this.baseUrl + "/resetpassword";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processResetpasswordGet(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processResetpasswordGet(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processResetpasswordGet(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<void>(null as any);
-    }
-}
-
-@Injectable()
 export class AddressapiServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -256,8 +29,9 @@ export class AddressapiServiceProxy {
     }
 
     /**
-     * @param id (optional) 
-     * @return Success
+     * Get user address of a specific id.
+     * @param id (optional) id of user address
+     * @return Returns the UserAddress
      */
     getbyid(id: number | undefined): Observable<UserAddress> {
         let url_ = this.baseUrl + "/api/addressapi/getbyid?";
@@ -312,8 +86,9 @@ export class AddressapiServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
+     * Create new address for the logged in user.
+     * @param body (optional) UserAddress object
+     * @return Returns the newely created UserAddress
      */
     createaddress(body: UserAddress | undefined): Observable<UserAddress> {
         let url_ = this.baseUrl + "/api/addressapi/createaddress";
@@ -368,8 +143,9 @@ export class AddressapiServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
+     * Update user address for the logged in user.
+     * @param body (optional) UserAddress object
+     * @return Returns the updated UserAddress
      */
     updateaddress(body: UserAddress | undefined): Observable<UserAddress> {
         let url_ = this.baseUrl + "/api/addressapi/updateaddress";
@@ -424,8 +200,9 @@ export class AddressapiServiceProxy {
     }
 
     /**
-     * @param id (optional) 
-     * @return Success
+     * Delete specific address of the logged in user.
+     * @param id (optional) id of user address
+     * @return Returns true
      */
     deleteaddress(id: number | undefined): Observable<boolean> {
         let url_ = this.baseUrl + "/api/addressapi/deleteaddress?";
@@ -481,8 +258,9 @@ export class AddressapiServiceProxy {
     }
 
     /**
-     * @param userId (optional) 
-     * @return Success
+     * Get all addresses for a specific user.
+     * @param userId (optional) id of user
+     * @return List of user Addresses
      */
     getrequestsbyuserid(userId: string | undefined): Observable<UserAddress[]> {
         let url_ = this.baseUrl + "/api/addressapi/getrequestsbyuserid?";
@@ -556,7 +334,8 @@ export class BuyrequestServiceProxy {
     }
 
     /**
-     * @return Success
+     * Get all Buy Me requests assigned to the logged in driver.
+     * @return List of Buy me requests
      */
     getallbydriverid(): Observable<BuyMe[]> {
         let url_ = this.baseUrl + "/api/buyrequest/getallbydriverid";
@@ -614,8 +393,9 @@ export class BuyrequestServiceProxy {
     }
 
     /**
-     * @param id (optional) 
-     * @return Success
+     * Get Buy me request of a specific id.
+     * @param id (optional) id of Buy Me request
+     * @return Buy Me object
      */
     getrequestbyid(id: number | undefined): Observable<BuyMe> {
         let url_ = this.baseUrl + "/api/buyrequest/getrequestbyid?";
@@ -670,7 +450,8 @@ export class BuyrequestServiceProxy {
     }
 
     /**
-     * @return Success
+     * Get all Buy Me requests of status pending assigned to the logged in driver.
+     * @return List of Buy me objects
      */
     getbuymependingsbydriverid(): Observable<BuyMe[]> {
         let url_ = this.baseUrl + "/api/buyrequest/getbuymependingsbydriverid";
@@ -728,7 +509,8 @@ export class BuyrequestServiceProxy {
     }
 
     /**
-     * @return Success
+     * Get all Buy Me requests of status Delivered/UnDelivered assigned to the logged in driver.
+     * @return List of Buy me objects
      */
     getbuymedonebydriverid(): Observable<BuyMe[]> {
         let url_ = this.baseUrl + "/api/buyrequest/getbuymedonebydriverid";
@@ -786,8 +568,9 @@ export class BuyrequestServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
+     * Create new Buy Me request for the logged in user and send notification to admins.
+     * @param body (optional) Buy Me object
+     * @return the newely created Buy Me object
      */
     addrequest(body: BuyMe | undefined): Observable<BuyMe> {
         let url_ = this.baseUrl + "/api/buyrequest/addrequest";
@@ -842,8 +625,9 @@ export class BuyrequestServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
+     * Update Buy Me request.
+     * @param body (optional) Buy Me object
+     * @return the updated Buy Me object
      */
     updaterequest(body: BuyMe | undefined): Observable<BuyMe> {
         let url_ = this.baseUrl + "/api/buyrequest/updaterequest";
@@ -898,8 +682,9 @@ export class BuyrequestServiceProxy {
     }
 
     /**
-     * @param id (optional) 
-     * @return Success
+     * Delete specific Buy Me Request of of specific id.
+     * @param id (optional) id of Buy Me Object
+     * @return true if deleting is successful
      */
     deleterequest(id: number | undefined): Observable<boolean> {
         let url_ = this.baseUrl + "/api/buyrequest/deleterequest?";
@@ -955,7 +740,8 @@ export class BuyrequestServiceProxy {
     }
 
     /**
-     * @return Success
+     * Get all Buy Me requests.
+     * @return List of Buy me objects
      */
     getallrequests(): Observable<BuyMe[]> {
         let url_ = this.baseUrl + "/api/buyrequest/getallrequests";
@@ -1013,8 +799,9 @@ export class BuyrequestServiceProxy {
     }
 
     /**
-     * @param creatorId (optional) 
-     * @return Success
+     * Get all Buy Me requests created by a specific user.
+     * @param creatorId (optional) id of user
+     * @return List of Buy me objects
      */
     getrequestsbycreatorid(creatorId: string | undefined): Observable<BuyMe[]> {
         let url_ = this.baseUrl + "/api/buyrequest/getrequestsbycreatorid?";
@@ -1088,9 +875,10 @@ export class ChatapiServiceProxy {
     }
 
     /**
-     * @param senderId (optional) 
-     * @param recieverId (optional) 
-     * @return Success
+     * Get Chats Archive between two users.
+     * @param senderId (optional) id of sender
+     * @param recieverId (optional) id of reciever
+     * @return List of Chat log objects
      */
     getchat(senderId: string | undefined, recieverId: string | undefined): Observable<ChatLog[]> {
         let url_ = this.baseUrl + "/api/chatapi/getchat?";
@@ -1156,8 +944,9 @@ export class ChatapiServiceProxy {
     }
 
     /**
-     * @param userId (optional) 
-     * @return Success
+     * Get all Messages created by a specific user.
+     * @param userId (optional) id of user
+     * @return List of Chat log objects
      */
     getmessagesbyuserid(userId: string | undefined): Observable<ChatLog[]> {
         let url_ = this.baseUrl + "/api/chatapi/getmessagesbyuserid?";
@@ -1219,8 +1008,9 @@ export class ChatapiServiceProxy {
     }
 
     /**
-     * @param userId (optional) 
-     * @return Success
+     * Get Latest Chat ocurred between specific user and others.
+     * @param userId (optional) id of user
+     * @return List of chat log objects
      */
     getlastmessages(userId: string | undefined): Observable<ChatLog[]> {
         let url_ = this.baseUrl + "/api/chatapi/getlastmessages?";
@@ -1282,8 +1072,9 @@ export class ChatapiServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
+     * Send a message from a user to another and notifies reciever about the new message.
+     * @param body (optional) chat log object
+     * @return true if successful
      */
     createmessage(body: ChatLog | undefined): Observable<boolean> {
         let url_ = this.baseUrl + "/api/chatapi/createmessage";
@@ -1351,9 +1142,10 @@ export class CouponapiServiceProxy {
     }
 
     /**
-     * @param promoCode (optional) 
-     * @param uid (optional) 
-     * @return Success
+     * checks if a coupon is valid to a specific user.
+     * @param promoCode (optional) code of coupon
+     * @param uid (optional) user id
+     * @return BaseResponse object of the coupon and its validity status( boolean value ) to the user
      */
     validatepromocode(promoCode: string | undefined, uid: string | undefined): Observable<CouponBaseResponse> {
         let url_ = this.baseUrl + "/api/couponapi/validatepromocode?";
@@ -1412,7 +1204,8 @@ export class CouponapiServiceProxy {
     }
 
     /**
-     * @return Success
+     * Get all Coupons.
+     * @return list of coupon objects
      */
     getallcoupons(): Observable<Coupon[]> {
         let url_ = this.baseUrl + "/api/couponapi/getallcoupons";
@@ -1470,8 +1263,9 @@ export class CouponapiServiceProxy {
     }
 
     /**
-     * @param couponCode (optional) 
-     * @return Success
+     * Get Coupon by its code.
+     * @param couponCode (optional) code of coupon
+     * @return BaseResponse object of the coupon and success/fail status
      */
     getbycouponcode(couponCode: string | undefined): Observable<CouponBaseResponse> {
         let url_ = this.baseUrl + "/api/couponapi/getbycouponcode?";
@@ -1526,8 +1320,9 @@ export class CouponapiServiceProxy {
     }
 
     /**
-     * @param id (optional) 
-     * @return Success
+     * Get Coupon of specific id.
+     * @param id (optional) coupon id
+     * @return BaseResponse object of the coupon and success/fail status
      */
     getbyid(id: number | undefined): Observable<CouponBaseResponse> {
         let url_ = this.baseUrl + "/api/couponapi/getbyid?";
@@ -1594,8 +1389,9 @@ export class DynamicpagesServiceProxy {
     }
 
     /**
-     * @param id (optional) 
-     * @return Success
+     * Get Page of a specific id.
+     * @param id (optional) Page id
+     * @return return DynamicPageModel object
      */
     getbyid(id: number | undefined): Observable<DynamicPageModel> {
         let url_ = this.baseUrl + "/api/dynamicpages/getbyid?";
@@ -1650,8 +1446,9 @@ export class DynamicpagesServiceProxy {
     }
 
     /**
-     * @param slug (optional) 
-     * @return Success
+     * Get Page of a specific slug.
+     * @param slug (optional) Page slug
+     * @return return DynamicPageModel object
      */
     getbyslug(slug: string | undefined): Observable<DynamicPageModel> {
         let url_ = this.baseUrl + "/api/dynamicpages/getbyslug?";
@@ -1706,8 +1503,9 @@ export class DynamicpagesServiceProxy {
     }
 
     /**
-     * @param title (optional) 
-     * @return Success
+     * Get Page of a specific Title.
+     * @param title (optional) Page title
+     * @return return DynamicPageModel object
      */
     getbytitle(title: string | undefined): Observable<DynamicPageModel> {
         let url_ = this.baseUrl + "/api/dynamicpages/getbytitle?";
@@ -1762,7 +1560,8 @@ export class DynamicpagesServiceProxy {
     }
 
     /**
-     * @return Success
+     * Get All dynamic Pages.
+     * @return return lis of DynamicPageModel objects
      */
     getpages(): Observable<DynamicPageModel[]> {
         let url_ = this.baseUrl + "/api/dynamicpages/getpages";
@@ -1832,8 +1631,9 @@ export class EwalletServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
+     * Add amount of money to logged in user's wallet.
+     * @param body (optional) ewallet object to be added
+     * @return return true if successfully created
      */
     deposite(body: EWallet | undefined): Observable<boolean> {
         let url_ = this.baseUrl + "/api/ewallet/deposite";
@@ -1889,8 +1689,9 @@ export class EwalletServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
+     * Withdraw amount of money from logged in user's wallet.
+     * @param body (optional) ewallet object to be added
+     * @return return true if successfully created
      */
     withdraw(body: EWallet | undefined): Observable<boolean> {
         let url_ = this.baseUrl + "/api/ewallet/withdraw";
@@ -1946,8 +1747,9 @@ export class EwalletServiceProxy {
     }
 
     /**
-     * @param userId (optional) 
-     * @return Success
+     * Get Total of money in specific user wallet.
+     * @param userId (optional) user id
+     * @return return float number repesents total
      */
     totalbyuserid(userId: string | undefined): Observable<number> {
         let url_ = this.baseUrl + "/api/ewallet/totalbyuserid?";
@@ -2003,8 +1805,9 @@ export class EwalletServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
+     * Add money to some user ewallet by another user 'usually the driver', not valid until accountant approves.
+     * @param body (optional) ewallet to be added
+     * @return object created
      */
     promisetoadd(body: EWalletPromise | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/ewallet/promisetoadd";
@@ -2067,7 +1870,8 @@ export class HomeapiServiceProxy {
     }
 
     /**
-     * @return Success
+     * Get Home Menu items.
+     * @return List of Category Objects
      */
     menu(): Observable<Category[]> {
         let url_ = this.baseUrl + "/api/homeapi/menu";
@@ -2125,7 +1929,8 @@ export class HomeapiServiceProxy {
     }
 
     /**
-     * @return Success
+     * Get Sliders of Home Page.
+     * @return return list of Slider objects
      */
     slider(): Observable<Slider[]> {
         let url_ = this.baseUrl + "/api/homeapi/slider";
@@ -2183,7 +1988,8 @@ export class HomeapiServiceProxy {
     }
 
     /**
-     * @return Success
+     * Get first four Brands to dispaly in Home Page.
+     * @return return list of Brand objects
      */
     brand(): Observable<Brand[]> {
         let url_ = this.baseUrl + "/api/homeapi/brand";
@@ -2241,7 +2047,8 @@ export class HomeapiServiceProxy {
     }
 
     /**
-     * @return Success
+     * Get 8 featured products to be dispalyed in home page.
+     * @return return list of product objects
      */
     featuredproduct(): Observable<Product[]> {
         let url_ = this.baseUrl + "/api/homeapi/featuredproduct";
@@ -2299,7 +2106,8 @@ export class HomeapiServiceProxy {
     }
 
     /**
-     * @return Success
+     * Get 8 top purchased products.
+     * @return return list of product objects
      */
     purchasedproduct(): Observable<Product[]> {
         let url_ = this.baseUrl + "/api/homeapi/purchasedproduct";
@@ -2369,7 +2177,8 @@ export class NotificationapiServiceProxy {
     }
 
     /**
-     * @param id (optional) 
+     * mark notification as read by its suborder id.
+     * @param id (optional) notification id
      * @return Success
      */
     opennotificationbysuborderid(id: number | undefined): Observable<void> {
@@ -2421,8 +2230,9 @@ export class NotificationapiServiceProxy {
     }
 
     /**
-     * @param userId (optional) 
-     * @return Success
+     * Get unread Orders' Notifications that belongs to a specific driver.
+     * @param userId (optional) driver id
+     * @return return list of notificationLog objects
      */
     getorderpendingbyuserid(userId: string | undefined): Observable<NotificationLog[]> {
         let url_ = this.baseUrl + "/api/notificationapi/getorderpendingbyuserid?";
@@ -2484,8 +2294,9 @@ export class NotificationapiServiceProxy {
     }
 
     /**
-     * @param userId (optional) 
-     * @return Success
+     * Get All orders' notifications that belongs to specific driver.
+     * @param userId (optional) driver id
+     * @return return list of notificationLog objects
      */
     getordernotificationsbyuserid(userId: string | undefined): Observable<NotificationLog[]> {
         let url_ = this.baseUrl + "/api/notificationapi/getordernotificationsbyuserid?";
@@ -2547,8 +2358,9 @@ export class NotificationapiServiceProxy {
     }
 
     /**
-     * @param userId (optional) 
-     * @return Success
+     * Get unread Serve Me Requests' Notifications that belongs to a specific driver.
+     * @param userId (optional) driver id
+     * @return return list of notificationLog objects
      */
     getservemependingbyuserid(userId: string | undefined): Observable<NotificationLog[]> {
         let url_ = this.baseUrl + "/api/notificationapi/getservemependingbyuserid?";
@@ -2610,8 +2422,9 @@ export class NotificationapiServiceProxy {
     }
 
     /**
-     * @param userId (optional) 
-     * @return Success
+     * Get All Serve Ne requests' notifications that belongs to specific driver.
+     * @param userId (optional) driver id
+     * @return return list of notificationLog objects
      */
     getservemenotificationsbyuserid(userId: string | undefined): Observable<NotificationLog[]> {
         let url_ = this.baseUrl + "/api/notificationapi/getservemenotificationsbyuserid?";
@@ -2673,8 +2486,9 @@ export class NotificationapiServiceProxy {
     }
 
     /**
-     * @param userId (optional) 
-     * @return Success
+     * Get unread Buy Me Requests' Notifications that belongs to a specific driver.
+     * @param userId (optional) driver id
+     * @return return list of notificationLog objects
      */
     getbuymependingbyuserid(userId: string | undefined): Observable<NotificationLog[]> {
         let url_ = this.baseUrl + "/api/notificationapi/getbuymependingbyuserid?";
@@ -2736,8 +2550,9 @@ export class NotificationapiServiceProxy {
     }
 
     /**
-     * @param userId (optional) 
-     * @return Success
+     * Get All Buy Ne requests' notifications that belongs to specific driver.
+     * @param userId (optional) driver id
+     * @return return list of notificationLog objects
      */
     getbuymenotificationsbyuserid(userId: string | undefined): Observable<NotificationLog[]> {
         let url_ = this.baseUrl + "/api/notificationapi/getbuymenotificationsbyuserid?";
@@ -2799,8 +2614,9 @@ export class NotificationapiServiceProxy {
     }
 
     /**
-     * @param receiverId (optional) 
-     * @return Success
+     * Get New Messages' Notifications that belongs to a specific user.
+     * @param receiverId (optional) user id of recipient
+     * @return return BaseResponse object of ChatLog objects
      */
     getmessagesnotificationsbyuserid(receiverId: string | undefined): Observable<ChatLogListBaseResponse> {
         let url_ = this.baseUrl + "/api/notificationapi/getmessagesnotificationsbyuserid?";
@@ -2855,8 +2671,9 @@ export class NotificationapiServiceProxy {
     }
 
     /**
-     * @param notificationId (optional) 
-     * @return Success
+     * Get Page of a specific Title.
+     * @param notificationId (optional) Page title
+     * @return return DynamicPageModel object
      */
     openordernotification(notificationId: number | undefined): Observable<StringBaseResponse> {
         let url_ = this.baseUrl + "/api/notificationapi/openordernotification?";
@@ -2911,8 +2728,9 @@ export class NotificationapiServiceProxy {
     }
 
     /**
-     * @param notificationId (optional) 
-     * @return Success
+     * mark notification as read by its id.
+     * @param notificationId (optional) notification Id
+     * @return return BaseResponse object of boolean value
      */
     openmessagenotification(notificationId: number | undefined): Observable<StringBaseResponse> {
         let url_ = this.baseUrl + "/api/notificationapi/openmessagenotification?";
@@ -2979,7 +2797,8 @@ export class OrderapiServiceProxy {
     }
 
     /**
-     * @return Success
+     * Get List of All Orders.
+     * @return return list of Order
      */
     list(): Observable<Order[]> {
         let url_ = this.baseUrl + "/api/orderapi/list";
@@ -3037,8 +2856,9 @@ export class OrderapiServiceProxy {
     }
 
     /**
-     * @param creatorId (optional) 
-     * @return Success
+     * Get Orders of specific user.
+     * @param creatorId (optional) user id
+     * @return return list of Order
      */
     getrequestsbycreatorid(creatorId: string | undefined): Observable<Order[]> {
         let url_ = this.baseUrl + "/api/orderapi/getrequestsbycreatorid?";
@@ -3100,8 +2920,9 @@ export class OrderapiServiceProxy {
     }
 
     /**
-     * @param orderId (optional) 
-     * @return Success
+     * Get Tracking of specific order.
+     * @param orderId (optional) order id
+     * @return return list of Tracking
      */
     trackingbyorderid(orderId: number | undefined): Observable<Tracking[]> {
         let url_ = this.baseUrl + "/api/orderapi/trackingbyorderid?";
@@ -3163,8 +2984,9 @@ export class OrderapiServiceProxy {
     }
 
     /**
-     * @param orderId (optional) 
-     * @return Success
+     * Get order of specific id.
+     * @param orderId (optional) order id
+     * @return return Order object
      */
     single(orderId: number | undefined): Observable<Order> {
         let url_ = this.baseUrl + "/api/orderapi/single?";
@@ -3219,8 +3041,9 @@ export class OrderapiServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
+     * Create un order and sends notification to vendor.
+     * @param body (optional) orderFilterModel object
+     * @return return order id if successful , otherwise it returns -1
      */
     create(body: OrderRequestModel | undefined): Observable<number> {
         let url_ = this.baseUrl + "/api/orderapi/create";
@@ -3276,8 +3099,9 @@ export class OrderapiServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
+     * Update un order.
+     * @param body (optional) orderFilterModel object
+     * @return return updated order id
      */
     update(body: Order | undefined): Observable<number> {
         let url_ = this.baseUrl + "/api/orderapi/update";
@@ -3333,8 +3157,9 @@ export class OrderapiServiceProxy {
     }
 
     /**
-     * @param id (optional) 
-     * @return Success
+     * Delete un order of specific id.
+     * @param id (optional) order id
+     * @return return BaseResponse object of boolean value
      */
     delete(id: number | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/orderapi/delete?";
@@ -3397,7 +3222,8 @@ export class PaymentcompanyapiServiceProxy {
     }
 
     /**
-     * @return Success
+     * Get all Payment Companies.
+     * @return list of PaymentCompany objects
      */
     getallcompanies(): Observable<PaymentCompany[]> {
         let url_ = this.baseUrl + "/api/paymentcompanyapi/getallcompanies";
@@ -3467,8 +3293,9 @@ export class PaymenttransactionServiceProxy {
     }
 
     /**
+     * Add Financial information about payment transaction of order.
      * @param body (optional) 
-     * @return Success
+     * @return true if successfully added
      */
     create(body: PaymentTransactionLog | undefined): Observable<boolean> {
         let url_ = this.baseUrl + "/api/paymenttransaction/create";
@@ -3536,8 +3363,9 @@ export class PopularquestionsapiServiceProxy {
     }
 
     /**
-     * @param id (optional) 
-     * @return Success
+     * Get popular question of specific id.
+     * @param id (optional) popular question id
+     * @return return PopularQuestions object
      */
     getrequestbyid(id: number | undefined): Observable<PopularQuestions> {
         let url_ = this.baseUrl + "/api/popularquestionsapi/getrequestbyid?";
@@ -3592,8 +3420,9 @@ export class PopularquestionsapiServiceProxy {
     }
 
     /**
-     * @param category (optional) 
-     * @return Success
+     * Get list of popular questions of specific category.
+     * @param category (optional) category id
+     * @return return list of PopularQuestions objects
      */
     listbycategory(category: UserType | undefined): Observable<PopularQuestions[]> {
         let url_ = this.baseUrl + "/api/popularquestionsapi/listbycategory?";
@@ -3667,8 +3496,9 @@ export class ProductapiServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
+     * Get list of products according to a provided filter.
+     * @param body (optional) filter object
+     * @return return list of ProductResponseModel objects
      */
     list(body: ProductFilterModel | undefined): Observable<ProductResponseModel> {
         let url_ = this.baseUrl + "/api/productapi/list";
@@ -3723,8 +3553,9 @@ export class ProductapiServiceProxy {
     }
 
     /**
-     * @param productId (optional) 
-     * @return Success
+     * Get product of specific id.
+     * @param productId (optional) Product id
+     * @return return Product object
      */
     single(productId: number | undefined): Observable<Product> {
         let url_ = this.baseUrl + "/api/productapi/single?";
@@ -3779,7 +3610,122 @@ export class ProductapiServiceProxy {
     }
 
     /**
-     * @return Success
+     * Create a Product.
+     * @param body (optional) Product object
+     * @return return the newely created product
+     */
+    create(body: Product | undefined): Observable<Product> {
+        let url_ = this.baseUrl + "/api/productapi/create";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<Product>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<Product>;
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<Product> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Product.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Product>(null as any);
+    }
+
+    /**
+     * Update a product.
+     * @param body (optional) Product id
+     * @return return the updated Product
+     */
+    update(body: Product | undefined): Observable<Product> {
+        let url_ = this.baseUrl + "/api/productapi/update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<Product>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<Product>;
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<Product> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Product.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Product>(null as any);
+    }
+
+    /**
+     * Get list of all products.
+     * @return return list of PopularQuestions objects
      */
     allproducts(): Observable<void> {
         let url_ = this.baseUrl + "/api/productapi/allproducts";
@@ -3826,8 +3772,9 @@ export class ProductapiServiceProxy {
     }
 
     /**
-     * @param name (optional) 
-     * @return Success
+     * Get list of products which have the same substring in the name.
+     * @param name (optional) name of product
+     * @return return list of ProductModel objects
      */
     getproductbyname(name: string | undefined): Observable<ProductModel[]> {
         let url_ = this.baseUrl + "/api/productapi/getproductbyname?";
@@ -3889,7 +3836,8 @@ export class ProductapiServiceProxy {
     }
 
     /**
-     * @return Success
+     * Get list of products with discount.
+     * @return return list of ProductModel objects
      */
     getproductwithdiscount(): Observable<ProductModel[]> {
         let url_ = this.baseUrl + "/api/productapi/getproductwithdiscount";
@@ -3945,6 +3893,59 @@ export class ProductapiServiceProxy {
         }
         return _observableOf<ProductModel[]>(null as any);
     }
+
+    /**
+     * Save Product Image on server.
+     * @return return image path as string
+     */
+    uploadproductimage(): Observable<string> {
+        let url_ = this.baseUrl + "/api/productapi/uploadproductimage";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUploadproductimage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUploadproductimage(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<string>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<string>;
+        }));
+    }
+
+    protected processUploadproductimage(response: HttpResponseBase): Observable<string> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string>(null as any);
+    }
 }
 
 @Injectable()
@@ -3959,8 +3960,9 @@ export class ReviewproductapiServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
+     * Create a Review.
+     * @param body (optional) review object
+     * @return return BaseResponse object of boolean value
      */
     create(body: Review | undefined): Observable<BooleanBaseResponse> {
         let url_ = this.baseUrl + "/api/reviewproductapi/create";
@@ -4015,8 +4017,9 @@ export class ReviewproductapiServiceProxy {
     }
 
     /**
-     * @param productId (optional) 
-     * @return Success
+     * Get Reviews of a specific product.
+     * @param productId (optional) product Id
+     * @return return BaseResponse object of list of Review
      */
     getreviewsbyproductid(productId: number | undefined): Observable<ReviewListBaseResponse> {
         let url_ = this.baseUrl + "/api/reviewproductapi/getreviewsbyproductid?";
@@ -4071,8 +4074,9 @@ export class ReviewproductapiServiceProxy {
     }
 
     /**
-     * @param productId (optional) 
-     * @return Success
+     * Get Rating of a product.
+     * @param productId (optional) Product Id
+     * @return return BaseResponse object of double value as rating
      */
     getratingofproduct(productId: number | undefined): Observable<DoubleBaseResponse> {
         let url_ = this.baseUrl + "/api/reviewproductapi/getratingofproduct?";
@@ -4139,8 +4143,9 @@ export class ReviewuserapiServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
+     * Create a Review of Vendor.
+     * @param body (optional) UserReview object
+     * @return return BaseResponse object of boolean value
      */
     create(body: UserReview | undefined): Observable<BooleanBaseResponse> {
         let url_ = this.baseUrl + "/api/reviewuserapi/create";
@@ -4195,8 +4200,9 @@ export class ReviewuserapiServiceProxy {
     }
 
     /**
-     * @param userId (optional) 
-     * @return Success
+     * Get Reviews of a specific vendor.
+     * @param userId (optional) vendor id
+     * @return return List of ReviewUserResponse
      */
     getreviewsbyuserid(userId: string | undefined): Observable<ReviewUserResponse[]> {
         let url_ = this.baseUrl + "/api/reviewuserapi/getreviewsbyuserid?";
@@ -4258,8 +4264,9 @@ export class ReviewuserapiServiceProxy {
     }
 
     /**
-     * @param userId (optional) 
-     * @return Success
+     * Get Rating of a Vendor.
+     * @param userId (optional) vendor Id
+     * @return return double value as rating
      */
     getratingofuser(userId: string | undefined): Observable<number> {
         let url_ = this.baseUrl + "/api/reviewuserapi/getratingofuser?";
@@ -4327,7 +4334,8 @@ export class ServerequestServiceProxy {
     }
 
     /**
-     * @return Success
+     * Get all Serve Me requests assigned to the logged in driver.
+     * @return List of Serve me requests
      */
     getallbydriverid(): Observable<ServeMe[]> {
         let url_ = this.baseUrl + "/api/serverequest/getallbydriverid";
@@ -4385,7 +4393,65 @@ export class ServerequestServiceProxy {
     }
 
     /**
-     * @return Success
+     * Get Serve me request of a specific id.
+     * @param id (optional) id of Serve Me request
+     * @return Serve Me object
+     */
+    getrequestbyid(id: number | undefined): Observable<ServeMe> {
+        let url_ = this.baseUrl + "/api/serverequest/getrequestbyid?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetrequestbyid(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetrequestbyid(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ServeMe>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ServeMe>;
+        }));
+    }
+
+    protected processGetrequestbyid(response: HttpResponseBase): Observable<ServeMe> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ServeMe.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ServeMe>(null as any);
+    }
+
+    /**
+     * Get all Serve Me requests of status pending assigned to the logged in driver.
+     * @return List of Serve me objects
      */
     getservemependingsbydriverid(): Observable<ServeMe[]> {
         let url_ = this.baseUrl + "/api/serverequest/getservemependingsbydriverid";
@@ -4443,7 +4509,8 @@ export class ServerequestServiceProxy {
     }
 
     /**
-     * @return Success
+     * Get all Serve Me requests of status Delivered/UnDelivered assigned to the logged in driver.
+     * @return List of Serve me objects
      */
     getservemedonebydriverid(): Observable<ServeMe[]> {
         let url_ = this.baseUrl + "/api/serverequest/getservemedonebydriverid";
@@ -4501,64 +4568,9 @@ export class ServerequestServiceProxy {
     }
 
     /**
-     * @param id (optional) 
-     * @return Success
-     */
-    getrequestbyid(id: number | undefined): Observable<ServeMe> {
-        let url_ = this.baseUrl + "/api/serverequest/getrequestbyid?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetrequestbyid(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetrequestbyid(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<ServeMe>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<ServeMe>;
-        }));
-    }
-
-    protected processGetrequestbyid(response: HttpResponseBase): Observable<ServeMe> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ServeMe.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<ServeMe>(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return Success
+     * Create new Serve Me request for the logged in user and send notification to admins.
+     * @param body (optional) Serve Me object
+     * @return the newely created Serve Me object
      */
     addrequest(body: ServeMe | undefined): Observable<ServeMe> {
         let url_ = this.baseUrl + "/api/serverequest/addrequest";
@@ -4613,8 +4625,9 @@ export class ServerequestServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
+     * Update Serve Me request.
+     * @param body (optional) Serve Me object
+     * @return the updated Serve Me object
      */
     updaterequest(body: ServeMe | undefined): Observable<ServeMe> {
         let url_ = this.baseUrl + "/api/serverequest/updaterequest";
@@ -4669,8 +4682,9 @@ export class ServerequestServiceProxy {
     }
 
     /**
-     * @param id (optional) 
-     * @return Success
+     * Delete specific Serve Me Request of of specific id.
+     * @param id (optional) id of Serve Me Object
+     * @return true if deleting is successful
      */
     deleterequest(id: number | undefined): Observable<boolean> {
         let url_ = this.baseUrl + "/api/serverequest/deleterequest?";
@@ -4726,7 +4740,8 @@ export class ServerequestServiceProxy {
     }
 
     /**
-     * @return Success
+     * Get all Serve Me requests.
+     * @return List of Serve me objects
      */
     getallrequests(): Observable<ServeMe[]> {
         let url_ = this.baseUrl + "/api/serverequest/getallrequests";
@@ -4784,8 +4799,9 @@ export class ServerequestServiceProxy {
     }
 
     /**
-     * @param creatorId (optional) 
-     * @return Success
+     * Get all Serve Me requests created by a specific user.
+     * @param creatorId (optional) id of user
+     * @return List of Serve me objects
      */
     getrequestsbycreatorid(creatorId: string | undefined): Observable<ServeMe[]> {
         let url_ = this.baseUrl + "/api/serverequest/getrequestsbycreatorid?";
@@ -4859,7 +4875,8 @@ export class SuborderapiServiceProxy {
     }
 
     /**
-     * @return Success
+     * Get List of SubOrders.
+     * @return return List of SubOrderModel
      */
     list(): Observable<SubOrderModel[]> {
         let url_ = this.baseUrl + "/api/suborderapi/list";
@@ -4917,8 +4934,9 @@ export class SuborderapiServiceProxy {
     }
 
     /**
-     * @param id (optional) 
-     * @return Success
+     * Get SubOrder of specific id.
+     * @param id (optional) suborder Id
+     * @return return SubOrder
      */
     getbyid(id: number | undefined): Observable<SubOrder> {
         let url_ = this.baseUrl + "/api/suborderapi/getbyid?";
@@ -4973,8 +4991,9 @@ export class SuborderapiServiceProxy {
     }
 
     /**
-     * @param id (optional) 
-     * @return Success
+     * Get List of SubOrders of specific Order.
+     * @param id (optional) Order Id
+     * @return return list of SubOrderModel objects
      */
     getbyorderid(id: number | undefined): Observable<SubOrderModel[]> {
         let url_ = this.baseUrl + "/api/suborderapi/getbyorderid?";
@@ -5036,8 +5055,9 @@ export class SuborderapiServiceProxy {
     }
 
     /**
-     * @param id (optional) 
-     * @return Success
+     * Get List of SubOrders assigned to a specific driver.
+     * @param id (optional) driver Id
+     * @return return list of SubOrderModel objects
      */
     getbydriverid(id: string | undefined): Observable<SubOrderModel[]> {
         let url_ = this.baseUrl + "/api/suborderapi/getbydriverid?";
@@ -5099,8 +5119,9 @@ export class SuborderapiServiceProxy {
     }
 
     /**
-     * @param id (optional) 
-     * @return Success
+     * Get List of SubOrders that belongs to a specific vendor.
+     * @param id (optional) vendor Id
+     * @return return list of SubOrderModel objects
      */
     getbyvendorid(id: string | undefined): Observable<SubOrderModel[]> {
         let url_ = this.baseUrl + "/api/suborderapi/getbyvendorid?";
@@ -5162,8 +5183,9 @@ export class SuborderapiServiceProxy {
     }
 
     /**
-     * @param id (optional) 
-     * @return Success
+     * Get List of suborders created by a specific user.
+     * @param id (optional) user Id
+     * @return return list of SubOrderModel objects
      */
     getbycreatorid(id: string | undefined): Observable<SubOrderModel[]> {
         let url_ = this.baseUrl + "/api/suborderapi/getbycreatorid?";
@@ -5225,8 +5247,9 @@ export class SuborderapiServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
+     * Update a Suborder.
+     * @param body (optional) SubOrderModel Object
+     * @return return the updated suborder
      */
     update(body: SubOrderModel | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/suborderapi/update";
@@ -5277,8 +5300,73 @@ export class SuborderapiServiceProxy {
     }
 
     /**
-     * @param id (optional) 
-     * @return Success
+     * Get List of suborders of a specific status.
+     * @param orderStatusType (optional) OrderStatusType object
+     * @return return list of SubOrderModel objects
+     */
+    listbystatus(orderStatusType: OrderStatusType | undefined): Observable<SubOrderModel[]> {
+        let url_ = this.baseUrl + "/api/suborderapi/listbystatus?";
+        if (orderStatusType === null)
+            throw new Error("The parameter 'orderStatusType' cannot be null.");
+        else if (orderStatusType !== undefined)
+            url_ += "orderStatusType=" + encodeURIComponent("" + orderStatusType) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processListbystatus(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processListbystatus(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<SubOrderModel[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<SubOrderModel[]>;
+        }));
+    }
+
+    protected processListbystatus(response: HttpResponseBase): Observable<SubOrderModel[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(SubOrderModel.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<SubOrderModel[]>(null as any);
+    }
+
+    /**
+     * Get Details of a specific suborder.
+     * @param id (optional) suborder Id
+     * @return return list of OrderDetail objects
      */
     getorderdetailsbysuborder(id: number | undefined): Observable<OrderDetail[]> {
         let url_ = this.baseUrl + "/api/suborderapi/getorderdetailsbysuborder?";
@@ -5340,8 +5428,73 @@ export class SuborderapiServiceProxy {
     }
 
     /**
-     * @param driverId (optional) 
-     * @return Success
+     * Get available drivers for a specific suborder.
+     * @param subOrderId (optional) suborder Id
+     * @return return List of ApplicationUser objects
+     */
+    getfreedrivers(subOrderId: number | undefined): Observable<ApplicationUser[]> {
+        let url_ = this.baseUrl + "/api/suborderapi/getfreedrivers?";
+        if (subOrderId === null)
+            throw new Error("The parameter 'subOrderId' cannot be null.");
+        else if (subOrderId !== undefined)
+            url_ += "subOrderId=" + encodeURIComponent("" + subOrderId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetfreedrivers(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetfreedrivers(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ApplicationUser[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ApplicationUser[]>;
+        }));
+    }
+
+    protected processGetfreedrivers(response: HttpResponseBase): Observable<ApplicationUser[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(ApplicationUser.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ApplicationUser[]>(null as any);
+    }
+
+    /**
+     * Get Subordrs assigned to a driver and waits his approve/reject.
+     * @param driverId (optional) driver Id
+     * @return return list of SubOrder objects
      */
     getdriverpendings(driverId: string | undefined): Observable<SubOrder[]> {
         let url_ = this.baseUrl + "/api/suborderapi/getdriverpendings?";
@@ -5403,8 +5556,9 @@ export class SuborderapiServiceProxy {
     }
 
     /**
-     * @param driverId (optional) 
-     * @return Success
+     * Get List of suborders assigned to a driver and are delivered/undelivered by him.
+     * @param driverId (optional) vendor Id
+     * @return return list of SubOrder objects
      */
     getdriverdoneorders(driverId: string | undefined): Observable<SubOrder[]> {
         let url_ = this.baseUrl + "/api/suborderapi/getdriverdoneorders?";
@@ -5478,8 +5632,8 @@ export class TrackingapiServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
+     * Create Tracking of SubOrder and Update SubOrder Status.
+     * @param body (optional) Tracking object
      */
     create(body: Tracking | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/trackingapi/create";
@@ -5530,8 +5684,8 @@ export class TrackingapiServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
+     * Update a Tracking.
+     * @param body (optional) Tracking obj
      */
     update(body: Tracking | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/trackingapi/update";
@@ -5582,7 +5736,8 @@ export class TrackingapiServiceProxy {
     }
 
     /**
-     * @return Success
+     * Get List of All Trackings.
+     * @return return list of Tracking objects
      */
     list(): Observable<Tracking[]> {
         let url_ = this.baseUrl + "/api/trackingapi/list";
@@ -5640,8 +5795,9 @@ export class TrackingapiServiceProxy {
     }
 
     /**
-     * @param id (optional) 
-     * @return Success
+     * Get a Tracking of a specific id.
+     * @param id (optional) Tracking Id
+     * @return return a Tracking object
      */
     byid(id: number | undefined): Observable<Tracking> {
         let url_ = this.baseUrl + "/api/trackingapi/byid?";
@@ -5696,8 +5852,9 @@ export class TrackingapiServiceProxy {
     }
 
     /**
-     * @param id (optional) 
-     * @return Success
+     * Get List of Trackings of specific Order.
+     * @param id (optional) Order Id
+     * @return return list of Tracking objects
      */
     listbyorderid(id: number | undefined): Observable<Tracking[]> {
         let url_ = this.baseUrl + "/api/trackingapi/listbyorderid?";
@@ -5759,8 +5916,9 @@ export class TrackingapiServiceProxy {
     }
 
     /**
-     * @param id (optional) 
-     * @return Success
+     * Get List of Trackings of specific SubOrder.
+     * @param id (optional) SubOrder Id
+     * @return return list of Tracking objects
      */
     listbysuborderid(id: number | undefined): Observable<Tracking[]> {
         let url_ = this.baseUrl + "/api/trackingapi/listbysuborderid?";
@@ -5822,7 +5980,8 @@ export class TrackingapiServiceProxy {
     }
 
     /**
-     * @return Success
+     * Get List of Not Done Yet Trackings.
+     * @return return list of Tracking objects
      */
     listnotdonetasks(): Observable<Tracking[]> {
         let url_ = this.baseUrl + "/api/trackingapi/listnotdonetasks";
@@ -5880,8 +6039,9 @@ export class TrackingapiServiceProxy {
     }
 
     /**
-     * @param userId (optional) 
-     * @return Success
+     * Get List of Trackings of status Delivered by specific driver.
+     * @param userId (optional) driver Id
+     * @return return list of Tracking objects
      */
     listdriverdonetasks(userId: string | undefined): Observable<Tracking[]> {
         let url_ = this.baseUrl + "/api/trackingapi/listdriverdonetasks?";
@@ -5955,8 +6115,9 @@ export class UserapiServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
+     * Authenticate Users by Email/Username and Password.
+     * @param body (optional) LoginApiModel object
+     * @return return LoginResponseModel object
      */
     login(body: LoginApiModel | undefined): Observable<LoginResponseModel> {
         let url_ = this.baseUrl + "/api/userapi/login";
@@ -6011,8 +6172,9 @@ export class UserapiServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
+     * Create account in Talabati database by Completing Registration Form.
+     * @param body (optional) userRegisterModel object
+     * @return return BaseResponse object of true/false
      */
     register(body: UserRegisterModel | undefined): Observable<StringBaseResponse> {
         let url_ = this.baseUrl + "/api/userapi/register";
@@ -6067,9 +6229,10 @@ export class UserapiServiceProxy {
     }
 
     /**
-     * @param userId (optional) 
+     * Save User Photo in server.
+     * @param userId (optional) user Id
      * @param file (optional) 
-     * @return Success
+     * @return return ApplicationUser object
      */
     uploaduserphoto(userId: string | undefined, file: FileParameter | undefined): Observable<ApplicationUser> {
         let url_ = this.baseUrl + "/api/userapi/uploaduserphoto?";
@@ -6131,64 +6294,9 @@ export class UserapiServiceProxy {
     }
 
     /**
-     * @param email (optional) 
-     * @return Success
-     */
-    forgetpassword(email: string | undefined): Observable<StringBaseResponse> {
-        let url_ = this.baseUrl + "/api/userapi/forgetpassword?";
-        if (email === null)
-            throw new Error("The parameter 'email' cannot be null.");
-        else if (email !== undefined)
-            url_ += "email=" + encodeURIComponent("" + email) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processForgetpassword(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processForgetpassword(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<StringBaseResponse>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<StringBaseResponse>;
-        }));
-    }
-
-    protected processForgetpassword(response: HttpResponseBase): Observable<StringBaseResponse> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = StringBaseResponse.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<StringBaseResponse>(null as any);
-    }
-
-    /**
-     * @param email (optional) 
-     * @return Success
+     * request a password reset in case a user forgets password , generates a token valid for short time and send the token to user email box.
+     * @param email (optional) user email
+     * @return return true if email is sent/email is not correct , false otherwise
      */
     forgetpasswordapp(email: string | undefined): Observable<boolean> {
         let url_ = this.baseUrl + "/api/userapi/forgetpasswordapp?";
@@ -6244,61 +6352,10 @@ export class UserapiServiceProxy {
     }
 
     /**
-     * @param email (optional) 
-     * @return Success
-     */
-    testemail2(email: string | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/userapi/testemail2?";
-        if (email === null)
-            throw new Error("The parameter 'email' cannot be null.");
-        else if (email !== undefined)
-            url_ += "email=" + encodeURIComponent("" + email) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processTestemail2(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processTestemail2(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processTestemail2(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<void>(null as any);
-    }
-
-    /**
-     * @param token (optional) 
-     * @param email (optional) 
-     * @return Success
+     * Check Token Validity after password reset request.
+     * @param token (optional) token for password reset
+     * @param email (optional) user email
+     * @return return true if password reset is successful ,false otherwise
      */
     checktokenforpassreset(token: string | undefined, email: string | undefined): Observable<boolean> {
         let url_ = this.baseUrl + "/api/userapi/checktokenforpassreset?";
@@ -6358,8 +6415,9 @@ export class UserapiServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
+     * Enter New Password after password Reset request and token validation.
+     * @param body (optional) ResetPasswordViewModel object
+     * @return return true if password is changed, false otherwise
      */
     resetpasswordapp(body: ResetPasswordViewModel | undefined): Observable<boolean> {
         let url_ = this.baseUrl + "/api/userapi/resetpasswordapp";
@@ -6415,64 +6473,9 @@ export class UserapiServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
-     */
-    resetpassword(body: ResetPasswordViewModel | undefined): Observable<StringBaseResponse> {
-        let url_ = this.baseUrl + "/api/userapi/resetpassword";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processResetpassword(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processResetpassword(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<StringBaseResponse>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<StringBaseResponse>;
-        }));
-    }
-
-    protected processResetpassword(response: HttpResponseBase): Observable<StringBaseResponse> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = StringBaseResponse.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<StringBaseResponse>(null as any);
-    }
-
-    /**
-     * @param userId (optional) 
-     * @return Success
+     * Get User of specific id.
+     * @param userId (optional) user Id
+     * @return return ApplicationUser object
      */
     getuserbyid(userId: string | undefined): Observable<ApplicationUser> {
         let url_ = this.baseUrl + "/api/userapi/getuserbyid?";
@@ -6527,11 +6530,12 @@ export class UserapiServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
+     * Change User Password.
+     * @param body (optional) EditUserAccount object
+     * @return return true if password changed
      */
-    edituser(body: EditUserAccount | undefined): Observable<boolean> {
-        let url_ = this.baseUrl + "/api/userapi/edituser";
+    changepassword(body: EditUserAccount | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/userapi/changepassword";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -6547,11 +6551,11 @@ export class UserapiServiceProxy {
         };
 
         return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processEdituser(response_);
+            return this.processChangepassword(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processEdituser(response_ as any);
+                    return this.processChangepassword(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<boolean>;
                 }
@@ -6560,7 +6564,7 @@ export class UserapiServiceProxy {
         }));
     }
 
-    protected processEdituser(response: HttpResponseBase): Observable<boolean> {
+    protected processChangepassword(response: HttpResponseBase): Observable<boolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -6584,59 +6588,9 @@ export class UserapiServiceProxy {
     }
 
     /**
-     * @return Success
-     */
-    currentuserdetailes(): Observable<UserDetails> {
-        let url_ = this.baseUrl + "/api/userapi/currentuserdetailes";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCurrentuserdetailes(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processCurrentuserdetailes(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<UserDetails>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<UserDetails>;
-        }));
-    }
-
-    protected processCurrentuserdetailes(response: HttpResponseBase): Observable<UserDetails> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = UserDetails.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<UserDetails>(null as any);
-    }
-
-    /**
-     * @param currentPass (optional) 
-     * @return Success
+     * Check Given Password if Valid for the Logged In User.
+     * @param currentPass (optional) password
+     * @return return true if password is valid for the specified user, false otherwise
      */
     checkpassword(currentPass: string | undefined): Observable<boolean> {
         let url_ = this.baseUrl + "/api/userapi/checkpassword?";
@@ -6692,7 +6646,8 @@ export class UserapiServiceProxy {
     }
 
     /**
-     * @return Success
+     * Change Logged In user status to online.
+     * @return return True if status is changed
      */
     goonline(): Observable<boolean> {
         let url_ = this.baseUrl + "/api/userapi/goonline";
@@ -6744,7 +6699,8 @@ export class UserapiServiceProxy {
     }
 
     /**
-     * @return Success
+     * Change Logged In user status to offline.
+     * @return return false if status is changed to offline
      */
     gooffline(): Observable<boolean> {
         let url_ = this.baseUrl + "/api/userapi/gooffline";
@@ -6796,7 +6752,8 @@ export class UserapiServiceProxy {
     }
 
     /**
-     * @return Success
+     * Check if logged In user is online.
+     * @return return true if user is online
      */
     isonline(): Observable<boolean> {
         let url_ = this.baseUrl + "/api/userapi/isonline";
@@ -6848,7 +6805,8 @@ export class UserapiServiceProxy {
     }
 
     /**
-     * @return Success
+     * Save Driver Photo on Server.
+     * @return return Ok result with image path
      */
     uploaddriverphoto(): Observable<void> {
         let url_ = this.baseUrl + "/api/userapi/uploaddriverphoto";
@@ -6895,7 +6853,8 @@ export class UserapiServiceProxy {
     }
 
     /**
-     * @return Success
+     * Save Driver ID on Server.
+     * @return return Ok result with image path
      */
     uploaddriverid(): Observable<void> {
         let url_ = this.baseUrl + "/api/userapi/uploaddriverid";
@@ -6942,7 +6901,8 @@ export class UserapiServiceProxy {
     }
 
     /**
-     * @return Success
+     * Save Driver License on Server.
+     * @return return Ok result with image path
      */
     uploaddriverlicense(): Observable<void> {
         let url_ = this.baseUrl + "/api/userapi/uploaddriverlicense";
@@ -6989,7 +6949,8 @@ export class UserapiServiceProxy {
     }
 
     /**
-     * @return Success
+     * Save vehicle Photo on Server.
+     * @return return Ok result with image path
      */
     uploadvehiclepicture(): Observable<void> {
         let url_ = this.baseUrl + "/api/userapi/uploadvehiclepicture";
@@ -7036,8 +6997,9 @@ export class UserapiServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
+     * Complete Driver Profile Information after registration.
+     * @param body (optional) DriverCompleteProfile object
+     * @return return true if updated
      */
     editdriver(body: DriverCompleteProfile | undefined): Observable<boolean> {
         let url_ = this.baseUrl + "/api/userapi/editdriver";
@@ -7093,64 +7055,8 @@ export class UserapiServiceProxy {
     }
 
     /**
-     * @param token (optional) 
-     * @return Success
-     */
-    refreshfirebasetoken(token: string | undefined): Observable<boolean> {
-        let url_ = this.baseUrl + "/api/userapi/refreshfirebasetoken?";
-        if (token === null)
-            throw new Error("The parameter 'token' cannot be null.");
-        else if (token !== undefined)
-            url_ += "token=" + encodeURIComponent("" + token) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processRefreshfirebasetoken(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processRefreshfirebasetoken(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<boolean>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<boolean>;
-        }));
-    }
-
-    protected processRefreshfirebasetoken(response: HttpResponseBase): Observable<boolean> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-    
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<boolean>(null as any);
-    }
-
-    /**
-     * @return Success
+     * Get Details of Logged In User.
+     * @return return UserDetails object
      */
     getuserdetails(): Observable<UserDetails> {
         let url_ = this.baseUrl + "/api/userapi/getuserdetails";
@@ -7201,7 +7107,8 @@ export class UserapiServiceProxy {
     }
 
     /**
-     * @return Success
+     * Get User Files/images.
+     * @return return list of UserFile objects
      */
     getmyfiles(): Observable<UserFile[]> {
         let url_ = this.baseUrl + "/api/userapi/getmyfiles";
@@ -7552,6 +7459,360 @@ export class UserlocationapiServiceProxy {
             }));
         }
         return _observableOf<void>(null as any);
+    }
+}
+
+@Injectable()
+export class VarientapiServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * Get Varient of specific id.
+     * @param varientId (optional) varient Id
+     * @return return Varient object
+     */
+    single(varientId: number | undefined): Observable<Varient> {
+        let url_ = this.baseUrl + "/api/varientapi/single?";
+        if (varientId === null)
+            throw new Error("The parameter 'varientId' cannot be null.");
+        else if (varientId !== undefined)
+            url_ += "varientId=" + encodeURIComponent("" + varientId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSingle(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSingle(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<Varient>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<Varient>;
+        }));
+    }
+
+    protected processSingle(response: HttpResponseBase): Observable<Varient> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Varient.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Varient>(null as any);
+    }
+
+    /**
+     * Create a Vrient.
+     * @param body (optional) varient object
+     * @return return the newely created varient
+     */
+    create(body: Varient | undefined): Observable<Varient> {
+        let url_ = this.baseUrl + "/api/varientapi/create";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<Varient>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<Varient>;
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<Varient> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Varient.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Varient>(null as any);
+    }
+
+    /**
+     * Update a Varient.
+     * @param body (optional) varient object
+     * @return return the updated varient
+     */
+    update(body: Varient | undefined): Observable<Varient> {
+        let url_ = this.baseUrl + "/api/varientapi/update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<Varient>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<Varient>;
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<Varient> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Varient.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Varient>(null as any);
+    }
+
+    /**
+     * Save varient image on server.
+     * @return return varient image path as string
+     */
+    uploadvarientimage(): Observable<string> {
+        let url_ = this.baseUrl + "/api/varientapi/uploadvarientimage";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUploadvarientimage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUploadvarientimage(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<string>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<string>;
+        }));
+    }
+
+    protected processUploadvarientimage(response: HttpResponseBase): Observable<string> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string>(null as any);
+    }
+
+    /**
+     * Get list of Color Varients.
+     * @return return list of Color objects
+     */
+    getcolorlist(): Observable<Color[]> {
+        let url_ = this.baseUrl + "/api/varientapi/getcolorlist";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetcolorlist(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetcolorlist(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<Color[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<Color[]>;
+        }));
+    }
+
+    protected processGetcolorlist(response: HttpResponseBase): Observable<Color[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(Color.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Color[]>(null as any);
+    }
+
+    /**
+     * Get list of Size Varients.
+     * @return return list of Size objects
+     */
+    getsizelist(): Observable<Size[]> {
+        let url_ = this.baseUrl + "/api/varientapi/getsizelist";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetsizelist(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetsizelist(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<Size[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<Size[]>;
+        }));
+    }
+
+    protected processGetsizelist(response: HttpResponseBase): Observable<Size[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(Size.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Size[]>(null as any);
     }
 }
 
