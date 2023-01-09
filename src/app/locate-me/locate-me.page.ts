@@ -6,6 +6,7 @@ import {
   MapGeocoderResponse,
 } from '@angular/google-maps';
 import { ActivatedRoute ,Router} from '@angular/router';
+import { AlertController } from '@ionic/angular'; 
 import { BackgroundGeolocationService } from '../services/background-geolocation.service';
 @Component({
   selector: 'app-locate-me',
@@ -41,7 +42,8 @@ export class LocateMePage implements OnInit {
   constructor(private ngZone: NgZone, 
     private geoCoder: MapGeocoder,
     private _router: Router,
-    private bgGeolocation:BackgroundGeolocationService) {
+    private bgGeolocation:BackgroundGeolocationService,
+    public alertController: AlertController) {
    /* this.height = (document.documentElement.clientHeight-100)+"px";*/
   }
 
@@ -82,27 +84,82 @@ export class LocateMePage implements OnInit {
   }*/
 
   async ngOnInit() {
-    const turnOnGPS = await this.bgGeolocation.askToTurnOnGPS();
-    if(turnOnGPS){
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
-        this.center = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        };
-        // Set marker position
-        this.setMarkerPosition(this.latitude, this.longitude);
-        this.getAddress(this.latitude, this.longitude);
-      });
+    try{
+      const turnOnGPS = await this.bgGeolocation.askToTurnOnGPS();
+      if(turnOnGPS){
+        navigator.geolocation.getCurrentPosition((position) => {
+          this.latitude = position.coords.latitude;
+          this.longitude = position.coords.longitude;
+          this.center = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          // Set marker position
+          this.setMarkerPosition(this.latitude, this.longitude);
+          this.getAddress(this.latitude, this.longitude);
+        },async (error)=>{
+          const alert = await this.alertController.create({
+            header: 'تأكيد ',
+            subHeader :  "عذرا لم نتمكن من الوصول إلى موقعك",
+             buttons: [
+              {
+                 text: 'حسنا',
+                 handler: () => { //takes the data 
+            
+                 
+                 }   
+              },
+        
+                     ],
+     
+                                         });
+     
+            await alert.present();
+        });
+    
+      }
+  else{
+    const alert = await this.alertController.create({
+      header: 'تأكيد ',
+      subHeader :     "لا يوجد سماحيات للوصول إلى الموقع \n" +
+                     "الرجاء تشغيل GPS.\n\n",
+      buttons: [
+        {
+          text: 'حسنا',
+              handler: () => { //takes the data 
+         
+              
+              }   
+      },
+     
+      ],
   
+    });
+  
+    await alert.present();
+  }
     }
-else{
-  if (window.confirm(
-    "لا يوجد سماحيات للوصول إلى الموقع \n" +
-      "الرجاء تشغيل GPS.\n\n"
-)) { }
-}
+    catch(error){
+      const alert = await this.alertController.create({
+        header: 'تأكيد ',
+        subHeader :     "لا يوجد سماحيات للوصول إلى الموقع \n" +
+                       "الرجاء تشغيل GPS.\n\n",
+        buttons: [
+          {
+            text: 'حسنا',
+                handler: () => { //takes the data 
+           
+                
+                }   
+        },
+       
+        ],
+    
+      });
+    
+      await alert.present();
+    }
+ 
 
   }
 

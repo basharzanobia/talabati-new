@@ -275,44 +275,96 @@ export class Tab3Page {
     }*/
     this.hasAddress = false;
     if( id == 0){
-      const turnOnGPS = await this.bgGeolocation.askToTurnOnGPS();
-      if(turnOnGPS){
-        this.deliverAddress ="موقعي الآن";
-        console.log(id);
-        const options = {
-          enableHighAccuracy: true,
-          timeout: 5000,
-          maximumAge: 0
-        };
+      try{
+        const turnOnGPS = await this.bgGeolocation.askToTurnOnGPS();
+        if(turnOnGPS){
+          this.deliverAddress ="موقعي الآن";
+          console.log(id);
+          const options = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0
+          };
+      
+         navigator.geolocation.getCurrentPosition((pos)=>{
+          const crd = pos.coords;
+          
+          console.log('Your current position is:');
+          console.log(`Latitude : ${crd.latitude}`);
+          console.log(`Longitude: ${crd.longitude}`);
+          console.log(`More or less ${crd.accuracy} meters.`);
+          this.userLatitude = crd.latitude;
+          this.userLongitude = crd.longitude;
+          console.log(this.userLatitude,this.userLongitude);
+          this.currentPosition = true;
+          this.hasAddress = true;
+         } ,
+         async (err)=>{
+          this.hasAddress = false;
+          console.warn(`ERROR(${err.code}): ${err.message}`);
+          const alert = await this.alertController.create({
+           header: 'تأكيد ',
+           subHeader :  "عذرا لم نتمكن من الوصول إلى موقعك",
+            buttons: [
+             {
+                text: 'حسنا',
+                handler: () => { //takes the data 
+           
+                
+                }   
+             },
+       
+                    ],
     
-       navigator.geolocation.getCurrentPosition((pos)=>{
-        const crd = pos.coords;
-        
-        console.log('Your current position is:');
-        console.log(`Latitude : ${crd.latitude}`);
-        console.log(`Longitude: ${crd.longitude}`);
-        console.log(`More or less ${crd.accuracy} meters.`);
-        this.userLatitude = crd.latitude;
-        this.userLongitude = crd.longitude;
-        console.log(this.userLatitude,this.userLongitude);
-        this.currentPosition = true;
-        this.hasAddress = true;
-       } ,
-       (err)=>{
-        console.warn(`ERROR(${err.code}): ${err.message}`);
-             if (window.confirm(
-                "عذرا لم نتمكن من الوصول إلى موقعك" +
-                            "\n\n"
-    )) { };
-       this.hasAddress = false;
-      }, options);
+                                        });
+    
+           await alert.present();
+         
+        }, options);
+        }
+        else{
+
+      const alert = await this.alertController.create({
+        header: 'تأكيد ',
+        subHeader :     "لا يوجد سماحيات للوصول إلى الموقع \n" +
+                       "الرجاء تشغيل GPS.\n\n",
+        buttons: [
+          {
+            text: 'حسنا',
+                handler: () => { //takes the data 
+           
+                
+                }   
+        },
+       
+        ],
+    
+      });
+    
+      await alert.present();
+        }
       }
-      else{
-      if (window.confirm(
-        "لا يوجد سماحيات للوصول إلى الموقع \n" +
-          "الرجاء تشغيل GPS.\n\n"
-    )) { }
+      catch(error){
+        const alert = await this.alertController.create({
+          header: 'تأكيد ',
+          subHeader :     "لا يوجد سماحيات للوصول إلى الموقع \n" +
+                         "الرجاء تشغيل GPS.\n\n",
+          buttons: [
+            {
+              text: 'حسنا',
+                  handler: () => { //takes the data 
+             
+                  
+                  }   
+          },
+         
+          ],
+      
+        });
+      
+        await alert.present();
       }
+ 
   
      
     }
