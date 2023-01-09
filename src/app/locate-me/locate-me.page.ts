@@ -81,20 +81,28 @@ export class LocateMePage implements OnInit {
     });
   }*/
 
-  ngOnInit() {
-    this.bgGeolocation.askToTurnOnGPS();
-    navigator.geolocation.getCurrentPosition((position) => {
-      this.latitude = position.coords.latitude;
-      this.longitude = position.coords.longitude;
-      this.center = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      };
-      // Set marker position
-      this.setMarkerPosition(this.latitude, this.longitude);
-      this.getAddress(this.latitude, this.longitude);
-    });
-
+  async ngOnInit() {
+    const turnOnGPS = await this.bgGeolocation.askToTurnOnGPS();
+    if(turnOnGPS){
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.latitude = position.coords.latitude;
+        this.longitude = position.coords.longitude;
+        this.center = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        // Set marker position
+        this.setMarkerPosition(this.latitude, this.longitude);
+        this.getAddress(this.latitude, this.longitude);
+      });
+  
+    }
+else{
+  if (window.confirm(
+    "لا يوجد سماحيات للوصول إلى الموقع \n" +
+      "الرجاء تشغيل GPS.\n\n"
+)) { }
+}
 
   }
 
