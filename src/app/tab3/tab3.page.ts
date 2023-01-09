@@ -275,31 +275,45 @@ export class Tab3Page {
     }*/
     this.hasAddress = false;
     if( id == 0){
-      this.bgGeolocation.askToTurnOnGPS();
-     this.deliverAddress ="موقعي الآن";
-      console.log(id);
-      const options = {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0
-      };
+      const turnOnGPS = await this.bgGeolocation.askToTurnOnGPS();
+      if(turnOnGPS){
+        this.deliverAddress ="موقعي الآن";
+        console.log(id);
+        const options = {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0
+        };
+    
+       navigator.geolocation.getCurrentPosition((pos)=>{
+        const crd = pos.coords;
+        
+        console.log('Your current position is:');
+        console.log(`Latitude : ${crd.latitude}`);
+        console.log(`Longitude: ${crd.longitude}`);
+        console.log(`More or less ${crd.accuracy} meters.`);
+        this.userLatitude = crd.latitude;
+        this.userLongitude = crd.longitude;
+        console.log(this.userLatitude,this.userLongitude);
+        this.currentPosition = true;
+        this.hasAddress = true;
+       } ,
+       (err)=>{
+        console.warn(`ERROR(${err.code}): ${err.message}`);
+             if (window.confirm(
+                "عذرا لم نتمكن من الوصول إلى موقعك" +
+                            "\n\n"
+    )) { };
+       this.hasAddress = false;
+      }, options);
+      }
+      else{
+      if (window.confirm(
+        "لا يوجد سماحيات للوصول إلى الموقع \n" +
+          "الرجاء تشغيل GPS.\n\n"
+    )) { }
+      }
   
-     navigator.geolocation.getCurrentPosition((pos)=>{
-      const crd = pos.coords;
-      
-      console.log('Your current position is:');
-      console.log(`Latitude : ${crd.latitude}`);
-      console.log(`Longitude: ${crd.longitude}`);
-      console.log(`More or less ${crd.accuracy} meters.`);
-      this.userLatitude = crd.latitude;
-      this.userLongitude = crd.longitude;
-      console.log(this.userLatitude,this.userLongitude);
-      this.currentPosition = true;
-      this.hasAddress = true;
-     } ,
-     (err)=>{console.warn(`ERROR(${err.code}): ${err.message}`);
-     this.hasAddress = false;
-    }, options);
      
     }
     else if( id==='new'){
