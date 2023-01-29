@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
+import { AppSessionService } from 'src/shared/session/app-session.service';
+
 @Component({
   selector: 'app-splash',
   templateUrl: './splash.page.html',
@@ -7,7 +9,9 @@ import {Router} from '@angular/router';
 })
 export class SplashPage implements OnInit {
 
-  constructor(public router:Router) { 
+  userName = this._session.user?.name;
+
+  constructor(private _session: AppSessionService,public router:Router) { 
     setTimeout(()=>{
       this.router.navigateByUrl('/intro');
     },3000);
