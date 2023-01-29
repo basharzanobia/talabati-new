@@ -11,24 +11,15 @@
 <ion-content>
   <section class = "logos-container">
     <div class="row logos">
-      <div class="col-4">
-      </div>
       <div class="col-4 tittle">
-        <img src="assets/img/logo.png" />
-        <h1>تسجيل الدخول</h1>
-        <p> مرحبا بعودتك!<br>ليس لديك حساب؟  </p>
+        <img src="assets/img/logo.png" alt="logo"/>
+        <p> مرحبا بعودتك.</p>
 
-        <!--- New Ccount -->
-        <ion-label slot="end" class="new-account" routerLink="/sign-up">
-         حساب جديد 
-        </ion-label>
-      </div>
-      <div class="col-4">
       </div>
     </div>
-<!--- End Form  header -->
+     <!--- End Form  header -->
 
-<!---  Form  -->
+     <!---  Form  -->
     <ion-row class="login-form">
       <ion-col>
         <ion-list lines="none" >
@@ -58,12 +49,12 @@
           </ion-item>
           <ion-item>
             <ion-label slot="end" class="forget" routerLink="/reset-password">
-              <ion-icon name="key-outline"></ion-icon> نسيان كلمة المرور
+              <ion-icon name="key-outline"></ion-icon> نسيت كلمة المرور
             </ion-label>
           </ion-item>
           <ion-item class="custom-ion-toggle">
             <ion-label>تذكرني</ion-label>
-            <ion-toggle slot="start" color="secondary"></ion-toggle>
+            <ion-toggle slot="start" color="primary" [checked]="true"></ion-toggle>
         </ion-item>
         </ion-list>
 
@@ -74,10 +65,18 @@
           تسجيل الدخول
           </ion-button>
         </ion-col>
-    
         <!---  End log in button  -->
       </ion-col>
     </ion-row>
+
+    <div class="row logos">
+      <div class="col-4 tittle">
+        <ion-label slot="end" class="new-account" routerLink="/sign-up">
+          إنشاء حساب جديد
+          </ion-label>
+      </div>
+    </div>
+
     <!--- End Form   -->
   </section>
 

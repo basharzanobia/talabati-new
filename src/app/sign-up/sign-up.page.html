@@ -15,7 +15,6 @@
       <div class="col-4">
       </div>
       <div class="col-4 tittle">
-        <img src="assets/img/logo.png" />
         <h1>انشاء حساب</h1>
         <p> الرجاء إدخال البيانات الخاصة  بك لإنشاء حساب.</p>
       </div>
@@ -39,13 +38,13 @@
             ></ion-input>
           </ion-item>
           <ion-item>
-            <ion-label slot="end">
-              <ion-icon name="mail-outline"></ion-icon>
+            <ion-label slot="end"> 
+              <ion-icon  name="person" ></ion-icon>
             </ion-label>
             <ion-input
-              [(ngModel)]="model.email"
-              placeholder="البريد الالكتروني"
-              type="email"
+              [(ngModel)]="model.middleName"
+              placeholder="الاسم الثاني"
+              type="text"
             ></ion-input>
           </ion-item>
           <ion-item>
@@ -54,22 +53,10 @@
             </ion-label>
             <ion-input
               [(ngModel)]="model.lastName"
-              placeholder="الاسم الأخير"
+              placeholder="الاسم الثالث"
               type="text"
             ></ion-input>
           </ion-item>
-
-          <ion-item>
-            <ion-label slot="end"> 
-              <ion-icon  name="person" ></ion-icon>
-            </ion-label>
-            <ion-input
-              [(ngModel)]="model.middleName"
-              placeholder="الاسم الأوسط"
-              type="text"
-            ></ion-input>
-          </ion-item>
-
           <ion-item>
             <ion-label slot="end"> 
               <ion-icon  name="person" ></ion-icon>
@@ -80,29 +67,35 @@
               type="text"
             ></ion-input>
           </ion-item>
-
+          <ion-item>
+            <ion-label slot="end"> 
+              <ion-icon  name="person" ></ion-icon>
+            </ion-label>
+            <ion-select [(ngModel)]="model.gender" interface="popover" placeholder="الجنس">
+              <ion-select-option value=0>ذكر</ion-select-option>
+              <ion-select-option value=1>انثى</ion-select-option>
+            </ion-select>
+          </ion-item>
           <ion-item>
             <ion-label slot="end"> 
               <ion-icon  name="person" ></ion-icon>
             </ion-label>
             <ion-input
               [(ngModel)]="model.mobile"
-              placeholder=" رقم الهاتف"
+              placeholder=" رقم التلفون"
               type="text"
             ></ion-input>
           </ion-item>
-
           <ion-item>
             <ion-label slot="end"> 
               <ion-icon  name="person" ></ion-icon>
             </ion-label>
             <ion-input
               [(ngModel)]="model.additionalMobile"
-              placeholder="رقم هاتف اضافي"
+              placeholder="رقم تلفون اضافي"
               type="text"
             ></ion-input>
           </ion-item>
-
           <ion-item>
             <ion-label slot="end"> 
               <ion-icon  name="person" ></ion-icon>
@@ -113,25 +106,38 @@
               type="text"
             ></ion-input>
           </ion-item>
-
           <ion-item>
             <ion-label slot="end">
-              <ion-icon name="key-outline"></ion-icon>
+              <ion-icon name="mail-outline"></ion-icon>
             </ion-label>
             <ion-input
-              [(ngModel)]="model.password"
-              placeholder="كلمة المرور"
-              type="password"
+              [(ngModel)]="model.email"
+              placeholder="البريد الالكتروني"
+              type="email"
             ></ion-input>
           </ion-item>
           <ion-item>
             <ion-label slot="end">
               <ion-icon name="key-outline"></ion-icon>
             </ion-label>
+            <ion-icon (click)="password()" class="show-option" [hidden]="showPass" name="eye-off-outline"></ion-icon>
+            <ion-icon (click)="password()" class="hide-option" [hidden]="!showPass" name="eye-outline"></ion-icon>
+            <ion-input
+              [(ngModel)]="model.password"
+              placeholder="كلمة المرور"
+              [type]="showPass ? 'text' : 'password'"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label slot="end">
+              <ion-icon name="key-outline"></ion-icon>
+            </ion-label>
+            <ion-icon (click)="confirmPassword()" class="show-option" [hidden]="showConfirm" name="eye-off-outline"></ion-icon>
+            <ion-icon (click)="confirmPassword()" class="hide-option" [hidden]="!showConfirm" name="eye-outline"></ion-icon>
             <ion-input
               [(ngModel)]="model.confirmPassword"
               placeholder="تاكيد كلمة المرور"
-              type="password"
+              [type]="showConfirm ? 'text' : 'password'"
             ></ion-input>
           </ion-item>
         </ion-list>

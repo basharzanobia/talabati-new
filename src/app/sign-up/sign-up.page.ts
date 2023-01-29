@@ -15,6 +15,8 @@ from 'src/shared/service-proxies/service-proxies';
 export class SignUpPage implements OnInit {
   model: UserRegisterModel = new UserRegisterModel();
   saving = false;
+  showPass: boolean = false;
+  showConfirm: boolean = false;
   name;
 
   constructor(private _accountService: UserapiServiceProxy,
@@ -43,6 +45,14 @@ export class SignUpPage implements OnInit {
           this.saving = false;
         });
       });
+  }
+
+  password() {
+    this.showPass = !this.showPass;
+  }
+
+  confirmPassword() {
+    this.showConfirm = !this.showConfirm;
   }
 
 }
