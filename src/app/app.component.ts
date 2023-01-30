@@ -46,13 +46,14 @@ export class AppComponent {
     this.initializeApp();
   }
   initializeApp() {
+
     App.addListener('backButton', () => {
       const currentUrl = this.router.url;
       if (currentUrl === "/intro" || currentUrl === "/splash") {
         // this.withDoublePress("Press again to exit", () => {
           const logo = document.getElementById('logo');
           logo.style.display = 'none';
-          this.withAlert("هل أنت متأكد من الخروج", () =>{
+          this.withAlert("هل ترغب في الخروج من التطبيق ؟", () =>{
           App.exitApp();
     });
   }}
@@ -68,13 +69,14 @@ openChat(){
     async withAlert(message: string, action: () => void) {
       const alert = await this.alertController.create({
         message: message,
-        buttons: [{
-          text: "إلغاء",
+        buttons: [
+          {
+            text: "نعم",
+            handler: action
+          },
+          {
+          text: "لا",
           role: "cancel"
-        },
-        {
-          text: "متأكد",
-          handler: action
         }]
       });
   
