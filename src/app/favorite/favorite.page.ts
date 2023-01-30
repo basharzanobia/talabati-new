@@ -28,6 +28,7 @@ export class FavoritePage implements OnInit {
   favProducts=[];
   productId=1;
   vendortId='';
+  segment: string = "rest";
 
   constructor(private _session: AppSessionService,
     private _vendorwishlistService: VendorwishlistapiServiceProxy,
@@ -82,6 +83,10 @@ getVendorsWishList(){
     this.getVendorsWishList();
     this.getWishList();
     
+  }
+
+  segmentChanged(ev: any) {
+    this.segment = ev.detail.value;
   }
 
 }
