@@ -21,9 +21,10 @@ export class Tab1Page implements OnInit {
   subcats$: VendorSubCategory[] = [];
   vendors$: UserResponseModel[] = [];
   filteredVendors : UserResponseModel[] = [];
+  subCatId = 15;
   catSlideOpts = {
-    slidesPerView: 3.8,
-    spaceBetween: 8,
+    slidesPerView: 4.5,
+    spaceBetween: 7,
   };
 
   AppConsts = AppConsts;
@@ -41,7 +42,7 @@ export class Tab1Page implements OnInit {
         this._vendorService.vendorsbycatid(this.catId).subscribe(
           (res1: UserResponseModel[])=>{
             this.vendors$ = res1;
-            this.filteredVendors = res1;
+            this.filterVendorsBySlider(this.subCatId);
           }
         );
       }
@@ -54,9 +55,22 @@ export class Tab1Page implements OnInit {
   })
   }
   filterVendorsBySlider(id){
+    this.subCatId = id;
+    console.log(this.subCatId);
+    if(id==0){
+      this.filteredVendors=this.vendors$;
+      return;
+    }
+
+    this.filteredVendors = this.vendors$.filter((item) => {
+      return (item.subCategories[0].id==id);
+    });
+
+/*
     this._vendorService.vendorsbysubcatid(id).subscribe((res)=>{
     this.filteredVendors = res;
     })
+    */
   }
   filerVendorsByFilter(){
     this.filteredVendors = [];
@@ -75,12 +89,12 @@ export class Tab1Page implements OnInit {
     const query = (event.target as HTMLInputElement).value;
 
      if (query) { 
-      this.filteredVendors = this.vendors$.filter((item) => {
+      this.filteredVendors = this.filteredVendors.filter((item) => {
         return (item.name.includes(query) || item.region.includes(query));
       })
     }
     else{
-      this.filteredVendors = this.vendors$;
+      this.filterVendorsBySlider(this.subCatId);
     }
    
   }
