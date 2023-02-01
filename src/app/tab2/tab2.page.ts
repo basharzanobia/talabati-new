@@ -16,6 +16,7 @@ export class Tab2Page implements OnInit {
   driverRating : number[] = [];
   vendorRating : number[] = [];
   orderList : Order[] = [];
+  segment: string = "going";
 
   AppConsts = AppConsts;
   AppOrderStatusType = AppOrderStatusType;
@@ -111,5 +112,9 @@ export class Tab2Page implements OnInit {
           console.log('error ', error);
         });
   
+      }
+
+      segmentChanged(ev: any) {
+        this.segment = ev.detail.value;
       }
 }

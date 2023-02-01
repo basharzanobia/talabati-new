@@ -5,7 +5,7 @@
     </ion-refresher>
     <ion-row class="user-bar">
       <ion-col size="2" class="logo-head" routerLink="/tabs/tab1/1" routerDirection="forward">
-        <img src="assets/img/logo.png">
+        <img alt="logo" src="assets/img/logo.png">
   </ion-col>
       <ion-col size="8" class="page-head">
         <ion-label class="rest-title"> طلباتي</ion-label>
@@ -18,12 +18,24 @@
       </ion-col>
     </ion-row>
 
-  <ion-grid class="ion-margin track">
+    <ion-item>
+    <ion-segment (ionChange)="segmentChanged($event)" value="going">
+      <ion-segment-button value="going">
+        <ion-row class="track-head" >
+          <ion-label class="track-title"></ion-label>
+          <ion-col size="12">طلبات قيد التنفيذ </ion-col>
+        </ion-row>
+      </ion-segment-button>
+      <ion-segment-button value="done">
+        <ion-row class="track-head" >
+          <ion-label class="track-title"></ion-label>
+          <ion-col size="12">طلباتي السابقة </ion-col>
+        </ion-row>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-item>
 
-    <ion-row class="track-head" >
-      <ion-label class="track-title"></ion-label>
-      <ion-col size="12">طلبات جارية </ion-col>
-    </ion-row>
+  <ion-grid class="ion-margin track" *ngIf="segment === 'going'">
 
     <ng-container *ngFor="let order of orders">
     <ng-container *ngIf="order.orderStatus !== 15">
@@ -124,11 +136,8 @@
   </ion-grid>
 
 
-  <ion-grid class="ion-margin track">
-  <ion-row class="track-head" >
-    <ion-label class="track-title"></ion-label>
-    <ion-col size="12">طلبات مكتملة</ion-col>
-  </ion-row>
+  <ion-grid class="ion-margin track" *ngIf="segment === 'done'">
+
   <ng-container *ngFor="let order of orders; let i = index">
     <ng-container *ngIf="order.orderStatus === 15">
 
