@@ -60,6 +60,12 @@ export class AppComponent {
   ); 
 }
   
+exit(){
+  this.withAlert("هل ترغب في الخروج من التطبيق ؟", () =>{
+    App.exitApp();
+  });
+}
+
 openChat(){
   this.adminId = AppConsts.adminId; 
   this.userId=this._session.userId; 
