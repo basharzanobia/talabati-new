@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LocationAccuracy } from '@ionic-native/location-accuracy';
+//import { LocationAccuracy } from '@ionic-native/location-accuracy';
 @Injectable({
   providedIn: 'root'
 })
@@ -8,6 +8,7 @@ export class BackgroundGeolocationService {
   constructor() { }
   async askToTurnOnGPS(): Promise<boolean> {
     return await new Promise((resolve, reject) => {
+        /*
         LocationAccuracy.canRequest().then((canRequest: boolean) => {
             if (canRequest) {
                 // the accuracy option will be ignored by iOS
@@ -22,6 +23,7 @@ export class BackgroundGeolocationService {
             }
             else {resolve(false);}
         });
+        */
     })
 }
 
