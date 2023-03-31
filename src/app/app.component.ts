@@ -49,14 +49,19 @@ export class AppComponent {
 
     App.addListener('backButton', () => {
       const currentUrl = this.router.url;
-      if (currentUrl === "/intro" || currentUrl === "/splash") {
+      if (currentUrl === "/intro") {
         // this.withDoublePress("Press again to exit", () => {
-          const logo = document.getElementById('logo');
-          logo.style.display = 'none';
+      /*     const logo = document.getElementById('logo');
+          logo.style.display = 'none'; */
           this.withAlert("هل ترغب في الخروج من التطبيق ؟", () =>{
           App.exitApp();
     });
-  }}
+  }
+  else
+  {
+    this.navController.back();
+  }
+}
   ); 
 }
   
