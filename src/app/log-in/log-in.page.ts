@@ -11,7 +11,6 @@ export class LogInPage implements OnInit {
   show: boolean = false;
 
   constructor(public authService: AppAuthService) { 
-
   }
 
   ngOnInit() {

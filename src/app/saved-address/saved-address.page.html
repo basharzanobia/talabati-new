@@ -3,11 +3,7 @@
   <ion-refresher slot="fixed" [pullFactor]="0.5" [pullMin]="100" [pullMax]="200" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <ion-fab vertical="bottom" horizontal="center" slot="fixed" routerLink="/tabs/tab1/1" routerDirection="root" class="fa-boton">
-    <ion-fab-button>
-      <ion-icon class="fa-ico" name="home"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+
   
   <ion-row class="user-bar">
     <ion-col size="2" class="logo-head" routerLink="/tabs/tab1/1" routerDirection="root">       
@@ -26,14 +22,14 @@
 
 
   <!-- map  -->
-  <section class="map-section">
+<!--   <section class="map-section">
        <div class="map-block">
          <ion-item class="map-header">
           <ion-icon  name="locate" class="location" (click)="locateMe()"></ion-icon>
           <ion-label *ngIf="userAddresses.length" class="location-titlle"> </ion-label>
          </ion-item>
        </div>
-  </section>
+  </section> -->
 <!--End  map  -->
 
  <!-- Address info  -->
@@ -48,8 +44,8 @@
               <ion-item *ngIf=" userAddress !== null ">
               <ion-label  class="location-titlle">{{userAddress?.addressTitle}} : {{userAddress?.address}} / {{userAddress?.area}} / {{userAddress?.city}} /  {{userAddress?.houseNo}} </ion-label>
                 <!--  Edite Address info  -->
-              <ion-icon class="edite-location" name="create"  routerLink="/edit-addres/{{userAddress?.id}}" ><span>تعديل</span></ion-icon>
-              <ion-icon class="edite-location" name="trash"  (click)="alertDeleteAddress(userAddress?.id)" ><span>حذف</span></ion-icon>
+              <ion-icon class="edite-location" name="create" color="primary"  routerLink="/edit-addres/{{userAddress?.id}}" ><span>تعديل</span></ion-icon>
+              <ion-icon class="edite-location" name="trash" color="primary" (click)="alertDeleteAddress(userAddress?.id)" ><span>حذف</span></ion-icon>
           </ion-item>
         </ion-item>
         </ion-list>

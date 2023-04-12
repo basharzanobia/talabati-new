@@ -1,25 +1,13 @@
-
-<!--
-<ion-header>
-  <ion-toolbar>
-    <ion-title>login</ion-title>
-  </ion-toolbar>
-</ion-header>
--->
-
-<!--- Form  header -->
+<!-- 
 <ion-content>
   <section class = "logos-container">
     <div class="row logos">
       <div class="col-4 tittle">
-        <img src="assets/img/logo.png" alt="logo"/>
+        <img src="assets/img/logo.png" alt="logo" height="150" width="150"/>
         <p> مرحبا بعودتك.</p>
 
       </div>
     </div>
-     <!--- End Form  header -->
-
-     <!---  Form  -->
     <ion-row class="login-form">
       <ion-col>
         <ion-list lines="none" >
@@ -57,15 +45,11 @@
             <ion-toggle slot="start" color="primary" [checked]="true"></ion-toggle>
         </ion-item>
         </ion-list>
-
-       
-         <!---  log in button  -->
          <ion-col size="12">
           <ion-button expand="block" (click)="login()" class="continue-button">
           تسجيل الدخول
           </ion-button>
         </ion-col>
-        <!---  End log in button  -->
       </ion-col>
     </ion-row>
 
@@ -76,8 +60,74 @@
           </ion-label>
       </div>
     </div>
-
-    <!--- End Form   -->
   </section>
 
-<ion-content>
+<ion-content> -->
+
+ <ion-content>
+  <ion-grid class="main">
+<ion-row >
+  <ion-col class="logos">
+    <img src="assets/img/logo.png" alt="logo" height="150" width="150"/>
+    <p> مرحبا بعودتك</p>
+  </ion-col>
+</ion-row>
+
+<ion-row class="login-form">
+  <ion-col size="10" >
+    
+     <ion-input class="input-form"
+     [(ngModel)]="authService.authenticateModel.email"
+     placeholder="البريد الالكتروني"
+     type="email"
+   ></ion-input>
+  </ion-col>
+  <ion-col size="2" class="icons">
+    <ion-icon name="phone-portrait-outline" ></ion-icon>
+  </ion-col>
+  <ion-col size="10">
+   <ion-label slot="end">
+    <ion-icon name="key-outline"></ion-icon>
+  </ion-label>
+     <ion-input
+              class="input-form"
+              [(ngModel)]="authService.authenticateModel.password"
+              placeholder="كلمة المرور"
+              [type]="show ? 'text' : 'password'">
+            </ion-input>
+</ion-col>
+<ion-col size="1" class="icons">
+  <ion-icon (click)="password()" class="show-option" [hidden]="show" name="eye-off-outline"></ion-icon>
+  <ion-icon (click)="password()" class="hide-option" [hidden]="!show" name="eye-outline"></ion-icon>
+</ion-col>
+<ion-col size="1" class="icons">
+  <ion-icon name="key-outline"></ion-icon>
+</ion-col>
+<ion-col size="12" class="forget" routerLink="/reset-password">
+
+    <ion-icon name="key-outline"></ion-icon> نسيت كلمة المرور
+
+</ion-col>
+<ion-col  size="12">
+  <ion-button expand="block" (click)="login()" class="continue-button">
+    تسجيل الدخول
+    </ion-button>
+</ion-col>
+<ion-col size="3" >
+    <ion-toggle   [checked]="true"></ion-toggle> 
+  </ion-col>
+
+  <ion-col class="toggle-lbl">
+    تذكرني
+  </ion-col>
+</ion-row>
+<div class="row logos">
+  <div class="col-4 tittle">
+    <ion-label slot="end" class="new-account" routerLink="/sign-up">
+      إنشاء حساب جديد
+      </ion-label>
+  </div>
+</div>
+</ion-grid>
+
+</ion-content> 
