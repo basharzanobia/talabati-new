@@ -7,13 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { EditAddresPageRoutingModule } from './edit-addres-routing.module';
 
 import { EditAddresPage } from './edit-addres.page';
-
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    EditAddresPageRoutingModule
+    EditAddresPageRoutingModule,
+    ReactiveFormsModule
   ],
   declarations: [EditAddresPage]
 })

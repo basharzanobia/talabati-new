@@ -20,51 +20,46 @@
     </ion-col>
   </ion-row>
 
-
-  <!-- map  -->
-<!--   <section class="map-section">
-       <div class="map-block">
-         <ion-item class="map-header">
-          <ion-icon  name="locate" class="location" (click)="locateMe()"></ion-icon>
-          <ion-label *ngIf="userAddresses.length" class="location-titlle"> </ion-label>
-         </ion-item>
-       </div>
-  </section> -->
-<!--End  map  -->
-
- <!-- Address info  -->
-
 <section>
   <ion-grid class="Address-info">
     <ion-row>
       <ion-col size="12">
        
         <ion-list lines="none">
-          <ion-item  *ngFor="let userAddress of this.addressDataService.getAddresses()" >
-              <ion-item *ngIf=" userAddress !== null ">
-              <ion-label  class="location-titlle">{{userAddress?.addressTitle}} : {{userAddress?.address}} / {{userAddress?.area}} / {{userAddress?.city}} /  {{userAddress?.houseNo}} </ion-label>
-                <!--  Edite Address info  -->
-              <ion-icon class="edite-location" name="create" color="primary"  routerLink="/edit-addres/{{userAddress?.id}}" ><span>تعديل</span></ion-icon>
-              <ion-icon class="edite-location" name="trash" color="primary" (click)="alertDeleteAddress(userAddress?.id)" ><span>حذف</span></ion-icon>
-          </ion-item>
-        </ion-item>
+          <div  *ngFor="let userAddress of this.addressDataService.getAddresses()" >
+              <ion-row *ngIf=" userAddress !== null ">
+                <ion-col size="8">
+                  <ion-row>
+                    <ion-label  class="location-titlle">{{userAddress?.addressTitle}} 
+                      <!--  : {{userAddress?.address}} / {{userAddress?.area}} / {{userAddress?.city}} /  {{userAddress?.houseNo}}  -->
+                     </ion-label>
+                  </ion-row>
+                  <br/>
+               <ion-row>
+              
+                <ion-label  class="location-titlle">{{userAddress?.landmark}} 
+                  <!--  : {{userAddress?.address}} / {{userAddress?.area}} / {{userAddress?.city}} /  {{userAddress?.houseNo}}  -->
+                 </ion-label>
+               </ion-row>
+                </ion-col>
+       
+    <ion-col size="4" class="icons">
+      <ion-icon size="large" class="edite-location" name="create" color="primary"  routerLink="/edit-addres/{{userAddress?.id}}" ><span>تعديل</span></ion-icon>
+      <ion-icon size="large" class="edite-location" name="trash" color="primary" (click)="alertDeleteAddress(userAddress?.id)" ><span>حذف</span></ion-icon>
+
+    </ion-col>
+         </ion-row>
+         <br/>
+         <br/>
+        </div>
+     
         </ion-list>
       </ion-col>
-
-       <!--End  Address info  -->
-
-        <!-- Add Address  -->
-     <!-- <ion-col size="12">
-        <ion-button  expand="block" class="add-new"  routerLink="/addres">
-         اضافة عنوان جديد
-        </ion-button>
-      </ion-col>-->
       <ion-col size="12">
         <ion-button  expand="block" class="add-new"  routerLink="/locate-me">
           اضافة عنوان جديد
         </ion-button>
       </ion-col>
-           <!-- Add Address  -->
     </ion-row>
   </ion-grid>
 </section>

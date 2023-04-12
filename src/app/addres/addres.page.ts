@@ -6,12 +6,15 @@ import { Router ,ActivatedRoute} from '@angular/router';
 import { AddressDataService } from '../services/address-data.service';
 import { Geolocation} from '@capacitor/geolocation';
 declare var google;
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-addres',
   templateUrl: './addres.page.html',
   styleUrls: ['./addres.page.scss'],
 })
 export class AddresPage implements OnInit {
+  addrInfoForm: FormGroup;
+  Myaddress = new UserAddress();
   items: any;
   autocomplete: any;
   acService: any;
@@ -24,11 +27,11 @@ export class AddresPage implements OnInit {
   destinationCity : string;
   zipCode : string="";
   googleAddress;
-  addressTitle: string;
+ // addressTitle: string;
   address: string;
-  area: string;
-  city: string;
-  houseNo: string;
+  //area: string;
+  //city: string;
+  //houseNo: string;
   AppConsts = AppConsts;
 latitude;
 longitude;
@@ -141,6 +144,7 @@ dismiss() {
  
 }
   ngOnInit() {
+   
     console.log("latitude "+this.route.snapshot.paramMap.get('lat'));
     this.latitude = this.route.snapshot.paramMap.get('lat');
     console.log("longitude "+this.route.snapshot.paramMap.get('lang'));
@@ -150,17 +154,54 @@ dismiss() {
     if(Boolean(this.addr)){
 this.myPosition = true;
     }
+    this.addrInfoForm = new FormGroup({
+      addressTitle: new FormControl(this.Myaddress.addressTitle, [
+        Validators.required
+      ]),
+      area: new FormControl(this.Myaddress.area,[
+        Validators.required,
+      ]),
+      city: new FormControl(this.Myaddress.city,[
+        Validators.required,
+      ]),
+      houseNo: new FormControl(this.Myaddress.houseNo,[
+      ]),
+      landmark: new FormControl(this.Myaddress.landmark,[
+        Validators.required,
+      ])
+    });
+  }
+  get addressTitle() {
+    return this.addrInfoForm.get('addressTitle')!;
+  }
+  get area() {
+    return this.addrInfoForm.get('area')!;
+  }
+  get city() {
+    return this.addrInfoForm.get('city')!;
+  }
+  get houseNo() {
+    return this.addrInfoForm.get('houseNo')!;
+  }
+  get landmark() {
+    return this.addrInfoForm.get('landmark')!;
   }
   saveAddress()
   { 
+    if (this.addrInfoForm.invalid) {
+      for (const control of Object.keys(this.addrInfoForm.controls)) {
+        this.addrInfoForm.controls[control].markAsTouched();
+      }
+      return;
+    } 
     console.log ("google addr b "+ this.googleAddress);
-      const address = new UserAddress();
+     // const address = new UserAddress();
       if(!Boolean(this.googleAddress)){
 this.googleAddress = this.addr;
 console.log ("google addr"+ this.googleAddress);
 
       }
-      address.init({
+  /*     address.init({
         userId:this._session.userId,
         addressTitle: this.addressTitle,
         address :this.googleAddress,
@@ -169,9 +210,21 @@ console.log ("google addr"+ this.googleAddress);
         area:this.area,
         city: this.city,
         houseNo: this.houseNo, 
-      });
-     
-      this._addressService.createaddress(address).subscribe(
+      }); */
+
+     this.Myaddress = this.addrInfoForm.value;
+     this.Myaddress.userId =this._session.userId;
+     this.Myaddress.address = this.googleAddress;     
+     this.Myaddress.latitude =this.latitude ?? 0;
+     this.Myaddress.longitude =  this.longitude ?? 0;
+     console.log( this.Myaddress.latitude);
+     console.log( this.Myaddress.longitude);
+     console.log( this.googleAddress);
+     console.log( this.Myaddress.addressTitle);
+     console.log( this.Myaddress.area);
+     console.log( this.Myaddress.city);
+     console.log( this.Myaddress.houseNo);
+      this._addressService.createaddress(this.Myaddress).subscribe(
         (res) => {
 
           this._addressService.getrequestsbyuserid(this._session.userId).subscribe((res: UserAddress[]) => this.addressDataService.initAddresses(res));
@@ -182,7 +235,7 @@ console.log ("google addr"+ this.googleAddress);
           // Unexpected result!
           // await this.presentAlert('فشل', 'حدث خطأ حاول مرة أخرى', null);
           console.log('error ', error);
-        });
+        }); 
     }  
   }
   

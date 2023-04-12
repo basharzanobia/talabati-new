@@ -7,7 +7,7 @@ import {
 } from '@angular/google-maps';
 import { ActivatedRoute ,Router} from '@angular/router';
 import { AlertController } from '@ionic/angular'; 
-import { BackgroundGeolocationService } from '../services/background-geolocation.service';
+//import { BackgroundGeolocationService } from '../services/background-geolocation.service';
 @Component({
   selector: 'app-locate-me',
   templateUrl: './locate-me.page.html',
@@ -42,7 +42,7 @@ export class LocateMePage implements OnInit {
   constructor(private ngZone: NgZone, 
     private geoCoder: MapGeocoder,
     private _router: Router,
-    private bgGeolocation:BackgroundGeolocationService,
+   // private bgGeolocation:BackgroundGeolocationService,
     public alertController: AlertController) {
    /* this.height = (document.documentElement.clientHeight-100)+"px";*/
   }
@@ -85,8 +85,8 @@ export class LocateMePage implements OnInit {
 
   async ngOnInit() {
     try{
-      const turnOnGPS = await this.bgGeolocation.askToTurnOnGPS();
-      if(turnOnGPS){
+     // const turnOnGPS = await this.bgGeolocation.askToTurnOnGPS();
+     // if(turnOnGPS){
         navigator.geolocation.getCurrentPosition((position) => {
           this.latitude = position.coords.latitude;
           this.longitude = position.coords.longitude;
@@ -117,8 +117,8 @@ export class LocateMePage implements OnInit {
             await alert.present();
         });
     
-      }
-  else{
+     // }
+/*   else{
     const alert = await this.alertController.create({
       header: 'تأكيد ',
       subHeader :     "لا يوجد سماحيات للوصول إلى الموقع \n" +
@@ -137,7 +137,7 @@ export class LocateMePage implements OnInit {
     });
   
     await alert.present();
-  }
+  } */
     }
     catch(error){
       const alert = await this.alertController.create({
