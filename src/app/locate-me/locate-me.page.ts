@@ -5,7 +5,7 @@ import {
   MapGeocoder,
   MapGeocoderResponse,
 } from '@angular/google-maps';
-import { ActivatedRoute ,Router} from '@angular/router';
+import { Router} from '@angular/router';
 import { AlertController } from '@ionic/angular'; 
 //import { BackgroundGeolocationService } from '../services/background-geolocation.service';
 @Component({

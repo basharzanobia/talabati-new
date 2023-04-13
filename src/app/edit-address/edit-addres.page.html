@@ -22,39 +22,39 @@
     <ion-row>
       <ion-col >
         <ion-list lines="none">
-          <ion-item >
+          <ion-item class="prod-top">
             <ion-col size="6">
               <ion-label class="booking-date" > اسم العنوان</ion-label>
             </ion-col>
             <ion-col size="6">
               <ion-input type="txt"
               formControlName="addressTitle"
-               placeholder="اسم العنوان"></ion-input>
+               placeholder="مثلا مكتبي أو منزلي"></ion-input>
             </ion-col>
           
          
        
           </ion-item>
    
-          <ion-item >
+          <ion-item class="prod-top">
             <ion-col size="6">
             <ion-label class="booking-date" > المدينة</ion-label>
             </ion-col>
             <ion-col size="6">
             <ion-input type="txt" 
             formControlName="city"
-            placeholder="city"></ion-input>
+            placeholder="المدينة"></ion-input>
        </ion-col>
           </ion-item>
   
-          <ion-item >
+          <ion-item class="prod-top">
             <ion-col size="6">
             <ion-label class="booking-time"> المنطقة </ion-label>
             </ion-col>
             <ion-col size="6">
             <ion-input type="text"
             formControlName="area"
-                placeholder="area"></ion-input>
+                placeholder="المنطقة"></ion-input>
          </ion-col>
           </ion-item>
     <!--   <ion-col size="6">
@@ -67,7 +67,7 @@
           </ion-item>
         </ion-list>
       </ion-col> -->
-          <ion-item >
+          <ion-item class="prod-top">
             <ion-col size="6">
             <ion-label class="booking-time">  رقم البناء </ion-label>
            </ion-col>
@@ -77,16 +77,17 @@
              placeholder="000"></ion-input>
           </ion-col>
           </ion-item>
-          <ion-item >
+          <ion-item class="prod-top">
             <ion-col size="6">
             <ion-label class="booking-time">  علامات استدلال  </ion-label>
             </ion-col>
             </ion-item>
-            <ion-item>
-             <ion-col size="6">
-            <ion-input type="text" 
+            <ion-item class="prod-top">
+             <ion-col size="12">
+            <ion-textarea type="text"
+            [autoGrow]="true" 
             formControlName="landmark"
-             placeholder="landmark"></ion-input>
+             placeholder="اكتب وصف ودلائل عن المكان"></ion-textarea>
           </ion-col>
           </ion-item>
         </ion-list>

@@ -27,17 +27,17 @@
        
         <ion-list lines="none">
           <div  *ngFor="let userAddress of this.addressDataService.getAddresses()" >
-              <ion-row *ngIf=" userAddress !== null ">
+              <ion-row *ngIf=" userAddress !== null " >
                 <ion-col size="8">
-                  <ion-row>
+                  <ion-row class="addr">
                     <ion-label  class="location-titlle">{{userAddress?.addressTitle}} 
                       <!--  : {{userAddress?.address}} / {{userAddress?.area}} / {{userAddress?.city}} /  {{userAddress?.houseNo}}  -->
                      </ion-label>
                   </ion-row>
                   <br/>
-               <ion-row>
+               <ion-row class="addr">
               
-                <ion-label  class="location-titlle">{{userAddress?.landmark}} 
+                <ion-label >{{userAddress?.landmark}} 
                   <!--  : {{userAddress?.address}} / {{userAddress?.area}} / {{userAddress?.city}} /  {{userAddress?.houseNo}}  -->
                  </ion-label>
                </ion-row>

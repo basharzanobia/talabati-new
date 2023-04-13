@@ -80,6 +80,7 @@ openChat(){
     async withAlert(message: string, action: () => void) {
       const alert = await this.alertController.create({
         message: message,
+        mode:'ios',
         buttons: [
           {
             text: "نعم",

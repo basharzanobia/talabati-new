@@ -5,6 +5,7 @@ import { AppConsts } from 'src/shared/AppConsts';
 import { Router ,ActivatedRoute} from '@angular/router';
 import { AddressDataService } from '../services/address-data.service';
 import { Geolocation} from '@capacitor/geolocation';
+import { LoadingService } from '../services/loading.service';
 declare var google;
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 @Component({
@@ -38,6 +39,7 @@ longitude;
 addr;
 myPosition;
 constructor(  
+  private loading :LoadingService,
   private route: ActivatedRoute,
   private _session: AppSessionService,
   private _router: Router,
@@ -188,6 +190,7 @@ this.myPosition = true;
   }
   saveAddress()
   { 
+   this.loading.present();
     if (this.addrInfoForm.invalid) {
       for (const control of Object.keys(this.addrInfoForm.controls)) {
         this.addrInfoForm.controls[control].markAsTouched();
@@ -230,11 +233,13 @@ console.log ("google addr"+ this.googleAddress);
           this._addressService.getrequestsbyuserid(this._session.userId).subscribe((res: UserAddress[]) => this.addressDataService.initAddresses(res));
             this._router.navigate(['/saved-address']);
           console.log('الرسالة ', 'تم إدخال العنوان');
+          this.loading.dismiss();
         },
         async (error) => {
           // Unexpected result!
           // await this.presentAlert('فشل', 'حدث خطأ حاول مرة أخرى', null);
           console.log('error ', error);
+          this.loading.dismiss();
         }); 
     }  
   }
