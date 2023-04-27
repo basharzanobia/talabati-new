@@ -25,51 +25,61 @@
       <ion-segment-button value="rest">
         <ion-row class="track-head" >
           <ion-label class="track-title"></ion-label>
-          <ion-col size="12">مطاعمي المفضلة </ion-col>
+          <ion-col size="12">مطاعمي  </ion-col>
         </ion-row>
       </ion-segment-button>
       <ion-segment-button value="product">
         <ion-row class="track-head" >
           <ion-label class="track-title"></ion-label>
-          <ion-col size="12">منتجاتي المفضلة </ion-col>
+          <ion-col size="12">منتجاتي  </ion-col>
         </ion-row>
       </ion-segment-button>
     </ion-segment>
   </ion-item>
 
-  <br>
   
-  <ion-grid class="main" *ngIf="segment === 'rest'">
-  <br>
-  <ion-row *ngIf="favVendors.length==0" else favVendorss class="feu-pro">
-    <ion-label class="message">ليس لديك مطاعم مفضلة..
-      <br>تسوق للوصول إلى المطاعم 
-    </ion-label>
-  </ion-row>
-  
-    <!---  card -->
-    <br>
+  <div class="main" *ngIf="segment === 'rest'">
     
-    <ion-row class="intro" #favVendorss>
+    <div class="center" *ngIf="vendorlist.length==0" else favVendorss>
+      <ion-row   class="no-fav">
+        <ion-col size="12" class="message" >
+          <ion-label>
+            ليس لديك مطاعم مفضلة
+          </ion-label>
+          <br>
+          <br>
+          <ion-label>
+            تسوق للوصول إلى المطاعم 
+          </ion-label>
+          <br>
+          <br>
+          <ion-icon name="sad-outline" class="no-fav-icon"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </div>
 
-      <ion-col *ngFor="let vendor of favVendors " size="12"  class="intro-item">
+   
+
+  
+    <div  #favVendorss *ngFor="let vendor of favVendors " size="12"  class="intro-item">
+
+   
         <ion-row class="rst-card" [routerLink]="['/resturant', vendor.id]" routerDirection="forward">
-          <ion-col size="4" class="rest-item">
-            <img alt="logo" [src]="vendor.storeLogo ? (AppConsts.appBaseUrl + '/' + vendor.storeLogo) : 'assets/img/Istanbul-Restaurant-17.jpg'" />
+          <ion-col size="4" class="rest-item ion-no-padding">
+            <img alt="logo" class="img-p" [src]="vendor.storeLogo ? (AppConsts.appBaseUrl + '/' + vendor.storeLogo) : 'assets/img/Istanbul-Restaurant-17.jpg'" />
           </ion-col>
 
-          <ion-col size="6" offset="2">
+          <ion-col size="6" offset="1">
 
-            <br>
             <ion-row>
-              <ion-col size="10" class="rest-location">
-                <ion-icon name="diamond-sharp" class="rest-map" color="primary"></ion-icon>
+              <ion-col size="12" class="rest-location">
+               <!--  <ion-icon name="diamond-sharp" class="rest-map" color="primary"></ion-icon> -->
                 <ion-label class="rest-name" color="primary"> {{ vendor.name }} </ion-label>
               </ion-col>
             </ion-row>
 
             <ion-row>
-              <ion-col size="10" class="rest-location">
+              <ion-col size="12" class="rest-location">
                 <ion-icon name="storefront-sharp" class="rest-ico" color="primary"></ion-icon>
                 <ion-label class="rest-statu" color="success"> {{ vendor.startTime }} - {{ vendor.endTime }} </ion-label>
               </ion-col>
@@ -77,47 +87,68 @@
             
           </ion-col>
         </ion-row>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-<br>
+   
+      </div>
+    </div>
 
-  <ion-grid class="main" *ngIf="segment === 'product'">
-    <!---  card -->
-    <br>  
-    <ion-row *ngIf="!favProducts" else favProducts class="feu-pro ">
-    <ion-col size="12" class="message">
-      <ion-label >ليس لديك منتجات مفضلة..
-        <br>تسوق للوصول إلى المنتجات 
-      </ion-label>
-    </ion-col>
-    </ion-row>
-  <ion-row *ngFor="let product of favProducts" #favProducts class="feu-pro">
-    <ng-container>
-      <ion-col size="4" class="item-photo" [routerLink]="['/product', product.id]">
-        <img alt="logo" [src]="AppConsts.appBaseUrl + '/' + product.mainImagePath" />
+  <div class="main" *ngIf="segment === 'product'">
+  
+    <div class="center">
+      <ion-row *ngIf="productlist.length==0" else favProducts  class="no-fav">
+        <ion-col size="12" class="message" >
+          <ion-label>
+            ليس لديك منتجات مفضلة
+          </ion-label>
+          <br>
+          <br>
+          <ion-label>
+            تسوق للوصول إلى المنتجات 
+          </ion-label>
+          <br>
+          <br>
+          <ion-icon name="sad-outline" class="no-fav-icon"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </div>
+  <div *ngFor="let product of favProducts" #favProducts  class="intro-item">
+    <ion-row  class="rst-card" [routerLink]="['/product', product.id]">
+      <ion-col size="4" class="rest-item ion-no-padding">
+        <img alt="logo"  class="img-p" [src]="AppConsts.appBaseUrl + '/' + product.mainImagePath" />
       </ion-col>
       <ion-col size="8" class="item-detile">
-        <ion-label class="item-id">{{ product.name }} </ion-label>
-        <p class="item-descrip"> {{ product.shortDescription }} </p>
+  
+        <ion-row>
+        
+<ion-col>
+  <ion-label class="rest-name">{{ product.name }} </ion-label>
+  <p class="item-descrip"> {{ product.shortDescription }} </p>
+</ion-col>
+        </ion-row>
         <ion-row>
           <ion-col size="6" class="item-cost">
             <ion-icon name="cash-outline"></ion-icon>
-                <ion-label color="secondry" class="item-price">{{ product.price }} $</ion-label> 
+          </ion-col>
+          <ion-col size="6" class="item-cost">
+            <ion-icon name="basket"></ion-icon>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6" class="item-cost">
+                <ion-label color="secondry" class="">{{ product.price }} {{AppConsts.currency}}</ion-label> 
                 
           </ion-col>
           <ion-col size="6" class="item-order" [routerLink]="['/product', product.id]">
             <a button icon-start ion-button full class="order-button">
-              <ion-icon name="basket"></ion-icon>
-              <ion-label class="add-item">طلب  </ion-label>
+     
+              <ion-label class="">طلب  </ion-label>
             
             </a>
           </ion-col>
         </ion-row>
       
       </ion-col>
-    </ng-container>
-  </ion-row>
+    </ion-row>
+  </div>
 
-  </ion-grid>
+</div>
 </ion-content>

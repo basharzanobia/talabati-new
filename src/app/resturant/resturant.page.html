@@ -72,18 +72,18 @@
           <ion-label color="danger">{{ (vendor$ | async)?.endTime }}</ion-label> 
           
     </ion-col>
-    <ion-col size="6" class="res-call">
+    <ion-col size="12" class="res-call">
       <a button icon-start ion-button full [href]="'tel://' + (vendor$ | async)?.phoneNumber">
         <strong>اتصال</strong>
         <ion-icon name="call"></ion-icon>
       </a>
     </ion-col>
-    <ion-col size="6" class="res-call">
+ <!--    <ion-col size="6" class="res-call">
       <a button icon-start ion-button full [routerLink]="['/tchat',currentUserId,(vendor$ | async)?.id]">
         <strong>مراسلة</strong>
         <ion-icon name="chatbox"></ion-icon>
       </a>
-    </ion-col>
+    </ion-col> -->
   </ion-row>
 
   <ion-row class="prod-top">
@@ -125,8 +125,8 @@
 
   <ion-row *ngFor="let product of featuredProducts" class="feu-pro">
     <ng-container *ngIf="!selectedCategory || selectedCategory == product.categoryId">
-      <ion-col size="4" class="item-photo" [routerLink]="['/product', product.id]">
-        <img [src]="AppConsts.appBaseUrl + '/' + product.mainImagePath" />
+      <ion-col size="4" class="item-photo ion-no-padding" [routerLink]="['/product', product.id]">
+        <img [src]="AppConsts.appBaseUrl + '/' + product.mainImagePath" class="product-img"/>
       </ion-col>
       <ion-col size="8" class="item-detile">
         <ion-label class="item-id">{{ product.name }} </ion-label>
@@ -153,9 +153,5 @@
 
 </section>
   
-<ion-fab vertical="bottom" horizontal="center" slot="fixed" routerLink="/tabs/tab1/1" routerDirection="root" class="fa-boton">
-  <ion-fab-button>
-    <ion-icon class="fa-ico" name="home"></ion-icon>
-  </ion-fab-button>
-</ion-fab>
+
 </ion-content>

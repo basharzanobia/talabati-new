@@ -28,12 +28,25 @@ ion-img{
       color: #292562;
   }
 }
+.center{
+  display: flex;
+  justify-content: center;
 
+}
+.no-fav {
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
 .message{
-  padding: 20px 20px;
+  font-size: 20px;
+  font-weight: bold;
   text-align: center;
 }
-
+.no-fav-icon{
+  font-size: 50px;
+}
 ion-scroll{
   height: 50px;
   
@@ -63,13 +76,14 @@ ion-scroll{
 .intro-item {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 10px;
-margin-top: 15px;
-margin-bottom: 15px;
-padding: 10px;
-
+margin-top: 3px;
+margin-bottom: 10px;
 }
-
-
+.img-p{
+  border-radius: 10px;
+  height: 120px;
+  width: 120px;
+}
    .banner-item {
        border: #292562;
        border-radius: 10px;

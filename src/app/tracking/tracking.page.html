@@ -5,11 +5,7 @@
   </ion-refresher>
 
   
-  <ion-fab vertical="bottom" horizontal="center" slot="fixed" routerLink="/tabs/tab2" routerDirection="root" class="fa-boton">
-    <ion-fab-button>
-      <ion-icon class="fa-ico" name="home"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+
   
   <ion-row class="user-bar">
     <ion-col size="2" class="logo-head" routerLink="/tabs/tab1/1" routerDirection="root">       
@@ -79,17 +75,7 @@
     </ion-row>
   <br>
     
-    <ion-row   class="order-cutomer" >
-      <ion-col size=""  >
-       <h4>المنتجات</h4>
-        </ion-col>
-        
-      </ion-row>
-    <br>
-
-
-  
-
+    
     <ion-row class="order-cutomer" *ngFor="let orderDetail of order?.orderDetail" >
         <ion-col size="4" class="item-photo" routerLink="/product">
           <ion-img [src]="AppConsts.appBaseUrl+ '/' +orderDetail.product.mainImagePath" ></ion-img>
@@ -130,7 +116,7 @@
      
 
       <ion-row class="order-cutomer" >  
-        <ion-col size="12"> تتبع الطلب :</ion-col> 
+        <ion-col size="12"> التفاصيل :</ion-col> 
       </ion-row>
       <!--
       <ion-grid  class="order-cutomer margin-bottom" *ngFor="let track of order?.tracking" > 

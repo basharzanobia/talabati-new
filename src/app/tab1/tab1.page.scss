@@ -61,11 +61,12 @@ ion-scroll{
 .intro-item {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 10px;
-  margin: 10px 4px;
-  padding: 10px;
+  margin: 10px 4px 0px 4px;
 
 }
-
+.img-vendor{
+  border-radius: 10px 10px 0px 0px;
+}
 
    .banner-item {
        border: #292562;
@@ -181,7 +182,9 @@ ion-scroll{
   font-size: 20px;
 }
 
-
+.slide-element{
+  height: 150px !important;
+}
 .swiper-slide {
   margin-left: 10px;
   display: flex;

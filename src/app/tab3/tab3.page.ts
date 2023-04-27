@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartStoreService } from 'src/shared/cart/cart-store.service';
-import { OrderapiServiceProxy,UserAddress,AddressType,AddressapiServiceProxy,Order, OrderDetail, OrderDetailRequest, OrderRequestModel, PaymentCompany,PaymentcompanyapiServiceProxy } from 'src/shared/service-proxies/service-proxies';
+import { OrderapiServiceProxy,UserAddress,AddressType,AddressapiServiceProxy,Order, OrderDetail, OrderDetailRequest, OrderRequestModel, PaymentCompany,PaymentcompanyapiServiceProxy, EwalletServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { AlertController } from '@ionic/angular';  
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { Geolocation} from '@capacitor/geolocation';
 import { AppConsts } from 'src/shared/AppConsts';
 import { BackgroundGeolocationService } from '../services/background-geolocation.service';
 import { ActionSheetController } from '@ionic/angular';
+import { LoadingService } from '../services/loading.service';
 declare var google;
 @Component({
   selector: 'app-tab3',
@@ -50,13 +51,15 @@ export class Tab3Page {
   constructor(
     private _session: AppSessionService,
     public cart: CartStoreService,
+    private loading :LoadingService,
     private _router: Router,
     private _orderService: OrderapiServiceProxy,
     private _paymentCompanyService: PaymentcompanyapiServiceProxy,
     private _addressApiService : AddressapiServiceProxy,
     public alertController: AlertController,
     private actionSheetCtrl: ActionSheetController,
-    private bgGeolocation:BackgroundGeolocationService
+    private bgGeolocation:BackgroundGeolocationService,
+    private _ewalletService: EwalletServiceProxy
   ) { this.initPage();}
   async presentActionSheet() {
     let radio_options = [];
@@ -68,13 +71,13 @@ export class Tab3Page {
         }
       });
     }
-    radio_options.push({
+  /*   radio_options.push({
       text: 'موقعي الآن',
       icon : 'navigate-outline',
       handler: () => {
         this.selectAddress(0)
       }
-    });
+    }); */
     radio_options.push({
       text: 'اضافة عنوان جديد',
       icon : 'add-outline',
@@ -226,7 +229,36 @@ export class Tab3Page {
   showPaymentCompanies(){
     this.paymentCompaniesVisible=true;
   }
-
+  EWalletPayment(){
+    this.loading.present();
+    this.hidePaymentCompanies();
+    this._ewalletService.totalbyuserid(this._session.userId).subscribe(async (res: number) =>
+    {
+      var totalQty=0;
+      this.cart.Items.forEach(element => {
+        totalQty+=element.quantity;
+      });
+      if(res < totalQty){
+        const alert = await this.alertController.create({
+          message: " ليس لديك رصيد كاف في المحفظة. رصيدك الحالي هو"+ totalQty
+          + " " +AppConsts.currency + " الرجاء اختيار طريقة دفع أخرى ",
+          buttons: [
+          {
+            text: "موافق",
+            handler:()=>{
+              this.orderRequest.paymentMode = null;
+            }
+          }]
+        });
+        this.loading.dismiss();
+      alert.present();
+      }
+    });
+    
+    
+  
+  }
+ 
   hidePaymentCompanies(){
     this.paymentCompaniesVisible=false;
   }
@@ -402,6 +434,7 @@ export class Tab3Page {
   }
   async sendOrder() {
     console.log(this.userLatitude,this.userLongitude);
+
     if(this.hasAddress)
     {
    this.withAlert("هل أنت متأكد من تثبيت الطلب؟", () =>{

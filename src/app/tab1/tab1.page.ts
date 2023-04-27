@@ -36,6 +36,7 @@ export class Tab1Page implements OnInit {
   ngOnInit(): void {
 
     this.catId =  Number(this.route.snapshot.paramMap.get('catId'));
+    console.log(this.catId);
     this._vendorService.subcategories(this.catId).subscribe(
       (res: VendorSubCategory[]) => {
         this.subcats$ = res;
@@ -54,6 +55,11 @@ export class Tab1Page implements OnInit {
    
   })
   }
+  ionViewWillEnter(){
+    this.catId =  Number(this.route.snapshot.paramMap.get('catId'));
+    console.log(this.catId);
+ 
+  }
   filterVendorsBySlider(id){
     this.subCatId = id;
     console.log(this.subCatId);
@@ -63,7 +69,7 @@ export class Tab1Page implements OnInit {
     }
 
     this.filteredVendors = this.vendors$.filter((item) => {
-      return (item.subCategories[0].id==id);
+      return (item.subCategories[0]?.id==id);
     });
 
 /*

@@ -238,8 +238,8 @@
         <br> <br> 
 
         <ion-list style="width: 100%;">
-          <ion-radio-group [(ngModel)]="orderRequest.paymentMode">
-             <ion-item (click)="hidePaymentCompanies()">
+          <ion-radio-group [(ngModel)]="orderRequest.paymentMode" [value]="orderRequest.paymentMode">
+             <ion-item (click)="EWalletPayment()">
               <ion-label> الدفع عبر المحفظة</ion-label>
               <ion-radio slot="end" value="3"></ion-radio>
              </ion-item>

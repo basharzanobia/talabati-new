@@ -37,7 +37,9 @@
     border-radius: 20px;
 }
 
-
+ion-slides{
+  height: 125px;
+}
 ion-scroll{
     height: 50px;
     
@@ -102,7 +104,9 @@ ion-scroll{
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 10px;
   }
-
+.product-img{
+  border-radius: 10px;
+}
   .item-id {
     color: rgb(255, 145, 0);
     font-size: 20px;
