@@ -190,13 +190,14 @@ this.myPosition = true;
   }
   saveAddress()
   { 
-   this.loading.present();
+ 
     if (this.addrInfoForm.invalid) {
       for (const control of Object.keys(this.addrInfoForm.controls)) {
         this.addrInfoForm.controls[control].markAsTouched();
       }
       return;
     } 
+    this.loading.present();
     console.log ("google addr b "+ this.googleAddress);
      // const address = new UserAddress();
       if(!Boolean(this.googleAddress)){
