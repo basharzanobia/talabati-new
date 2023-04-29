@@ -24,6 +24,7 @@
 <!--- End Form  header -->
 
 <!---  Form  -->
+<form [formGroup]="signupForm" (ngSubmit)="onSubmit()" novalidate autocomplete="off">
     <ion-row class="account-form">
       <ion-col>
         <ion-list >
@@ -32,7 +33,7 @@
               <ion-icon  name="person-outline" ></ion-icon>
             </ion-label>
             <ion-input
-              [(ngModel)]="model.name"
+            formControlName="name"
               placeholder="الاسم"
               type="text"
             ></ion-input>
@@ -42,7 +43,7 @@
               <ion-icon  name="person-outline" ></ion-icon>
             </ion-label>
             <ion-input
-              [(ngModel)]="model.middleName"
+              formControlName="middleName"
               placeholder="الاسم الثاني"
               type="text"
             ></ion-input>
@@ -52,7 +53,7 @@
               <ion-icon name="people-outline"></ion-icon>
             </ion-label>
             <ion-input
-              [(ngModel)]="model.lastName"
+              formControlName="lastName"
               placeholder="الاسم الثالث"
               type="text"
             ></ion-input>
@@ -62,7 +63,7 @@
               <ion-icon name="megaphone-outline"></ion-icon>
             </ion-label>
             <ion-input
-              [(ngModel)]="model.nickName"
+              formControlName="nickName"
               placeholder="اللقب"
               type="text"
             ></ion-input>
@@ -71,7 +72,9 @@
             <ion-label slot="end"> 
               <ion-icon name="male-female-outline"></ion-icon>
             </ion-label>
-            <ion-select [(ngModel)]="model.gender" interface="popover" placeholder="الجنس">
+            <ion-select 
+            formControlName="gender"
+            interface="popover" placeholder="الجنس">
               <ion-select-option value=0>ذكر</ion-select-option>
               <ion-select-option value=1>انثى</ion-select-option>
             </ion-select>
@@ -81,9 +84,9 @@
               <ion-icon name="phone-portrait-outline"></ion-icon>
             </ion-label>
             <ion-input
-              [(ngModel)]="model.mobile"
+              formControlName="mobile"
               placeholder=" رقم التلفون"
-              type="text"
+              type="number"
             ></ion-input>
           </ion-item>
           <ion-item>
@@ -91,9 +94,9 @@
               <ion-icon name="call-outline"></ion-icon>
             </ion-label>
             <ion-input
-              [(ngModel)]="model.additionalMobile"
+              formControlName="additionalMobile"
               placeholder="رقم تلفون اضافي"
-              type="text"
+              type="number"
             ></ion-input>
           </ion-item>
 
@@ -102,11 +105,14 @@
               <ion-icon name="mail-outline"></ion-icon>
             </ion-label>
             <ion-input
-              [(ngModel)]="model.email"
+              formControlName="email"
               placeholder="البريد الالكتروني"
               type="email"
             ></ion-input>
           </ion-item>
+          <div class="invalid-feedback" *ngIf="f.email.errors?.email">
+            <span class="text-danger" >البريد الالكتروني غير صالح</span>
+          </div>
           <ion-item>
             <ion-label slot="end">
               <ion-icon name="key-outline"></ion-icon>
@@ -114,11 +120,15 @@
             <ion-icon (click)="password()" class="show-option" [hidden]="showPass" name="eye-off-outline"></ion-icon>
             <ion-icon (click)="password()" class="hide-option" [hidden]="!showPass" name="eye-outline"></ion-icon>
             <ion-input
-              [(ngModel)]="model.password"
+              formControlName="password"
               placeholder="كلمة المرور"
               [type]="showPass ? 'text' : 'password'"
+         
             ></ion-input>
           </ion-item>
+          <div class="invalid-feedback" *ngIf="(submitted || f.password.dirty) && !minLengthValid">
+            <div>كلمة المرور يجب أن تكون 6 مخارف على الأقل</div>
+          </div>
           <ion-item>
             <ion-label slot="end">
               <ion-icon name="key-outline"></ion-icon>
@@ -126,15 +136,18 @@
             <ion-icon (click)="confirmPassword()" class="show-option" [hidden]="showConfirm" name="eye-off-outline"></ion-icon>
             <ion-icon (click)="confirmPassword()" class="hide-option" [hidden]="!showConfirm" name="eye-outline"></ion-icon>
             <ion-input
-              [(ngModel)]="model.confirmPassword"
+              formControlName="confirmPassword"
               placeholder="تاكيد كلمة المرور"
               [type]="showConfirm ? 'text' : 'password'"
             ></ion-input>
           </ion-item>
+          <div class="invalid-feedback" *ngIf="(submitted || f.confirmPassword.dirty) && f.confirmPassword.errors">
+            <div *ngIf="f.confirmPassword.errors.mismatch">كلمة المرور والتأكيد غير متطابقتان</div>
+          </div>
         </ion-list>
             <!---  Regester button  -->
             <ion-col size="12">
-              <ion-button expand="block" (click)="save()" class="continue-button" >
+              <ion-button expand="block" type="submit"  class="continue-button" >
                 انشاء حساب
               </ion-button>
             </ion-col>
@@ -143,6 +156,6 @@
       </ion-col>
     </ion-row>
     <!--- End Form   -->
-  
+  </form>
 
 <ion-content>
