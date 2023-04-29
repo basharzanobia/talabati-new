@@ -11,6 +11,7 @@ import { Location } from '@angular/common';
 import { App } from '@capacitor/app';
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { AppConsts } from 'src/shared/AppConsts';
+import { RouteInterceptorServiceService } from './services/route-interceptor-service.service';
 
 
 
@@ -40,13 +41,15 @@ export class AppComponent {
       private navController: NavController,
       private toastController: ToastController,
       private _session: AppSessionService,
+      private routeService : RouteInterceptorServiceService,
     @Optional() private routerOutlet?: IonRouterOutlet
   ) {
     
     this.initializeApp();
   }
+  
   initializeApp() {
-
+  
     App.addListener('backButton', () => {
       const currentUrl = this.router.url;
       if (currentUrl === "/intro") {
