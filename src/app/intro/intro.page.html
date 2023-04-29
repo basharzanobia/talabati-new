@@ -17,7 +17,7 @@
   <ion-grid>
     <ion-row class="intro">
       <ion-col *ngFor="let category of categories"
-        size="12" class="intro-item" [routerLink]="['/tabs/tab1', category.id]">
+        size="12" class="intro-item" [routerLink]="['/tabs/tab1', category.id]" routerDirection="forward">
         <ion-img [src]="AppConsts.appBaseUrl + '/' + category.imagePath" ></ion-img>
         <h2>
           {{ category.name }}

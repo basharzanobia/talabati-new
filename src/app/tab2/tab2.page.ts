@@ -3,6 +3,9 @@ import { AppOrderStatusType } from 'src/shared/AppEnums';
 import { Order,UserReview,ReviewuserapiServiceProxy,SubOrder,SuborderapiServiceProxy, OrderapiServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { AppConsts } from 'src/shared/AppConsts';
+import { App } from '@capacitor/app';
+import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab2',
@@ -24,7 +27,9 @@ export class Tab2Page implements OnInit {
   constructor(private _session: AppSessionService,
     private _subOrderService: SuborderapiServiceProxy,
     private _reviewUserapiService:ReviewuserapiServiceProxy,
-    private _orderService: OrderapiServiceProxy) {
+    private _orderService: OrderapiServiceProxy,
+    private router: Router,
+    private navController: NavController) {
 
   }
 
@@ -41,8 +46,11 @@ export class Tab2Page implements OnInit {
         });
       });
     });
-  }
 
+  }
+ionViewWillLeave(){
+
+}
   getDriverReview(userId){
     this._reviewUserapiService.getratingofuser(userId).subscribe(
       (res) => {    
@@ -117,4 +125,6 @@ export class Tab2Page implements OnInit {
       segmentChanged(ev: any) {
         this.segment = ev.detail.value;
       }
+
+      
 }

@@ -27,7 +27,7 @@ export class SupportPage implements OnInit {
   openChat(){
     this.adminId = AppConsts.adminId; 
     this.userId=this._session.userId; 
-    this.router.navigate(['/tchat',this.userId,this.adminId]);
+    this.router.navigate(['/tchat',this.userId,this.adminId],{replaceUrl:true});
   }
   handleRefresh(event) {
     setTimeout(() => {
