@@ -53,6 +53,9 @@ getWishList(){
     if(res.length == 0 ){
       this.showEmptyProductsFavorite = true;
        }
+       else{
+        this.showEmptyProductsFavorite = false;
+       }
     this.productlist.forEach(element=>{
       this.productId =Number(element.productId);
       this._productService.single(this.productId).subscribe((pro: Product)=> {
@@ -70,6 +73,9 @@ getVendorsWishList(){
   this._vendorwishlistService.getwishlist(this._session.userId).subscribe((res:VendorWishListResponseModel[])=>{ this.vendorlist = res;
   if(res.length == 0 ){
  this.showEmptyVendorFavorite = true;
+  }
+  else{
+    this.showEmptyVendorFavorite = false; 
   }
     this.vendorlist.forEach(element=>{
       this.vendortId =element.vendorId;
