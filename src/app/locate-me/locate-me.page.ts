@@ -227,7 +227,7 @@ export class LocateMePage implements OnInit {
       this.noAddressError = "الرجاء اختيار موقع من الخريطة";
     }
     else{
-      this._router.navigate(['/addres',this.latitude,this.longitude,this.address]);
+      this._router.navigate(['/addres',this.latitude,this.longitude,this.address],{replaceUrl:true});
     }
   }
 }

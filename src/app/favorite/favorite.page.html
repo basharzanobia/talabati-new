@@ -40,7 +40,7 @@
   
   <div class="main" *ngIf="segment === 'rest'">
     
-    <div class="center" *ngIf="vendorlist.length==0" else favVendorss>
+    <div class="center" *ngIf="showEmptyVendorFavorite" else favVendorss>
       <ion-row   class="no-fav">
         <ion-col size="12" class="message" >
           <ion-label>
@@ -94,7 +94,7 @@
   <div class="main" *ngIf="segment === 'product'">
   
     <div class="center">
-      <ion-row *ngIf="productlist.length==0" else favProducts  class="no-fav">
+      <ion-row *ngIf="showEmptyProductsFavorite" else favProducts  class="no-fav">
         <ion-col size="12" class="message" >
           <ion-label>
             ليس لديك منتجات مفضلة

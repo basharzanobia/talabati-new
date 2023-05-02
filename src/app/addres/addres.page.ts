@@ -232,7 +232,7 @@ console.log ("google addr"+ this.googleAddress);
         (res) => {
 
           this._addressService.getrequestsbyuserid(this._session.userId).subscribe((res: UserAddress[]) => this.addressDataService.initAddresses(res));
-            this._router.navigate(['/saved-address']);
+            this._router.navigate(['/saved-address'],{replaceUrl:true});
           console.log('الرسالة ', 'تم إدخال العنوان');
           this.loading.dismiss();
         },

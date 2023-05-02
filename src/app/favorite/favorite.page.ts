@@ -21,6 +21,8 @@ import { AppConsts } from 'src/shared/AppConsts';
 export class FavoritePage implements OnInit {
 
   customFormatter;
+  showEmptyVendorFavorite = false;
+  showEmptyProductsFavorite = false;
   vendorlist :VendorWishListResponseModel[]=[];
   productlist:WishListModel[]=[]; 
   AppConsts = AppConsts;
@@ -48,7 +50,10 @@ export class FavoritePage implements OnInit {
   
 getWishList(){
   this._wishListService.getwishlist(this._session.userId).subscribe((res:WishListModel[])=>{ this.productlist = res;
-     this.productlist.forEach(element=>{
+    if(res.length == 0 ){
+      this.showEmptyProductsFavorite = true;
+       }
+    this.productlist.forEach(element=>{
       this.productId =Number(element.productId);
       this._productService.single(this.productId).subscribe((pro: Product)=> {
         const Product = pro;
@@ -63,7 +68,10 @@ getWishList(){
 
 getVendorsWishList(){
   this._vendorwishlistService.getwishlist(this._session.userId).subscribe((res:VendorWishListResponseModel[])=>{ this.vendorlist = res;
-     this.vendorlist.forEach(element=>{
+  if(res.length == 0 ){
+ this.showEmptyVendorFavorite = true;
+  }
+    this.vendorlist.forEach(element=>{
       this.vendortId =element.vendorId;
       this._vendorService.vendorbyid(this.vendortId).subscribe((vendor: UserResponseModel)=> {
         const Vendor = vendor;
