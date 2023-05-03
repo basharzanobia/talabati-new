@@ -24,12 +24,12 @@
 
   <br>
   <ion-row class="order-add" >
-    <ion-col size="6" class="order-track" routerLink="/tabs/tab2" replaceUrl="true"> 
+    <ion-col size="6" class="order-track" routerLink="/tabs/tab2" [replaceUrl]="true"> 
       <a button icon-start ion-button full class="order-track">
         <ion-label class="add-item" > تعقب الطلب  </ion-label>
       </a>
        </ion-col>
-       <ion-col size="6" class="main-button" routerLink="/tabs/tab1/1" routerDirection="root" replaceUrl="true"> 
+       <ion-col size="6" class="main-button" routerLink="/tabs/tab1/1" routerDirection="root" [replaceUrl]="true"> 
         <a button icon-start ion-button full class="main-button">
           <ion-label class="add-item" > الرئيسية  </ion-label>
         </a>
