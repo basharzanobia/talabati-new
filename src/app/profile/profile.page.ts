@@ -30,6 +30,7 @@ export class ProfilePage implements OnInit {
   
   logout() {
     this.withAlert("هل ترغب في الخروج من التطبيق ؟", () =>{
+      this._auth.logout();
       App.exitApp();
     });
   }

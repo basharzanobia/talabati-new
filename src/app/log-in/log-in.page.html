@@ -1,68 +1,3 @@
-<!-- 
-<ion-content>
-  <section class = "logos-container">
-    <div class="row logos">
-      <div class="col-4 tittle">
-        <img src="assets/img/logo.png" alt="logo" height="150" width="150"/>
-        <p> مرحبا بعودتك.</p>
-
-      </div>
-    </div>
-    <ion-row class="login-form">
-      <ion-col>
-        <ion-list lines="none" >
-          <ion-item>
-            <ion-label slot="end">
-              <ion-icon name="phone-portrait-outline" ></ion-icon>
-            </ion-label>
-            <ion-input
-              [(ngModel)]="authService.authenticateModel.email"
-              placeholder="البريد الالكتروني"
-              type="email"
-            ></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label slot="end">
-              <ion-icon name="key-outline"></ion-icon>
-            </ion-label>
-            
-            <ion-icon (click)="password()" class="show-option" [hidden]="show" name="eye-off-outline"></ion-icon>
-            <ion-icon (click)="password()" class="hide-option" [hidden]="!show" name="eye-outline"></ion-icon>
-            <ion-input
-              [(ngModel)]="authService.authenticateModel.password"
-              placeholder="كلمة المرور"
-              [type]="show ? 'text' : 'password'">
-            </ion-input>
-
-          </ion-item>
-          <ion-item>
-            <ion-label slot="end" class="forget" routerLink="/reset-password">
-              <ion-icon name="key-outline"></ion-icon> نسيت كلمة المرور
-            </ion-label>
-          </ion-item>
-          <ion-item class="custom-ion-toggle">
-            <ion-label>تذكرني</ion-label>
-            <ion-toggle slot="start" color="primary" [checked]="true"></ion-toggle>
-        </ion-item>
-        </ion-list>
-         <ion-col size="12">
-          <ion-button expand="block" (click)="login()" class="continue-button">
-          تسجيل الدخول
-          </ion-button>
-        </ion-col>
-      </ion-col>
-    </ion-row>
-
-    <div class="row logos">
-      <div class="col-4 tittle">
-        <ion-label slot="end" class="new-account" routerLink="/sign-up">
-          إنشاء حساب جديد
-          </ion-label>
-      </div>
-    </div>
-  </section>
-
-<ion-content> -->
 
  <ion-content>
   <ion-grid class="main">
@@ -72,12 +7,12 @@
     <p> مرحبا بعودتك</p>
   </ion-col>
 </ion-row>
-
+<form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
 <ion-row class="login-form">
   <ion-col size="10" >
     
      <ion-input class="input-form"
-     [(ngModel)]="authService.authenticateModel.email"
+     formControlName="email"
      placeholder="البريد الالكتروني"
      type="email"
    ></ion-input>
@@ -91,7 +26,7 @@
   </ion-label>
      <ion-input
               class="input-form"
-              [(ngModel)]="authService.authenticateModel.password"
+              formControlName="password"
               placeholder="كلمة المرور"
               [type]="show ? 'text' : 'password'">
             </ion-input>
@@ -109,18 +44,19 @@
 
 </ion-col>
 <ion-col  size="12">
-  <ion-button expand="block" (click)="login()" class="continue-button">
+  <ion-button expand="block" type="submit" class="continue-button">
     تسجيل الدخول
     </ion-button>
 </ion-col>
 <ion-col size="3" >
-    <ion-toggle   [checked]="true"></ion-toggle> 
+    <ion-toggle  formControlName="rememberMe" ></ion-toggle> 
   </ion-col>
 
   <ion-col class="toggle-lbl">
     تذكرني
   </ion-col>
 </ion-row>
+</form>
 <div class="row logos">
   <div class="col-4 tittle">
     <ion-label slot="end" class="new-account" routerLink="/sign-up">

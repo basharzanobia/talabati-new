@@ -68,23 +68,19 @@
         <ion-col size="6">الاجمالي</ion-col>
         <ion-col size="6">{{ cart.Total }} {{AppConsts.currency}}  </ion-col>
       </ion-row>
-  
-      <ion-row class="order-addres" >
-           <!--<ion-col size="12">
-            <ion-list>     
-              <ion-item>
-                <ion-select interface="action-sheet" [interfaceOptions]="{ cssClass: 'popover-wide' }" placeholder="عنوان التسليم" [(ngModel)]="AddressId" (ionChange)="selectAddress(AddressId)" cancelText="الغاء">
-                  <ng-container *ngFor="let ad of userAddresses">
-                    <ion-select-option value={{ad?.id}} 
-                    >{{ad?.addressTitle}}</ion-select-option>
-                   </ng-container>
-                   <ion-select-option value="0"  class="position-now" >
-                     موقعي الآن </ion-select-option>
-                   <ion-select-option value="new">اضافة عنوان جديد </ion-select-option> 
-                </ion-select>
-              </ion-item>
-            </ion-list>
-          </ion-col>-->
+  <br/>
+      <ion-row class="order-pay" >
+            <ion-col size="12" class="pay-title"> 
+              <ion-label>ملاحظات</ion-label>
+            </ion-col>
+            <ion-col size="12"> 
+              <ion-textarea type="text" 
+                placeholder="ادخل ملاحظات الطلب من فضلك ..."
+                [(ngModel)]="orderRequest.orderNotes"> </ion-textarea> 
+              
+               </ion-col>
+              </ion-row>
+              <ion-row class="order-pay" >
           <ion-col  size="6">
             <ion-button fill="clear" (click)="presentActionSheet()" style="color:black" >عنوان التسليم <ion-icon name="chevron-down-outline" ></ion-icon></ion-button>
          
@@ -93,85 +89,8 @@
           {{deliverAddress}}
          
           </ion-col>
-     <!-- <ion-row *ngIf="showGoogleMap">
-        <p>الرجاء ادخال العنوان الذي ترغب به</p>
-        <ion-searchbar class="location-search" mode="ios" [(ngModel)]="autocomplete.query" show-cancel-button="never" (ionInput)="updateSearch()"
-        (ionCancel)="dismiss()" (ionClear)="dismiss()" placeholder="">
-      </ion-searchbar>
-      <p class="small" *ngIf="selectedItem">{{autocomplete.query}}</p>
-      <ion-list lines="full">
-   
-        <ion-item  *ngFor="let item of items" (click)="chooseItem(item)">
-          <ion-icon slot="end" color="success" size="small" class="wg-arrow-line-left">
-          </ion-icon>
-          <ion-label text-wrap>
-         <h2>{{item.structured_formatting.main_text}}</h2>
-            <p>{{item.structured_formatting.secondary_text}}</p>
-          </ion-label>
-        </ion-item>
-      </ion-list>
-      </ion-row>-->
-       
-      </ion-row>
-        <!--  <ion-grid class="sevices">
-            <ion-row>
-              <ion-col size="6">
-                <ion-list lines="none">
-                  <ion-item >
-                    <ion-label class="booking-date" > المدينة</ion-label>
-                  </ion-item>
-                  <ion-item >
-                    <ion-input type="txt" [(ngModel)]="userAddress.city" placeholder="city"></ion-input>
-                  </ion-item>
-                </ion-list>
-              </ion-col>
-              <ion-col size="6">
-                <ion-list lines="none">
-                  <ion-item >
-                    <ion-label class="booking-time"> المنطقة </ion-label>
-                  </ion-item>
-                  <ion-item >
-                    <ion-input type="text"  [(ngModel)]="userAddress.area"  placeholder="area"></ion-input>
-                  </ion-item>
-                </ion-list>
-              </ion-col>
-              <ion-col size="6" *ngIf="!showGoogleMap">
-                <ion-list lines="none">
-                  <ion-item >
-                    <ion-label class="booking-date"> العنوان</ion-label>
-                  </ion-item>
-                  <ion-item >
-                    <ion-input type="text" [(ngModel)]="userAddress.address" placeholder="address"></ion-input>
-                  </ion-item>
-                </ion-list>
-              </ion-col>
-              <ion-col size="6">
-                <ion-list lines="none">
-                  <ion-item >
-                    <ion-label class="booking-time">  رقم البناء </ion-label>
-                  </ion-item>
-                  <ion-item >
-                    <ion-input type="text" [(ngModel)]="userAddress.houseNo" placeholder="000"></ion-input>
-                  </ion-item>
-                </ion-list>
-              </ion-col>
-                
-            </ion-row>
-          </ion-grid>
-
-           End Address Info--> 
-      <ion-row class="order-notes" >
-        <ion-col size="12"> 
-          <ion-label>ملاحظات</ion-label>
-        </ion-col>
-        <ion-col size="12"> 
-          <ion-textarea type="text" 
-            placeholder="ادخل ملاحظات الطلب من فضلك ..."
-            [(ngModel)]="orderRequest.orderNotes"> </ion-textarea> 
-          <br> <br>
-           </ion-col>
-      </ion-row>
-
+        </ion-row>
+    <br/>
       <ion-row class="order-notes" >
         <ion-col size="12"> 
           <ion-label>إرسال إلى شخص اخر</ion-label>
@@ -230,7 +149,7 @@
       </ion-row>
     </ng-container>
 
-
+<br/>
       <ion-row class="order-pay" >
         <ion-col size="12" class="pay-title">
           <ion-label> طريقة الدفع</ion-label>
@@ -239,16 +158,17 @@
 
         <ion-list style="width: 100%;">
           <ion-radio-group [(ngModel)]="orderRequest.paymentMode" [value]="orderRequest.paymentMode">
+            <ion-item (click)="hidePaymentCompanies()">
+              <ion-label> الدفع عند الاستلام</ion-label>
+              <ion-radio slot="end" value="1"></ion-radio>
+             </ion-item>
              <ion-item (click)="EWalletPayment()">
               <ion-label> الدفع عبر المحفظة</ion-label>
               <ion-radio slot="end" value="3"></ion-radio>
              </ion-item>
-             <ion-item (click)="hidePaymentCompanies()">
-              <ion-label> الدفع عند الاستلام</ion-label>
-              <ion-radio slot="end" value="1"></ion-radio>
-             </ion-item>
+         
              <ion-item (click)="showPaymentCompanies()">
-              <ion-label> الدفع عبر البطاقة</ion-label>
+              <ion-label>  الدفع عبر البطاقة أو الحوالة</ion-label>
               <ion-radio slot="end" value="2"></ion-radio>              
              </ion-item>
           </ion-radio-group>

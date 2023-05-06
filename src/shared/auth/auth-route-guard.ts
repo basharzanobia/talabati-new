@@ -24,8 +24,8 @@ export class AppRouteGuard implements CanActivate, CanActivateChild {
             return false;
         }
 
-        this._router.navigate([this.selectBestRoute()]);
-        return false;
+        //this._router.navigate([this.selectBestRoute()]);
+        return true;
     }
 
     canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {

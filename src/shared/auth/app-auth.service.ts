@@ -7,26 +7,33 @@ import {
     LoginResponseModel,
     
 } from '../service-proxies/service-proxies';
+import { AppSessionService } from '../session/app-session.service';
 
 @Injectable()
 export class AppAuthService {
-    authenticateModel: LoginApiModel;
-    authenticateResult: LoginResponseModel;
-    rememberMe: boolean;
+    authenticateModel: LoginApiModel ;
+    authenticateResult: LoginResponseModel; 
+    rememberMe: boolean =  JSON.parse(localStorage.getItem("rememberMe")) ? JSON.parse(localStorage.getItem("rememberMe")) : true;
 
     constructor(
         private _userService: UserapiServiceProxy,
         private _router: Router,
-        public alertController: AlertController
+        public alertController: AlertController,
+        private usersession : AppSessionService
     ) {
-        this.clear();
+      //  this.clear();
+      this.authenticateModel = new LoginApiModel();
+      console.log("auth instantiated ");
+       
     }
 
     logout(reload?: boolean): void {
+        console.log("from log out")
         localStorage.clear();
-        if (reload) {
+        console.log(this.usersession.user)
+       /*  if (reload) {
             this._router.navigate(['/log-in']);
-        }
+        } */
     }
 
     authenticate(finallyCallback?: () => void): void {
@@ -67,20 +74,31 @@ export class AppAuthService {
         // const tokenExpireDate = rememberMe
         //     ? new Date(new Date().getTime() + 1000 * expireInSeconds)
         //     : undefined;
-
+        localStorage.setItem("rememberMe", String(rememberMe));
+        console.log(rememberMe);
+      if(rememberMe){
         localStorage.setItem("token", authenticateResult.token);
         localStorage.setItem("talabati-username", authenticateResult.name);
         localStorage.setItem("talabati-email", authenticateResult.email);
         localStorage.setItem("talabati-role", authenticateResult.role);
         localStorage.setItem("talabati-id", authenticateResult.id);
+      }
+      else{
+        localStorage.setItem("token", authenticateResult.token);
+        sessionStorage.setItem("talabati-username", authenticateResult.name);
+        sessionStorage.setItem("talabati-email", authenticateResult.email);
+        sessionStorage.setItem("talabati-role", authenticateResult.role);
+        sessionStorage.setItem("talabati-id", authenticateResult.id);
+      }
+    
 
         this._router.navigate(['/intro']);
     }
 
     private clear(): void {
         this.authenticateModel = new LoginApiModel();
-        this.authenticateResult = null;
-        this.rememberMe = false;
+        //this.authenticateResult = null;
+       // this.rememberMe = false;
     }
 
     async presentAlert(header: string, msg: string, subHeader: string) {

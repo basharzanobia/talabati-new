@@ -12,6 +12,7 @@ import { App } from '@capacitor/app';
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { AppConsts } from 'src/shared/AppConsts';
 import { RouteInterceptorServiceService } from './services/route-interceptor-service.service';
+import { AppAuthService } from 'src/shared/auth/app-auth.service';
 
 
 
@@ -41,6 +42,7 @@ export class AppComponent {
       private navController: NavController,
       private toastController: ToastController,
       private _session: AppSessionService,
+      private _auth : AppAuthService,
       private routeService : RouteInterceptorServiceService,
     @Optional() private routerOutlet?: IonRouterOutlet
   ) {
@@ -79,6 +81,7 @@ export class AppComponent {
   
 exit(){
   this.withAlert("هل ترغب في الخروج من التطبيق ؟", () =>{
+    this._auth.logout();
     App.exitApp();
   });
 }

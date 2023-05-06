@@ -230,6 +230,7 @@ export class Tab3Page {
     this.paymentCompaniesVisible=true;
   }
   EWalletPayment(){
+console.log(this._session.userId);
     this.loading.present();
     this.hidePaymentCompanies();
     this._ewalletService.totalbyuserid(this._session.userId).subscribe(async (res: number) =>
@@ -284,6 +285,7 @@ export class Tab3Page {
   async withAlert(message: string, action: () => void) {
     const alert = await this.alertController.create({
       message: message,
+      mode:'ios',
       buttons: [{
         text: "إلغاء",
         role: "cancel"
