@@ -9,6 +9,7 @@ import { AppConsts } from 'src/shared/AppConsts';
 import { BackgroundGeolocationService } from '../services/background-geolocation.service';
 import { ActionSheetController } from '@ionic/angular';
 import { LoadingService } from '../services/loading.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 declare var google;
 @Component({
   selector: 'app-tab3',
@@ -37,7 +38,6 @@ export class Tab3Page {
   PaymentCompanies: PaymentCompany[] = [];
   userAddress:UserAddress=new UserAddress();
   userAddresses:UserAddress[]=[];
-  googleAddress;
   orderRequest: OrderRequestModel=new OrderRequestModel();
   showGoogleMap =false;
   userLatitude=0;
@@ -47,7 +47,7 @@ export class Tab3Page {
   addressId;
   deliverAddress;
   AppConsts = AppConsts;
-  
+  anotherAddressForm: FormGroup;
   constructor(
     private _session: AppSessionService,
     public cart: CartStoreService,
@@ -102,6 +102,27 @@ export class Tab3Page {
     this.items_len=this.cart.Items.length;
     this._addressApiService.getrequestsbyuserid(this._session.userId).subscribe((res: UserAddress[]) => this.userAddresses = res);
     this._paymentCompanyService.getallcompanies().subscribe((res: PaymentCompany[]) => this.PaymentCompanies = res);
+    this.anotherAddressForm = new FormGroup({
+      name: new FormControl(this.orderRequest.firstName, [
+        Validators.required
+      ]),
+      mobile: new FormControl(this.orderRequest.mobile,[
+        Validators.required,
+      ]),
+      city: new FormControl(this.orderRequest.city,[
+        Validators.required,
+      ]),
+      area: new FormControl(this.orderRequest.area,[
+        Validators.required,
+      ]),
+      houseNo: new FormControl(this.orderRequest.houseNo,[
+        Validators.required,
+      ]),
+      address: new FormControl(this.orderRequest.address,[
+        Validators.required,
+      ])
+    },
+    );
   }
   async presentAlert() {
     let radio_options = [];
@@ -151,23 +172,6 @@ export class Tab3Page {
       this.currentLon = position.coords.longitude
              });  
   } 
-  chooseItem(item: any) {
-    console.log('modal > chooseItem > item > ', item);
-    console.log(item)
-    this.selectedItem = item;
-    this.items = [];
-    this.autocomplete.query = item.structured_formatting.main_text + " - " + item.structured_formatting.secondary_text;
-    console.log("description "+item.description)
-    this.googleAddress = item.description;
-    this.buttonDisabled = false;
-    if (item.structured_formatting.secondary_text.indexOf(",")>0){
-      let lieuSplitted = item.structured_formatting.secondary_text.split(",",1); 
-      this.destinationCity  = lieuSplitted[0]
-    }
-    else{
-      this.destinationCity  = item.structured_formatting.main_text
-    }
-  }
 
   updateSearch() {
     console.log('modal > updateSearch '+this.autocomplete.query);
@@ -300,118 +304,21 @@ console.log(this._session.userId);
   }
 
   async selectAddress(id:any){
-   /* if( id==0){
-      this.showGoogleMap = true;
-      this.userAddress.address="";
-      this.userAddress.city="";
-      this.userAddress.houseNo="";
-      this.userAddress.area="";
-    }*/
-    this.hasAddress = false;
-    if( id == 0){
-      try{
-        const turnOnGPS = await this.bgGeolocation.askToTurnOnGPS();
-        if(turnOnGPS){
-          this.deliverAddress ="موقعي الآن";
-          console.log(id);
-          const options = {
-            enableHighAccuracy: true,
-            timeout: 5000,
-            maximumAge: 0
-          };
-      
-         navigator.geolocation.getCurrentPosition((pos)=>{
-          const crd = pos.coords;
-          
-          console.log('Your current position is:');
-          console.log(`Latitude : ${crd.latitude}`);
-          console.log(`Longitude: ${crd.longitude}`);
-          console.log(`More or less ${crd.accuracy} meters.`);
-          this.userLatitude = crd.latitude;
-          this.userLongitude = crd.longitude;
-          console.log(this.userLatitude,this.userLongitude);
-          this.currentPosition = true;
-          this.hasAddress = true;
-         } ,
-         async (err)=>{
-          this.hasAddress = false;
-          console.warn(`ERROR(${err.code}): ${err.message}`);
-          const alert = await this.alertController.create({
-           header: 'تأكيد ',
-           subHeader :  "عذرا لم نتمكن من الوصول إلى موقعك",
-            buttons: [
-             {
-                text: 'حسنا',
-                handler: () => { //takes the data 
-           
-                
-                }   
-             },
-       
-                    ],
-    
-                                        });
-    
-           await alert.present();
-         
-        }, options);
-        }
-        else{
-
-      const alert = await this.alertController.create({
-        header: 'تأكيد ',
-        subHeader :     "لا يوجد سماحيات للوصول إلى الموقع \n" +
-                       "الرجاء تشغيل GPS.\n\n",
-        buttons: [
-          {
-            text: 'حسنا',
-                handler: () => { //takes the data 
-           
-                
-                }   
-        },
-       
-        ],
-    
-      });
-    
-      await alert.present();
-        }
-      }
-      catch(error){
-        const alert = await this.alertController.create({
-          header: 'تأكيد ',
-          subHeader :     "لا يوجد سماحيات للوصول إلى الموقع \n" +
-                         "الرجاء تشغيل GPS.\n\n",
-          buttons: [
-            {
-              text: 'حسنا',
-                  handler: () => { //takes the data 
-             
-                  
-                  }   
-          },
-         
-          ],
-      
-        });
-      
-        await alert.present();
-      }
- 
   
-     
-    }
-    else if( id==='new'){
+    this.hasAddress = false;
+  if( id==='new'){
       console.log(id);
       this._router.navigate(['/locate-me'])
     }
     else {
+      this.loading.present();
       this.hasAddress = true;
       console.log(id);
       this.addressId=id;
       this._addressApiService.getbyid(id).subscribe((res: UserAddress) => 
-      {this.userAddress = res;
+      {
+        this.loading.dismiss();
+        this.userAddress = res;
         this.deliverAddress = res.addressTitle;
       });  
      
@@ -426,7 +333,7 @@ console.log(this._session.userId);
   };
   
   ShowDetailes(e){
-    console.log(e);
+    this.hasAddress = false;
     if(e.detail.checked){
       this.showDetailes = true;
     }
@@ -435,26 +342,31 @@ console.log(this._session.userId);
     }
   }
   async sendOrder() {
-    console.log(this.userLatitude,this.userLongitude);
+    if(this.showDetailes){
+      if (this.anotherAddressForm.invalid) {
+        for (const control of Object.keys(this.anotherAddressForm.controls)) {
+          this.anotherAddressForm.controls[control].markAsTouched();
+        }
+        return;
+      } 
+      console.log(this.hasAddress)
+    }
 
-    if(this.hasAddress)
+    if(this.hasAddress || this.showDetailes)
     {
    this.withAlert("هل أنت متأكد من تثبيت الطلب؟", () =>{
-     
+    this.loading.present();
     var totalQty=0;
     this.cart.Items.forEach(element => {
       totalQty+=element.quantity;
     });
-   if(this.currentPosition){
-    this.orderRequest.area="unidentified";
-    this.orderRequest.city="unidentified";
-    this.orderRequest.houseNo="unidentified";
-    this.orderRequest.address="unidentified";
-    this.orderRequest.deliverLatitude=this.userLatitude;
-    this.orderRequest.deliverLongitude=this.userLongitude;
-    //this.orderRequest.addressId = null;
+   if(this.showDetailes){
+    this.orderRequest.area=this.anotherAddressForm.value['area'];
+    this.orderRequest.city=this.anotherAddressForm.value['city'];
+    this.orderRequest.houseNo=this.anotherAddressForm.value['houseNo'];
+    this.orderRequest.address=this.anotherAddressForm.value['address'];
    }
-   else{
+   if(this.hasAddress){
     this.orderRequest.area=this.userAddress.area;
     this.orderRequest.city=this.userAddress.city;
     this.orderRequest.houseNo=this.userAddress.houseNo;
@@ -462,9 +374,7 @@ console.log(this._session.userId);
     this.orderRequest.deliverLatitude=this.userAddress.latitude;
     this.orderRequest.deliverLongitude=this.userAddress.longitude;
     this.orderRequest.addressId = this.addressId;
-    if(Boolean(this.googleAddress)){
-      this.orderRequest.address=this.googleAddress;
-    }
+    
    }
 
     this.orderRequest.totalAmount= this.cart.Total;
@@ -486,6 +396,7 @@ console.log(this._session.userId);
     });
     this._orderService.create(this.orderRequest).subscribe(
       (res) => {
+        this.loading.dismiss();
           console.log('res is ', res);
           this.cart.clearCart();
           this._router.navigate(['/invoice',res]);
@@ -493,11 +404,13 @@ console.log(this._session.userId);
       async (error) => {
         // Unexpected result!
         // await this.presentAlert('فشل', 'حدث خطأ حاول مرة أخرى', null);
+        this.loading.dismiss();
         console.log('error ', error);
       });
     });
     }
     else{
+      this.loading.dismiss();
       const alert = await this.alertController.create({
         header: 'تأكيد ',
         subHeader : "الرجاء ادخال عنوان استلام",
