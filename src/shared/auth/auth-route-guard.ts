@@ -14,7 +14,9 @@ export class AppRouteGuard implements CanActivate, CanActivateChild {
     constructor(
         private _router: Router,
         private _sessionService: AppSessionService,
-    ) { }
+    ) { 
+        console.log("in guard auth")
+    }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         console.log('_sessionService ', this._sessionService.user);

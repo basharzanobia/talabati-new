@@ -6,7 +6,7 @@ import { EditAddressResolverService } from './resolver/edit-address-resolver.ser
 const routes: Routes = [
 
    { 
-    path: '', redirectTo: 'log-in', pathMatch: 'full'
+    path: '', redirectTo: 'intro', pathMatch: 'full'
    }, 
   {
     path: '',
