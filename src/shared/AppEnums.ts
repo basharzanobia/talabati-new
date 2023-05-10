@@ -1,6 +1,19 @@
 import { OrderStatusType } from './service-proxies/service-proxies';
-
-
+import { PaymentModeType } from './service-proxies/service-proxies';
+export class AppPaymentModeType {
+    static getName(val: PaymentModeType) {
+        switch (val) {
+            case PaymentModeType.COD:
+                return 'دفع عند الاستلام';
+            case PaymentModeType.Online:
+                return 'دفع عبر البطاقة';
+            case PaymentModeType.EWallet:
+                return 'دفع عبر المحفظة';
+            default:
+               return '';
+        }
+    }
+}
 export class AppOrderStatusType {
     static Pending: number = OrderStatusType.Pending;
     static InTransit: number = OrderStatusType.InTransit;

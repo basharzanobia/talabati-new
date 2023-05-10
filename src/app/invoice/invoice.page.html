@@ -15,7 +15,7 @@
   </ion-row>
 
   <ion-grid class="ion-margin table">
-    <ion-row class="order-head" >
+<!--     <ion-row class="order-head" >
       <ion-col size="3">رقم الطلب: </ion-col>
       <ion-col size="3">{{order.id}}</ion-col>
       <ion-col size="3">التاريخ:</ion-col>
@@ -28,7 +28,7 @@
       <ion-col size="3">العنوان:</ion-col>
       <ion-col size="3">{{order.address}}</ion-col>
 
-    </ion-row>
+    </ion-row> -->
     <ion-row class="table-head" >
       <ion-col>البيانات</ion-col>
       <ion-col>السعر</ion-col>
@@ -58,7 +58,20 @@
       <ion-col size="6"> اجمالي قيمة الفاتورة:</ion-col>
       <ion-col size="6">{{order.grandTotal}} {{AppConsts.currency}} </ion-col>
     </ion-row>
+    <ion-row class="order-total" >
+      <ion-col size="6"> طريقة الدفع:</ion-col>
+      <ion-col size="6">{{_appPaymentModeType(order.paymentMode)}}  </ion-col>
+    </ion-row>
+    <ion-row class="order-total" >
+      <ion-col size="6"> الملاحظات:</ion-col>
+      <ion-col size="6" *ngIf="order.orderNotes !== null ">{{order.orderNotes}}  </ion-col>
+      <ion-col size="6" *ngIf="order.orderNotes === null "> لا يوجد </ion-col>
+    </ion-row>
+    <ion-row class="order-cutomer" >
+      <ion-col size="6">العنوان:</ion-col>
+      <ion-col size="6">{{order.address}}</ion-col>
 
+    </ion-row> 
     <br>      
      <ion-row class="order-add" >
       <ion-col size="12" class="item-order" routerLink="/order-confirmed" [replaceUrl]="true"> 

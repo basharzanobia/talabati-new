@@ -258,6 +258,10 @@ console.log(this._session.userId);
         this.loading.dismiss();
       alert.present();
       }
+     else{
+      this.orderRequest.paymentMode = 3;
+      this.loading.dismiss();
+     }
     });
     
     
@@ -356,84 +360,106 @@ console.log(this._session.userId);
       } 
       console.log(this.hasAddress)
     }
+if(this.orderRequest.paymentMode == null){
 
-    if(this.hasAddress || this.showDetailes)
-    {
-   this.withAlert("هل أنت متأكد من تثبيت الطلب؟", () =>{
-    this.loading.present();
-    var totalQty=0;
-    this.cart.Items.forEach(element => {
-      totalQty+=element.quantity;
-    });
-   if(this.showDetailes){
-    this.orderRequest.area=this.anotherAddressForm.value['area'];
-    this.orderRequest.city=this.anotherAddressForm.value['city'];
-    this.orderRequest.houseNo=this.anotherAddressForm.value['houseNo'];
-    this.orderRequest.address=this.anotherAddressForm.value['address'];
-   }
-   if(this.hasAddress){
-    this.orderRequest.area=this.userAddress.area;
-    this.orderRequest.city=this.userAddress.city;
-    this.orderRequest.houseNo=this.userAddress.houseNo;
-    this.orderRequest.address=this.userAddress.address;
-    this.orderRequest.deliverLatitude=this.userAddress.latitude;
-    this.orderRequest.deliverLongitude=this.userAddress.longitude;
-    this.orderRequest.addressId = this.addressId;
-    
-   }
-
-    this.orderRequest.totalAmount= this.cart.Total;
-    this.orderRequest.grandTotal= this.cart.Total;
-    this.orderRequest.totalQty=totalQty;
-    this.orderRequest.orderDetail = [];
-    this.cart.Items.forEach(element => {
-      const orderDetail = new OrderDetailRequest();
-      var elementPrice =element.varientId!=0?element.varient.price:element.product.price;
-      orderDetail.init({
-        productId: element.product.id,
-        qty: element.quantity,
-        price: elementPrice,
-        amount:elementPrice*element.quantity,  
-        varientId:element.varientId,
-        vendorId:element.product.createdBy
-      });
-      this.orderRequest.orderDetail.push(orderDetail);
-    });
-    this._orderService.create(this.orderRequest).subscribe(
-      (res) => {
-        this.loading.dismiss();
-          console.log('res is ', res);
-          this.cart.clearCart();
-          this._router.navigate(['/invoice',res]);
-      },
-      async (error) => {
-        // Unexpected result!
-        // await this.presentAlert('فشل', 'حدث خطأ حاول مرة أخرى', null);
-        this.loading.dismiss();
-        console.log('error ', error);
-      });
-    });
-    }
-    else{
-      this.loading.dismiss();
-      const alert = await this.alertController.create({
-        header: 'تأكيد ',
-        subHeader : "الرجاء ادخال عنوان استلام",
-        buttons: [
-          {
-            text: 'حسنا',
-                handler: () => { //takes the data 
-           
-                
-                }   
-        },
+  const alert = await this.alertController.create({
+    header: 'تأكيد ',
+    subHeader : "الرجاء ادخال طريقة دفع",
+    buttons: [
+      {
+        text: 'حسنا',
+            handler: () => { //takes the data 
        
-        ],
-    
-      });
-    
-      await alert.present();
-    }
+            
+            }   
+    },
+   
+    ],
+
+  });
+
+  await alert.present();
+}
+else{
+  if(this.hasAddress || this.showDetailes)
+  {
+ this.withAlert("هل أنت متأكد من تثبيت الطلب؟", () =>{
+  this.loading.present();
+  var totalQty=0;
+  this.cart.Items.forEach(element => {
+    totalQty+=element.quantity;
+  });
+ if(this.showDetailes){
+  this.orderRequest.area=this.anotherAddressForm.value['area'];
+  this.orderRequest.city=this.anotherAddressForm.value['city'];
+  this.orderRequest.houseNo=this.anotherAddressForm.value['houseNo'];
+  this.orderRequest.address=this.anotherAddressForm.value['address'];
+ }
+ if(this.hasAddress){
+  this.orderRequest.area=this.userAddress.area;
+  this.orderRequest.city=this.userAddress.city;
+  this.orderRequest.houseNo=this.userAddress.houseNo;
+  this.orderRequest.address=this.userAddress.address;
+  this.orderRequest.deliverLatitude=this.userAddress.latitude;
+  this.orderRequest.deliverLongitude=this.userAddress.longitude;
+  this.orderRequest.addressId = this.addressId;
+  
+ }
+
+  this.orderRequest.totalAmount= this.cart.Total;
+  this.orderRequest.grandTotal= this.cart.Total;
+  this.orderRequest.totalQty=totalQty;
+  this.orderRequest.orderDetail = [];
+  this.cart.Items.forEach(element => {
+    const orderDetail = new OrderDetailRequest();
+    var elementPrice =element.varientId!=0?element.varient.price:element.product.price;
+    orderDetail.init({
+      productId: element.product.id,
+      qty: element.quantity,
+      price: elementPrice,
+      amount:elementPrice*element.quantity,  
+      varientId:element.varientId,
+      vendorId:element.product.createdBy
+    });
+    this.orderRequest.orderDetail.push(orderDetail);
+  });
+  this._orderService.create(this.orderRequest).subscribe(
+    (res) => {
+      this.loading.dismiss();
+        console.log('res is ', res);
+        this.cart.clearCart();
+        this._router.navigate(['/invoice',res]);
+    },
+    async (error) => {
+      // Unexpected result!
+      // await this.presentAlert('فشل', 'حدث خطأ حاول مرة أخرى', null);
+      this.loading.dismiss();
+      console.log('error ', error);
+    });
+  });
+  }
+  else{
+   
+    const alert = await this.alertController.create({
+      header: 'تأكيد ',
+      subHeader : "الرجاء ادخال عنوان استلام",
+      buttons: [
+        {
+          text: 'حسنا',
+              handler: () => { //takes the data 
+         
+              
+              }   
+      },
+     
+      ],
+  
+    });
+  
+    await alert.present();
+  }
+}
+ 
  
   }
 
