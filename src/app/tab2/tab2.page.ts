@@ -38,15 +38,40 @@ export class Tab2Page implements OnInit {
     this._subOrderService.getbycreatorid(this._session.userId).subscribe((res: SubOrder[]) => {
       this.orders = res;
       this.orders.forEach(or => {
-        console.log(or.orderId);
+       // console.log(or.orderId);
+        console.log(or.userId);
         this._orderService.single(or.orderId).subscribe((res2: Order) =>{
           this.orderList[or.id]=res2;
-          this.getDriverReview(or.userId);
-          this.getVendorReview(or.vendorId);
+          if(or?.userId !=null){
+            console.log(or?.userId)
+            this.getDriverReview(or?.userId);
+          }
+         
+          console.log(or?.vendorId);
+          this.getVendorReview(or?.vendorId);
         });
       });
     });
 
+  }
+  ionViewWillEnter(){
+    this._subOrderService.getbycreatorid(this._session.userId).subscribe((res: SubOrder[]) => {
+      this.orders = res;
+      this.orders.forEach(or => {
+       // console.log(or.orderId);
+        console.log(or.userId);
+        this._orderService.single(or.orderId).subscribe((res2: Order) =>{
+          this.orderList[or.id]=res2;
+          if(or?.userId !=null){
+            console.log(or?.userId)
+            this.getDriverReview(or?.userId);
+          }
+         
+          console.log(or?.vendorId);
+          this.getVendorReview(or?.vendorId);
+        });
+      });
+    });
   }
 ionViewWillLeave(){
 
@@ -90,7 +115,8 @@ ionViewWillLeave(){
     });
 
     this._reviewUserapiService.create(review).subscribe(
-      (res) => {    
+      (res) => {  
+        if(userId !=null)  
         this.getDriverReview(userId);
       },
       async (error) => {

@@ -49,7 +49,9 @@ export class TrackingPage implements OnInit {
      this._subOrderService.getbyid(this.orderId)
           .subscribe((res:SubOrder) => {
             this.order = res;
-            this.getReview();
+            if(res.userId != null){
+              this.getReview();
+            }
             console.log(this.order);
           
           });
@@ -77,6 +79,7 @@ export class TrackingPage implements OnInit {
   addDriverReview(rate){
     
     const review = new UserReview();
+    console.log(this._session.userId);
     review.init({
       userId:this.order.userId,
       raterId:this._session.userId,
@@ -101,8 +104,10 @@ ionViewDidEnter(){
         this.orderAddress = res.address;
         this.orderLatitude = res.deliverLatitude;
         this.orderLongitude = res.deliverLongitude;
-       
-          this.initMap();
+       if(this.order.userId != null){
+        this.initMap();
+       }
+         
         
        
       }); 

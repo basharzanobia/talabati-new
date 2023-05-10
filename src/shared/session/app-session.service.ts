@@ -37,12 +37,13 @@ console.log(" remember from session "+this.rememberMe);
 
     get userId(): string {
         if(this.rememberMe){
-            return localStorage.getItem("talabati-id") ? localStorage.getItem("talabati-id") : null;
+            var u = localStorage.getItem("talabati-id") ? localStorage.getItem("talabati-id") : null;
         }
         else{
-            return sessionStorage.getItem("talabati-id") ? sessionStorage.getItem("talabati-id") : null;
+            var u = sessionStorage.getItem("talabati-id") ? sessionStorage.getItem("talabati-id") : null;
         }
-
+console.log(u);
+return u;
     }
 
 }

@@ -283,7 +283,12 @@ console.log(this._session.userId);
   }
 
   clearCart() {
-    this.cart.clearCart();
+    this.withAlert("هل أنت متأكد من حذف السلة؟", () =>{
+      this.cart.clearCart();
+      this._router.navigate(['/tabs/tab1/1'],{replaceUrl:true});
+    })
+
+
   }
   
   async withAlert(message: string, action: () => void) {
