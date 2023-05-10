@@ -5,9 +5,9 @@ import { EditAddressResolverService } from './resolver/edit-address-resolver.ser
 
 const routes: Routes = [
 
-  { 
-    path: '', redirectTo: 'guard', pathMatch: 'full'
-   },
+   { 
+    path: '', redirectTo: 'log-in', pathMatch: 'full'
+   }, 
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
