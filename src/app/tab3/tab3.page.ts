@@ -235,7 +235,7 @@ export class Tab3Page {
   }
   EWalletPayment(){
 console.log(this._session.userId);
-  
+this.loading.present();
     this.hidePaymentCompanies();
     this._ewalletService.totalbyuserid(this._session.userId).subscribe(async (res: number) =>
     {
@@ -244,7 +244,7 @@ console.log(this._session.userId);
         totalQty+=element.quantity;
       });
       if(res < totalQty){
-        this.loading.present();
+    
         const alert = await this.alertController.create({
           message: " ليس لديك رصيد كاف في المحفظة. رصيدك الحالي هو"+ totalQty
           + " " +AppConsts.currency + " الرجاء اختيار طريقة دفع أخرى ",
@@ -259,7 +259,7 @@ console.log(this._session.userId);
         this.loading.dismiss();
       alert.present();
       }
-   
+      this.loading.dismiss();
     });
     
     
