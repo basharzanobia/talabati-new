@@ -64,44 +64,20 @@
   </ion-row>
 
   <ion-row>
-    <ion-col size="6" class="res-start" > 
+    
+    <ion-col size="4" class="res-start" > 
       <ion-icon name="time"></ion-icon>
-        <ion-label color="secondry">  {{ (vendor$ | async)?.startTime }} </ion-label>  
+        <ion-label color="secondry">  {{ (vendor$ | async)?.startTime }} إلى {{ (vendor$ | async)?.endTime }} </ion-label>  
         
     </ion-col>
-    <ion-col size="6" class="res-end">        
-      <ion-icon name="time"></ion-icon>
-          <ion-label color="danger">{{ (vendor$ | async)?.endTime }}</ion-label> 
-          
-    </ion-col>
-    <ion-col size="12" class="res-call">
+
+    <ion-col size="4" class="res-call">
       <a button icon-start ion-button full [href]="'tel://' + (vendor$ | async)?.phoneNumber">
         <strong>اتصال</strong>
-        <ion-icon name="call"></ion-icon>
+<!--         <ion-icon name="call"></ion-icon> -->
       </a>
     </ion-col>
- <!--    <ion-col size="6" class="res-call">
-      <a button icon-start ion-button full [routerLink]="['/tchat',currentUserId,(vendor$ | async)?.id]">
-        <strong>مراسلة</strong>
-        <ion-icon name="chatbox"></ion-icon>
-      </a>
-    </ion-col> -->
-  </ion-row>
-
-  <ion-row class="prod-top">
-
-    
-    <ion-col size="6">
-      <div>
-        <ion-icon class="stars"  (click)="addReview(1)" [ngClass]="{'checked' : rating >= 1}" name="star" ></ion-icon>
-        <ion-icon class="stars"  (click)="addReview(2)" [ngClass]="{'checked' : rating >= 2}"  name="star" ></ion-icon>
-        <ion-icon class="stars" (click)="addReview(3)" [ngClass]="{'checked' : rating >= 3}" name="star" ></ion-icon>
-        <ion-icon class="stars" (click)="addReview(4)"  [ngClass]="{'checked' : rating >= 4}" name="star" ></ion-icon>
-       <ion-icon class="stars"  (click)="addReview(5)"  [ngClass]="{'checked' : rating >= 5}" name="star" ></ion-icon>
-      </div>
-    </ion-col>
-    
-    <ion-col size="6" class="prod-tilte-describ">
+    <ion-col size="4" class="prod-tilte-describ">
       <ion-label  *ngIf="isFav==false"  class="prod-price" (click)="createVendorWishList()">    
           <small>
             <ion-icon name="heart-circle-outline" size="medium"></ion-icon>
@@ -115,6 +91,22 @@
         </small>
     </ion-label>
     </ion-col>
+  </ion-row>
+
+  <ion-row class="prod-top">
+
+    
+    <ion-col size="12">
+      <div>
+        <ion-icon class="stars"  (click)="addReview(1)" [ngClass]="{'checked' : rating >= 1}" name="star" ></ion-icon>
+        <ion-icon class="stars"  (click)="addReview(2)" [ngClass]="{'checked' : rating >= 2}"  name="star" ></ion-icon>
+        <ion-icon class="stars" (click)="addReview(3)" [ngClass]="{'checked' : rating >= 3}" name="star" ></ion-icon>
+        <ion-icon class="stars" (click)="addReview(4)"  [ngClass]="{'checked' : rating >= 4}" name="star" ></ion-icon>
+       <ion-icon class="stars"  (click)="addReview(5)"  [ngClass]="{'checked' : rating >= 5}" name="star" ></ion-icon>
+      </div>
+    </ion-col>
+    
+
 
 
     
@@ -139,13 +131,21 @@
                 <ion-label color="secondry" class="item-price">{{ product.price }} {{AppConsts.currency}}</ion-label> 
                 
           </ion-col>
-          <ion-col size="6" class="item-order" [routerLink]="['/product', product.id]">
-            <a button icon-start ion-button full class="order-button">
+     <ion-col size="6" class="item-order" [routerLink]="['/product', product.id]" *ngIf="cart.getItemById(product.id) == 0"> 
+           <a button icon-start ion-button full class="order-button">
               <ion-icon name="basket"></ion-icon>
               <ion-label class="add-item">طلب  </ion-label>
-            
-            </a>
-          </ion-col>
+          
+            </a> 
+            </ion-col>
+          <ion-col size="6"  *ngIf="cart.getItemById(product.id) > 0" >
+   
+            <ion-col>         <ion-icon name="remove-outline" color="danger" (click)="decItem(product.id)"></ion-icon></ion-col>
+        
+            <ion-col>    {{  cart.getItemById(product.id)  }}</ion-col>
+            <ion-col>   <ion-icon name="add-outline" color="success" (click)="incItem(product.id)"></ion-icon></ion-col>
+          
+          </ion-col> 
         </ion-row>
       
       </ion-col>

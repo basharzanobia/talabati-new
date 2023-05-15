@@ -22,6 +22,7 @@ import { switchMap } from 'rxjs/operators';
 import { AppConsts } from 'src/shared/AppConsts';
 import { AlertController } from '@ionic/angular';  
 import { AppSessionService } from 'src/shared/session/app-session.service';
+import { CartStoreService } from 'src/shared/cart/cart-store.service';
 
 @Component({
   selector: 'app-resturant',
@@ -45,9 +46,11 @@ export class ResturantPage implements OnInit {
   vendorWishListId;
   AppConsts = AppConsts;
   Review: ReviewUserResponse[]=[];
+  dictionary= new Map<number, number>();
   constructor(
     private _session: AppSessionService,
     private route: ActivatedRoute,
+    public cart: CartStoreService,
     private _vendorService: VendorapiServiceProxy,
     private _productsService: ProductapiServiceProxy,
     private _homeService: HomeapiServiceProxy,
@@ -84,9 +87,53 @@ export class ResturantPage implements OnInit {
 
     this.categories$ = this._homeService.menu();
     this.isFavVendor();
+
+  }
+  decItem(i: number) {
+    const item = this.cart.Items.forEach(function (value) {
+      if(value.productId == i)
+      {
+        value.quantity = value.quantity > 1 ? value.quantity - 1 : 1;
+      }
+    });
    
   }
+ getItemCountInCart(id : number){
+  var quantity = this.cart.getItemById(id);
 
+ }
+  incItem(i: number) {
+  
+    var isExist = this.cart.isItemExist(i);
+    if(isExist){
+      const item = this.cart.Items.forEach(function (value) {
+        if(value.productId == i)
+        {
+          console.log(value)
+          value.quantity = value.quantity +1;
+        }
+     
+      });
+    }
+    else{
+      this._productsService.single(i)
+      .subscribe((res: Product) => {
+        if(res){
+          this.cart.addToCart({
+            productId: i,
+            quantity: 1,
+            product: res,
+            varientId : null,
+            varient : null
+          });
+        }
+    
+      });
+    
+    }
+
+
+  }
   slidePrev() {
 
   }

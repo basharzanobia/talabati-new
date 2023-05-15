@@ -21,7 +21,26 @@ export class CartStoreService {
     this.items.splice(index, 1);
     sessionStorage.setItem(this.storageKey, JSON.stringify(this.items));
   }
-
+  getItemById(id: number) : number {
+    var q = 0;
+    this.items.forEach(function (value) {
+      if(value.productId == id)
+      {
+        q = value.quantity;
+      }
+    }); 
+    return q;
+  }
+  isItemExist(id:number): boolean{
+    var q = false;
+    this.items.forEach(function (value) {
+      if(value.productId == id)
+      {
+        q= true;
+      }
+    }); 
+    return q;
+  }
   clearCart() {
     this.items = [];
     sessionStorage.setItem(this.storageKey, JSON.stringify(this.items));
