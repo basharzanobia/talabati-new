@@ -170,6 +170,9 @@ this.myPosition = true;
       ]),
       landmark: new FormControl(this.Myaddress.landmark,[
         Validators.required,
+      ]),
+      addressType: new FormControl(this.Myaddress.type,[
+        Validators.required,
       ])
     });
   }
@@ -187,6 +190,9 @@ this.myPosition = true;
   }
   get landmark() {
     return this.addrInfoForm.get('landmark')!;
+  }
+  get addressType() {
+    return this.addrInfoForm.get('addressType')!;
   }
   saveAddress()
   { 
@@ -221,13 +227,15 @@ console.log ("google addr"+ this.googleAddress);
      this.Myaddress.address = this.googleAddress;     
      this.Myaddress.latitude =this.latitude ?? 0;
      this.Myaddress.longitude =  this.longitude ?? 0;
-     console.log( this.Myaddress.latitude);
+     this.Myaddress.type = this.addressType.value;
+ /*     console.log( this.Myaddress.latitude);
      console.log( this.Myaddress.longitude);
      console.log( this.googleAddress);
      console.log( this.Myaddress.addressTitle);
      console.log( this.Myaddress.area);
      console.log( this.Myaddress.city);
      console.log( this.Myaddress.houseNo);
+     console.log( this.addressType.value); */
       this._addressService.createaddress(this.Myaddress).subscribe(
         (res) => {
 
