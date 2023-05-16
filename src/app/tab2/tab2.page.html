@@ -39,28 +39,16 @@
 
     <ng-container *ngFor="let order of orders">
     <ng-container *ngIf="order.orderStatus !== 15">
+
       <ion-row class="track-head">
         <ion-label class="track-title"></ion-label>
         <ion-col size="6">رقم الطلب :</ion-col>
         <ion-col size="6">{{ order.id }} </ion-col>
       </ion-row>
-
-
-      <!-- <ion-row class="order-action" >  
-        <ion-col size="3"> الشحن  :</ion-col> 
-        <ion-col size="3" > 
-          {{ order.shippingAmount }}
-          </ion-col>
-      
-        <ion-col size="3">الضريبة   :</ion-col> 
-        <ion-col size="3" > 
-          {{order.taxAmount }}
-          </ion-col>
-      </ion-row> -->
       
       
 
-        <ion-row class="order-cutomer" >
+ <!--        <ion-row class="order-cutomer" >
           <ion-col size="6" class="total item-photo" >
             الإجمالي   : 
             <ion-row >  
@@ -78,9 +66,9 @@
                 </ion-col>
               </ion-row>
           </ion-col>
-          </ion-row>
+          </ion-row> -->
 
-          <br>
+ <!--          <br>
       <ion-row class="order-cutomer" *ngFor="let orderDetail of order.orderDetail">
           <ion-col size="4" class="item-photo" routerLink="/product">
             <ion-img [src]="AppConsts.appBaseUrl+ '/' +orderDetail.product.mainImagePath" ></ion-img>
@@ -109,28 +97,28 @@
 
              
           </ion-col>
-      </ion-row>
+      </ion-row> -->
       <ion-row class="table-head" >
         <ion-col size="12" class="item-statu">
-          <ion-range style = "pointer-events:none" min="0" max="100" step="20" snaps="true" [pinFormatter]="customFormatter" [pin]="true" color="tertiary" [value]="order.orderStatus * 10"></ion-range>
+<!--           <ion-range style = "pointer-events:none" min="0" max="100" step="20" snaps="true" [pinFormatter]="customFormatter" [pin]="true" color="tertiary" [value]="order.orderStatus * 10"></ion-range> -->
           <p class="item-hint">{{ AppOrderStatusType.getName(order.orderStatus) }} </p>
         </ion-col>
         
       </ion-row>
-     
-      <br>
       <ion-row class="order-action" >
-        <ion-col size="6" class="order-cancel" [routerLink]="['/tracking', order.id]" routerDirection="forward"> 
+        <ion-col size="12" class="order-cancel" [routerLink]="['/tracking', order.id]" routerDirection="forward"> 
           <a button icon-start ion-button full class="order-track">
             <ion-label class="cancel-item" > التفاصيل</ion-label>
           </a>
            </ion-col>
-           <ion-col size="6" class="call-button" routerLink="/tabs/tab1"> 
+  <!--          <ion-col size="6" class="call-button" routerLink="/tabs/tab1"> 
             <a button icon-start ion-button full>
               <ion-label class="add-call" > الاتصال  </ion-label>
             </a>
-         </ion-col>
+         </ion-col> -->
       </ion-row>
+      <ion-item-divider>
+      </ion-item-divider>
     </ng-container>
    </ng-container>
   </ion-grid>

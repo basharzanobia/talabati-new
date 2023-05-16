@@ -7,6 +7,8 @@ import {
 } from '@angular/google-maps';
 import { Router} from '@angular/router';
 import { AlertController } from '@ionic/angular'; 
+import { LoadingService } from '../services/loading.service';
+
 //import { BackgroundGeolocationService } from '../services/background-geolocation.service';
 @Component({
   selector: 'app-locate-me',
@@ -42,6 +44,7 @@ export class LocateMePage implements OnInit {
   constructor(private ngZone: NgZone, 
     private geoCoder: MapGeocoder,
     private _router: Router,
+    private loading :LoadingService,
    // private bgGeolocation:BackgroundGeolocationService,
     public alertController: AlertController) {
    /* this.height = (document.documentElement.clientHeight-100)+"px";*/
@@ -82,7 +85,22 @@ export class LocateMePage implements OnInit {
       });
     });
   }*/
+  async presentAlert(header: string, msg: string, subHeader: string) {
+    const alert = await this.alertController.create({
+      cssClass: 'app-alert',
+      header: header,
+      subHeader: subHeader,
+      message: msg,
+      buttons: ['حسنا']
+    });
 
+    await alert.present();
+
+    const { role } = await alert.onDidDismiss();
+  }
+async ionViewWillEnter(){
+  await this.presentAlert('تأكيد', 'لتحديد العنوان بشكل الأفضل يرجى تفعيل خاصية المواقع من الجوال', null);
+}
   async ngOnInit() {
     try{
      // const turnOnGPS = await this.bgGeolocation.askToTurnOnGPS();

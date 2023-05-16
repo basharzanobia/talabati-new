@@ -120,7 +120,7 @@
   <ion-row *ngFor="let product of featuredProducts" class="feu-pro">
     <ng-container *ngIf="!selectedCategory || selectedCategory == product.categoryId">
       <ion-col size="4" class="item-photo ion-no-padding" [routerLink]="['/product', product.id]">
-        <img [src]="AppConsts.appBaseUrl + '/' + product.mainImagePath" class="product-img"/>
+        <img [src]="AppConsts.appBaseUrl + '/' + product.mainImagePath" class="product-img" height="100"/>
       </ion-col>
       <ion-col size="8" class="item-detile">
         <ion-label class="item-id">{{ product.name }} </ion-label>
