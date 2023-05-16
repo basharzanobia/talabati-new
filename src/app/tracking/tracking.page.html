@@ -155,7 +155,7 @@
   
     <br>
     <ion-row class="order-action" >
-      <ion-col size="6" class="order-cancel" routerLink="/order-canceled"> 
+      <ion-col size="6" class="order-cancel" (click)="cancelOrder()"> 
         <a button icon-start ion-button full class="order-track">
           <ion-label class="cancel-item" > الغاء الطلب </ion-label>
         </a>

@@ -43,7 +43,7 @@ export class BuyForMePage implements OnInit {
       header: header,
       subHeader: subHeader,
       message: msg,
-      buttons: ['OK']
+      buttons: ['حسنا']
     });
 
     await alert.present();

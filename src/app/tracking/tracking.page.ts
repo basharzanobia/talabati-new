@@ -3,10 +3,11 @@ import { AppOrderStatusType } from 'src/shared/AppEnums';
 import { Order, SuborderapiServiceProxy,SubOrder,UserReview,ReviewuserapiServiceProxy, OrderapiServiceProxy,SubOrderModel ,UserlocationapiServiceProxy ,Location, OrderStatusType} from 'src/shared/service-proxies/service-proxies';
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { AppConsts } from 'src/shared/AppConsts';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ViewChild, ElementRef } from '@angular/core';
 import { faCab } from "@fortawesome/free-solid-svg-icons";
 import { interval } from 'rxjs';
+import { AlertController } from '@ionic/angular';
 declare var google:any;
 @Component({
   selector: 'app-tracking',
@@ -37,7 +38,9 @@ export class TrackingPage implements OnInit {
     private _userLocation :UserlocationapiServiceProxy,
     private _subOrderService :SuborderapiServiceProxy,
     private _reviewUserapiService:ReviewuserapiServiceProxy,
-    private _orderService: OrderapiServiceProxy) {
+    private _orderService: OrderapiServiceProxy,
+    public alertController: AlertController,
+    private router: Router) {
   }
 
 
@@ -75,7 +78,29 @@ export class TrackingPage implements OnInit {
         console.log('error ', error);
       });
   }
+  async presentAlert(header: string, msg: string, subHeader: string) {
+    const alert = await this.alertController.create({
+      cssClass: 'app-alert',
+      header: header,
+      subHeader: subHeader,
+      message: msg,
+      buttons: ['حسنا']
+    });
 
+    await alert.present();
+
+    const { role } = await alert.onDidDismiss();
+  }
+   async cancelOrder(){
+    if(this.order.orderStatus == OrderStatusType.Pending){
+     this.order.orderStatus = OrderStatusType.Canceled;
+     this._subOrderService.update(this.order).subscribe((res)=> console.log("updated"));
+     this.router.navigate(['/order-canceled']);
+    }
+    else{
+      await this.presentAlert('عذرا', 'لا يمكن الغاء الطلب بعد البدء بتحضيره', null);
+    }
+  }
   addDriverReview(rate){
     
     const review = new UserReview();

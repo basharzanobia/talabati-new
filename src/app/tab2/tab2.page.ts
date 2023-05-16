@@ -48,7 +48,8 @@ export class Tab2Page implements OnInit {
           }
          
           console.log(or?.vendorId);
-          this.getVendorReview(or?.vendorId);
+          if(or?.vendorId !== null){
+          this.getVendorReview(or?.vendorId);}
         });
       });
     });
@@ -62,13 +63,14 @@ export class Tab2Page implements OnInit {
         console.log(or.userId);
         this._orderService.single(or.orderId).subscribe((res2: Order) =>{
           this.orderList[or.id]=res2;
-          if(or?.userId !=null){
+          if(or?.userId !== null){
             console.log(or?.userId)
             this.getDriverReview(or?.userId);
           }
          
           console.log(or?.vendorId);
-          this.getVendorReview(or?.vendorId);
+          if(or?.vendorId !== null){
+          this.getVendorReview(or?.vendorId);}
         });
       });
     });
