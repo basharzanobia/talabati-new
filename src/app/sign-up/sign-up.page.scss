@@ -5,8 +5,18 @@
     padding: 6%;
 
 }
-
-
+.item-input{
+    padding-bottom: 0 !important;
+    padding-top:  0 !important;
+}
+.item-select{
+    padding-bottom: 0  !important;
+    padding-top: 0  !important;  
+}
+ion-item{
+    --inner-padding-bottom: 0  !important;
+    --inner-padding-top: 0  !important;
+}
 /*  Form  header Title */
 
 .logos {
