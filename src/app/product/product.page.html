@@ -81,7 +81,6 @@
 
   
   </ion-row>
-
     <ion-row class="prod-mid">
       <ion-col size="12" class="prod-tilte-describ">
        <ion-label class="prod-price"> الوصف والمحتويات </ion-label>
@@ -135,13 +134,14 @@
             
       </ion-col>
       <ion-col size="6" class="item-order" routerLink="/resturant/{{restId}}">
-        <a ion-button button icon-start full 
+        <a ion-button button icon-start full  
           class="order-button"
           (click)="addToCart()">
           <ion-icon name="basket"></ion-icon>
           <ion-label class="add-item">طلب  </ion-label>
       </a>
       </ion-col>
+    
     </ion-row>
 
     </section>

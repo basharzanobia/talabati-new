@@ -23,7 +23,8 @@ import * as ApiServiceProxies from './service-proxies';
         ApiServiceProxies.ReviewuserapiServiceProxy,
         ApiServiceProxies.PaymentcompanyapiServiceProxy,
         ApiServiceProxies.PopularquestionsapiServiceProxy,
-        ApiServiceProxies.DynamicpagesServiceProxy
+        ApiServiceProxies.DynamicpagesServiceProxy,
+        ApiServiceProxies.VarientapiServiceProxy
         // { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true }
     ]
 })

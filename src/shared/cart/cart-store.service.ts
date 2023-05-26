@@ -16,6 +16,50 @@ export class CartStoreService {
   get Items() {
     return this.items;
   }
+  clearCart() {
+    this.items = [];
+    sessionStorage.setItem(this.storageKey, JSON.stringify(this.items));
+    return this.items;
+  }
+
+  get Total() {
+    const sum = this.items.reduce((sum, current) => sum + (current.varientId!=0?current.varient.price:current.product.price) * current.quantity, 0);
+    return sum;
+  }
+
+
+
+
+
+
+
+  decItem(productId: number) {
+    const i = this.items.findIndex(e => e.productId === productId);
+    if (i > -1) {
+      const item = this.Items[i];
+      item.quantity = item.quantity > 1 ? item.quantity - 1 : 1;
+    } 
+  }
+
+  incItem(product) {
+    const i = this.items.findIndex(e => e.productId === product.productId);
+    if (i > -1) {
+      const item = this.Items[i];
+      item.quantity = item.quantity + 1;
+    } 
+    else{
+      this.addToCart(product)
+    }
+  }
+
+  getCountOfItem(productId: number) : number{
+    const i = this.items.findIndex(e => e.productId === productId);
+    if (i > -1) {
+      return(this.Items[i].quantity);
+    } 
+    else return 0;
+  }
+  
 
   removeFromCart(index: number) {
     this.items.splice(index, 1);
@@ -41,16 +85,7 @@ export class CartStoreService {
     }); 
     return q;
   }
-  clearCart() {
-    this.items = [];
-    sessionStorage.setItem(this.storageKey, JSON.stringify(this.items));
-    return this.items;
-  }
-
-  get Total() {
-    const sum = this.items.reduce((sum, current) => sum + (current.varientId!=0?current.varient.price:current.product.price) * current.quantity, 0);
-    return sum;
-  }
+ 
 
   getShippingPrices() {
     

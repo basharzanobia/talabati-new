@@ -54,7 +54,7 @@ ion-scroll{
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden
+  overflow: hidden;
 }
 ion-vendor{
   flex-shrink: 0;
@@ -73,6 +73,7 @@ ion-vendor{
     padding: 10px;
 
   }
+
 
   .selectable-icon {
       padding-bottom: 5px;
@@ -106,12 +107,14 @@ ion-vendor{
           padding-left: 2px;
       }
   }
-
+ 
 .products {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 10px; 
 }
-
+.call-icon{
+font-size: 20px;
+}
   .item-photo {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 10px;
@@ -133,7 +136,7 @@ text-align: center;
 padding: 2%;
 
   }
-
+ 
   .item-cost {
     font-size: 18px;
     font-weight: 600;

@@ -64,6 +64,7 @@ export class Tab1Page implements OnInit {
     this.subCatId = id;
     console.log(this.subCatId);
     if(id==0){
+      this.subCatId = 0;
       this.filteredVendors=this.vendors$;
       return;
     }
@@ -93,9 +94,10 @@ export class Tab1Page implements OnInit {
   }
   search(event: Event){
     const query = (event.target as HTMLInputElement).value;
-
+console.log('query' +query);
      if (query) { 
       this.filteredVendors = this.filteredVendors.filter((item) => {
+        console.log(item.name)
         return (item.name.includes(query) || item.region.includes(query));
       })
     }
@@ -104,7 +106,41 @@ export class Tab1Page implements OnInit {
     }
    
   }
-
+  handleInput(event) { 
+    const query = event.target.value.toLowerCase();
+    if(this.subCatId === 0){
+      this._vendorService.vendorsbycatid(this.catId).subscribe(
+        (res1: UserResponseModel[])=>{
+          if (query) { 
+       
+            this.filteredVendors = res1.filter((item) => {
+              console.log(item.name)
+              return (item.name.includes(query) );
+            })
+          }
+          else{
+            this.filterVendorsBySlider(this.subCatId);
+          }
+        }
+      );
+    }
+    else{
+      this._vendorService.vendorsbysubcatid( this.subCatId ).subscribe((res)=>{
+        if (query) { 
+       
+          this.filteredVendors = res.filter((item) => {
+            console.log(item.name)
+            return (item.name.includes(query) );
+          })
+        }
+        else{
+          this.filterVendorsBySlider(this.subCatId);
+        }
+      });
+    }
+   
+ 
+  }
   handleRefresh(event) {
     setTimeout(() => {
       this.ngOnInit();

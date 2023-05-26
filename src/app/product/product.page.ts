@@ -3,7 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { AppConsts } from 'src/shared/AppConsts';
 import { CartStoreService } from 'src/shared/cart/cart-store.service';
 import { AppSessionService } from 'src/shared/session/app-session.service';
-import { AlertController } from '@ionic/angular';  
+import { AlertController } from '@ionic/angular'; 
+import * as moment from 'moment'; 
 
 import {
   Product,
@@ -13,7 +14,8 @@ import {
   Wishlist,
   WishListModel,
   ReviewproductapiServiceProxy,
-  Review
+  Review,
+  VendorapiServiceProxy
 } 
 from 'src/shared/service-proxies/service-proxies';
 
@@ -35,6 +37,10 @@ export class ProductPage implements OnInit {
   isFav:boolean=false;
   wishListId;
   rating;
+  now;
+  startTime;
+  endTime;
+  isClosed = false;
 
   constructor(
     private _session: AppSessionService,
@@ -43,6 +49,7 @@ export class ProductPage implements OnInit {
     private _productsService: ProductapiServiceProxy,
     private _wishlistService: WishlistapiServiceProxy,
     private _productapiService:ReviewproductapiServiceProxy,
+    private _vendorService : VendorapiServiceProxy,
     public alertCtrl: AlertController,
     ) { }
 
@@ -54,10 +61,25 @@ export class ProductPage implements OnInit {
             this.getReview(this.product.review);
             this.varientNumber = this.product.varient.length;
             this.restId = this.product.createdBy;
+            this.now = new  Date().toString().split(' ')[4];
+            console.log(this.product?.createdBy);
+            this._vendorService.vendorbyid(this.product?.createdBy).subscribe((res)=>{
+              var start = res.startTime.split(":");
+              var end = res.endTime.split(":");
+              this.startTime = moment({ hour:+start[0], minute:+start[1] }).format('HH:mm');
+              this.endTime = moment({ hour:+end[0], minute:+end[1] }).format('HH:mm');
+              console.log(res?.endTime);
+              console.log(res?.startTime);
+              if((this.startTime > this.now) || ( this.endTime < this.now)){
+                    this.isClosed = true;
+              }
+            })
           });
           this.isFavProduct();   
   }
+ionViewDidEnter(){
 
+}
   handleRefresh(event) {
     setTimeout(() => {
       // Any calls to load data go here

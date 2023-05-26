@@ -214,7 +214,13 @@ const routes: Routes = [
   {
     path: 'reset-token',
     loadChildren: () => import('./reset-token/reset-token.module').then( m => m.ResetTokenPageModule)
+  },
+  {
+    path: 'restaurant-new/:vendorId',
+    loadChildren: () => import('./restaurant-new/restaurant-new.module').then( m => m.RestaurantNewPageModule),
+    canActivate: [AppRouteGuard]
   }
+
 
 
 

@@ -283,7 +283,24 @@ this.loading.present();
   removeItem(i: number) {
     this.cart.removeFromCart(i);
   }
-
+  ionViewDidEnter(){
+    this.hideTabBar();
+  }
+  ionViewDidLeave(){
+    this.showTabBar();
+  }
+   showTabBar  () {
+    const tabBar = document.getElementById('app-tab-bar');
+    if (tabBar !== null) {
+      tabBar.style.display = 'block';
+    }
+  };
+   hideTabBar () {
+    const tabBar = document.getElementById('app-tab-bar');
+    if (tabBar !== null) {
+      tabBar.style.display = 'none';
+    }
+  };
   clearCart() {
     this.withAlert("هل أنت متأكد من حذف السلة؟", () =>{
       this.cart.clearCart();

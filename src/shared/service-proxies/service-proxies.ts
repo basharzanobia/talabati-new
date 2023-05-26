@@ -3553,6 +3553,64 @@ export class ProductapiServiceProxy {
     }
 
     /**
+     * @return Success
+     */
+    listpoductswithvarients(): Observable<ProductModel[]> {
+        let url_ = this.baseUrl + "/api/productapi/listpoductswithvarients";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processListpoductswithvarients(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processListpoductswithvarients(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ProductModel[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ProductModel[]>;
+        }));
+    }
+
+    protected processListpoductswithvarients(response: HttpResponseBase): Observable<ProductModel[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(ProductModel.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ProductModel[]>(null as any);
+    }
+
+    /**
      * Get product of specific id.
      * @param productId (optional) Product id
      * @return return Product object
@@ -7481,6 +7539,69 @@ export class VarientapiServiceProxy {
     }
 
     /**
+     * @param productId (optional) 
+     * @return Success
+     */
+    listbyproductid(productId: number | undefined): Observable<Varient[]> {
+        let url_ = this.baseUrl + "/api/varientapi/listbyproductid?";
+        if (productId === null)
+            throw new Error("The parameter 'productId' cannot be null.");
+        else if (productId !== undefined)
+            url_ += "productId=" + encodeURIComponent("" + productId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processListbyproductid(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processListbyproductid(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<Varient[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<Varient[]>;
+        }));
+    }
+
+    protected processListbyproductid(response: HttpResponseBase): Observable<Varient[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(Varient.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Varient[]>(null as any);
+    }
+
+    /**
      * Get Varient of specific id.
      * @param varientId (optional) varient Id
      * @return return Varient object
@@ -8461,6 +8582,68 @@ export class WishlistapiServiceProxy {
             }));
         }
         return _observableOf<WishListModel[]>(null as any);
+    }
+
+    /**
+     * @param productId (optional) 
+     * @param userId (optional) 
+     * @return Success
+     */
+    isfav(productId: number | undefined, userId: string | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/wishlistapi/isfav?";
+        if (productId === null)
+            throw new Error("The parameter 'productId' cannot be null.");
+        else if (productId !== undefined)
+            url_ += "productId=" + encodeURIComponent("" + productId) + "&";
+        if (userId === null)
+            throw new Error("The parameter 'userId' cannot be null.");
+        else if (userId !== undefined)
+            url_ += "userId=" + encodeURIComponent("" + userId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processIsfav(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processIsfav(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<boolean>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<boolean>;
+        }));
+    }
+
+    protected processIsfav(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(null as any);
     }
 
     /**
@@ -11953,6 +12136,7 @@ export class ProductModel implements IProductModel {
     status: boolean;
     isFeatured: boolean;
     purchaseCount: number;
+    varient: Varient[] | undefined;
 
     constructor(data?: IProductModel) {
         if (data) {
@@ -11994,6 +12178,11 @@ export class ProductModel implements IProductModel {
             this.status = _data["status"];
             this.isFeatured = _data["isFeatured"];
             this.purchaseCount = _data["purchaseCount"];
+            if (Array.isArray(_data["varient"])) {
+                this.varient = [] as any;
+                for (let item of _data["varient"])
+                    this.varient.push(Varient.fromJS(item));
+            }
         }
     }
 
@@ -12035,6 +12224,11 @@ export class ProductModel implements IProductModel {
         data["status"] = this.status;
         data["isFeatured"] = this.isFeatured;
         data["purchaseCount"] = this.purchaseCount;
+        if (Array.isArray(this.varient)) {
+            data["varient"] = [];
+            for (let item of this.varient)
+                data["varient"].push(item.toJSON());
+        }
         return data;
     }
 
@@ -12076,6 +12270,7 @@ export interface IProductModel {
     status: boolean;
     isFeatured: boolean;
     purchaseCount: number;
+    varient: Varient[] | undefined;
 }
 
 export class ProductResponseModel implements IProductResponseModel {

@@ -116,7 +116,13 @@ ion-scroll{
     font-size: 18px;
     font-weight: 600;
   }
-
+  .item-closed {
+    background-color: rgb(105, 17, 17);
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    justify-content: center;
+  }
   .order-button {
     color: aliceblue;
     display: flex;
