@@ -59,7 +59,8 @@ export class CartPage implements OnInit {
       orderDetail.init({
         productId: element.product.id,
         qty: element.quantity,
-        price: element.product.price
+        price: element.product.price,
+        notes : element.notes
       });
       order.orderDetail.push(orderDetail);
     });

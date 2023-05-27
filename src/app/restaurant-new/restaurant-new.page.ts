@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { 
   Category,
   HomeapiServiceProxy,
@@ -29,6 +29,7 @@ import { AppConsts } from 'src/shared/AppConsts';
 import { ActionSheetController, AlertController, IonModal } from '@ionic/angular';  
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { CartStoreService } from 'src/shared/cart/cart-store.service';
+import * as moment from 'moment';
 
 
 @Component({
@@ -50,6 +51,10 @@ export class RestaurantNewPage implements OnInit {
   rating;
   currentUserId = "";
   selectedCategory;
+  now;
+  startTime;
+  endTime;
+  isClosed = false;
   vendorlist :VendorWishListResponseModel[]=[];
   productslist :IWishListModel[]=[];
   isFav:boolean=false;
@@ -62,6 +67,7 @@ export class RestaurantNewPage implements OnInit {
    indexedArray: {[key: number]: boolean};
   constructor(
     private _session: AppSessionService,
+    private router : Router,
     private route: ActivatedRoute,
     public cart: CartStoreService,
     private _vendorService: VendorapiServiceProxy,
@@ -90,6 +96,7 @@ export class RestaurantNewPage implements OnInit {
   
 
   ngOnInit() {
+    this.now = new  Date().toString().split(' ')[4];
     this.currentUserId = this._session.userId;
     this.vendor$ = this.route.paramMap.pipe(
       switchMap(params => {
@@ -101,7 +108,17 @@ export class RestaurantNewPage implements OnInit {
           currentPage: 1,
           take: 20
         });
-    
+        this._vendorService.vendorbyid(this.vendorId).subscribe((res)=>{
+          var start = res.startTime.split(":");
+          var end = res.endTime.split(":");
+          this.startTime = moment({ hour:+start[0], minute:+start[1] }).format('HH:mm');
+          this.endTime = moment({ hour:+end[0], minute:+end[1] }).format('HH:mm');
+          console.log(res?.endTime);
+          console.log(res?.startTime);
+          if((this.startTime > this.now) || ( this.endTime < this.now)){
+                this.isClosed = true;
+          }
+        });
         this._productsService.list(productFilter)
         .subscribe((res: ProductResponseModel) => {
           this.featuredProducts = res.products;
@@ -125,6 +142,7 @@ export class RestaurantNewPage implements OnInit {
   }
 ionViewWillEnter(){
   this.dictionary.clear();
+  this.now = new  Date().toString().split(' ')[4];
   this.vendor$ = this.route.paramMap.pipe(
     switchMap(params => {
       this.vendorId = params.get('vendorId');
@@ -135,19 +153,18 @@ ionViewWillEnter(){
         currentPage: 1,
         take: 20
       });
-  
-      this._productsService.list(productFilter)
-      .subscribe((res: ProductResponseModel) => {
-        this.featuredProducts = res.products;
-        this._productsWishList.getwishlist(this._session.userId).subscribe((res:WishListModel[])=>{ this.productslist = res;
-          this.productslist.forEach(element=>{
-          //this.indexedArray[element.productId] = true;
-          this.dictionary.set(element.productId,element.id);
-          console.log("hiii "+       this.dictionary.get(element.productId))
-         });
-   
-        });
+      this._vendorService.vendorbyid(this.vendorId).subscribe((res)=>{
+        var start = res.startTime.split(":");
+        var end = res.endTime.split(":");
+        this.startTime = moment({ hour:+start[0], minute:+start[1] }).format('HH:mm');
+        this.endTime = moment({ hour:+end[0], minute:+end[1] }).format('HH:mm');
+        console.log(res?.endTime);
+        console.log(res?.startTime);
+        if((this.startTime > this.now) || ( this.endTime < this.now)){
+              this.isClosed = true;
+        }
       });
+ 
       this.getReview(this.vendorId);
       return this._vendorService.vendorbyid(this.vendorId);
     })
@@ -168,20 +185,74 @@ ionViewWillEnter(){
       quantity: 1,
       product: res,
       varientId : varientId,
-      varient : this.getVarientById(res,varientId)
+      varient : this.getVarientById(res,varientId),
+      note : ""
     });
   });
  }
   incItem(i: number) {
-    this._productsService.single(i).subscribe((res)=>{
-      this.cart.incItem({
-        productId: i,
-        quantity: 1,
-        product: res,
-        varientId : this.varientId,
-        varient : this.getVarientById(res,this.varientId)
+    if(!this.isClosed){
+      this._productsService.single(i).subscribe((res)=>{
+        this.cart.incItem({
+          productId: i,
+          quantity: 1,
+          product: res,
+          varientId : this.varientId,
+          varient : this.getVarientById(res,this.varientId),
+          note : ""
+        });
       });
+    }
+  }
+
+  async addNote(productId,varientId) {
+    const alert = await this.alertCtrl.create({
+      header: 'معلومات اضافية',
+      message: '',
+      buttons: [
+        {
+          text: 'ارسال',
+              handler: (alertData) => { //takes the data 
+                if (alertData.refuseMsg == "") {
+                  alert.message ="ادخال ملاحظاتك حول الطلب" ;
+                  return false;
+              } else {
+                console.log(alertData.refuseMsg);
+                if(this.cart.isItemExist(productId))
+                {
+                  this.cart.addNote(alertData.refuseMsg,productId,varientId);
+                }
+              }
+              
+              }
+      }, 
+      ],
+      inputs: [     
+        {
+          name:'refuseMsg',
+          type: 'textarea',
+          placeholder: "ادخال ملاحظاتك حول الطلب" ,
+        },
+      ],
     });
+  
+    await alert.present();
+  }
+  
+  incItemWithVarient(pid , vid) {
+    console.log(vid+ " vid")
+    if(!this.isClosed){
+      this._productsService.single(pid).subscribe((res)=>{
+        this.cart.incItem({
+          productId: pid,
+          quantity: 1,
+          product: res,
+          varientId : vid,
+          varient : this.getVarientById(res,vid),
+          note:""
+        });
+      });
+    }
   }
   getVarientById(product,id) : Varient{
     var v:Varient = new Varient();
@@ -192,10 +263,10 @@ ionViewWillEnter(){
       });
       return v;
     }
-  decItem(i: number) {
-      this.cart.decItem(i);
- 
-   
+  decItem(productId,varientId) {
+    if(!this.isClosed){
+      this.cart.decItem(productId,varientId); 
+    }
   }
   getVarients(productId:number): Varient[]{
     this._varientService.listbyproductid(productId).subscribe((res)=>{

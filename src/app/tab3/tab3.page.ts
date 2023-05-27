@@ -434,7 +434,8 @@ else{
       price: elementPrice,
       amount:elementPrice*element.quantity,  
       varientId:element.varientId,
-      vendorId:element.product.createdBy
+      vendorId:element.product.createdBy,
+      notes : element.note
     });
     this.orderRequest.orderDetail.push(orderDetail);
   });

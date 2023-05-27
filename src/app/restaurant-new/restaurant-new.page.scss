@@ -101,7 +101,7 @@
         margin-top: 30px;
         margin-bottom: 30px;
         padding-top: 30px;
-        padding-bottom: 30px;
+       // padding-bottom: 30px;
         font-weight: 600;
         ion-icon {
             padding-left: 2px;
@@ -192,7 +192,7 @@
  }
  .container-like{
   position: absolute;
-  background-color: white;
+/*   background-color: white; */
   border-top-right-radius: 10px;
   border-bottom-left-radius: 5px;
   right:    0;
@@ -239,6 +239,12 @@ ion-modal::part(backdrop) {
   left:    2px;
   top:   0;
  }
+ .container-note{
+  position: absolute;
+  padding:5px;
+  left:    2px;
+  top:   30px;
+ }
  .container-order{
  position: absolute;
  padding:5px;
@@ -246,9 +252,11 @@ ion-modal::part(backdrop) {
  bottom:   0;
  }
  .container-number{
-  border: 1px solid rgb(41,37,98);
+/*   border: 1px solid rgb(41,37,98); */
   font-size:20px;
-  border-radius: 10px;
+  border-radius: 18px;
+  height: 27px !important;
+  width:107px !important;
   right:0;
 
  }
@@ -274,10 +282,22 @@ justify-content: center !important;
   text-align: center !important;
 }
 .varient-btn{
-  background-color: #ff9165  ; 
+  background-color: rgb(41,37,98);
+  color:white;
   border-radius: 10px;
   height: 20px !important;
 }
 .varient-con{
-  margin: 10px !important;
+  margin: 6px !important;
+}
+
+.addremoverow{
+  display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.closed-now{
+  background-color: rgb(41,37,98);
+  color:white;
 }

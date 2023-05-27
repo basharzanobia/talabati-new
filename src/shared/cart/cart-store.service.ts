@@ -33,8 +33,8 @@ export class CartStoreService {
 
 
 
-  decItem(productId: number) {
-    const i = this.items.findIndex(e => e.productId === productId);
+  decItem(productId, varientId) {
+    const i = this.items.findIndex(e => e.productId === productId && e.varientId === varientId);
     if (i > -1) {
       const item = this.Items[i];
       item.quantity = item.quantity > 1 ? item.quantity - 1 : 1;
@@ -42,7 +42,7 @@ export class CartStoreService {
   }
 
   incItem(product) {
-    const i = this.items.findIndex(e => e.productId === product.productId);
+    const i = this.items.findIndex(e => e.productId === product.productId && e.varientId === product.varientId);
     if (i > -1) {
       const item = this.Items[i];
       item.quantity = item.quantity + 1;
@@ -51,7 +51,15 @@ export class CartStoreService {
       this.addToCart(product)
     }
   }
-
+addNote(note,productId,varientId){
+  console.log(note+" "+ productId+" "+ varientId);
+  const i = this.items.findIndex(e => e.productId === productId && e.varientId === varientId);
+  if (i > -1) {
+    console.log("hi")
+   this.Items[i].note =   note;
+   sessionStorage.setItem(this.storageKey, JSON.stringify(this.items));
+  }  
+}
   getCountOfItem(productId: number) : number{
     const i = this.items.findIndex(e => e.productId === productId);
     if (i > -1) {
@@ -60,7 +68,14 @@ export class CartStoreService {
     else return 0;
   }
   
-
+  getCountOfItemWithVarient(productId,varientId) : number{
+    const i = this.items.findIndex(e => e.productId === productId && e.varientId === varientId);
+    if (i > -1) {
+      return(this.Items[i].quantity);
+    } 
+    else return 0;
+  }
+  
   removeFromCart(index: number) {
     this.items.splice(index, 1);
     sessionStorage.setItem(this.storageKey, JSON.stringify(this.items));

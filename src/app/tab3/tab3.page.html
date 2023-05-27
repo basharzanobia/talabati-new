@@ -51,7 +51,9 @@
           {{ item.quantity }}
           <ion-icon name="add-circle-outline" color="success" (click)="incItem(i)"></ion-icon>
         </ion-col>
-        <ion-col>لا يوجد</ion-col>
+        <ion-col> 
+          {{ item.note }}
+        </ion-col>
        <ion-icon name="trash-outline" color="danger" (click)="removeItem(i)"></ion-icon>
       </ion-row>
       <ion-row class="order-cost" >

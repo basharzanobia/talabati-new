@@ -11053,6 +11053,7 @@ export class OrderDetail implements IOrderDetail {
     updatedBy: string | undefined;
     vendorId: string | undefined;
     vendor: ApplicationUser;
+    notes: string | undefined;
 
     constructor(data?: IOrderDetail) {
         if (data) {
@@ -11084,6 +11085,7 @@ export class OrderDetail implements IOrderDetail {
             this.updatedBy = _data["updatedBy"];
             this.vendorId = _data["vendorId"];
             this.vendor = _data["vendor"] ? ApplicationUser.fromJS(_data["vendor"]) : <any>undefined;
+            this.notes = _data["notes"];
         }
     }
 
@@ -11115,6 +11117,7 @@ export class OrderDetail implements IOrderDetail {
         data["updatedBy"] = this.updatedBy;
         data["vendorId"] = this.vendorId;
         data["vendor"] = this.vendor ? this.vendor.toJSON() : <any>undefined;
+        data["notes"] = this.notes;
         return data;
     }
 
@@ -11146,6 +11149,7 @@ export interface IOrderDetail {
     updatedBy: string | undefined;
     vendorId: string | undefined;
     vendor: ApplicationUser;
+    notes: string | undefined;
 }
 
 export class OrderDetailRequest implements IOrderDetailRequest {
@@ -11154,6 +11158,7 @@ export class OrderDetailRequest implements IOrderDetailRequest {
     qty: number;
     price: number;
     amount: number;
+    notes: string | undefined;
     varientId: number;
     vendorId: string | undefined;
 
@@ -11173,6 +11178,7 @@ export class OrderDetailRequest implements IOrderDetailRequest {
             this.qty = _data["qty"];
             this.price = _data["price"];
             this.amount = _data["amount"];
+            this.notes = _data["notes"];
             this.varientId = _data["varientId"];
             this.vendorId = _data["vendorId"];
         }
@@ -11192,6 +11198,7 @@ export class OrderDetailRequest implements IOrderDetailRequest {
         data["qty"] = this.qty;
         data["price"] = this.price;
         data["amount"] = this.amount;
+        data["notes"] = this.notes;
         data["varientId"] = this.varientId;
         data["vendorId"] = this.vendorId;
         return data;
@@ -11211,6 +11218,7 @@ export interface IOrderDetailRequest {
     qty: number;
     price: number;
     amount: number;
+    notes: string | undefined;
     varientId: number;
     vendorId: string | undefined;
 }
