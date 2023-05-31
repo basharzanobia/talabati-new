@@ -112,13 +112,13 @@
 <section class="products" >
 
 <div *ngFor="let product of featuredProducts" class="container-row">
-  <div class="container-box">
+  <div class="container-box" >
 <div  class="container-right">
   <div  class="container-like">
-   <ion-icon name="heart" class="isfavprod" style="color:red" *ngIf="dictionary.get(product.id) >0" (click)="deleteWishList(dictionary.get(product.id))" class="like-icon" ></ion-icon>
-   <ion-icon name="heart" class="notfavprod"style="color:black"  *ngIf="dictionary.get(product.id) === undefined" class="like-icon" (click)="createWishList(product.id)" ></ion-icon>
+   <ion-icon name="heart" class="isfavprod" style="color:red"  *ngIf="myWishList.includes(product.id)" class="like-icon"  (click)="deleteWishList(product.id)" ></ion-icon>
+   <ion-icon name="heart" class="notfavprod"style="color:black" *ngIf="!myWishList.includes(product.id)"  class="like-icon" (click)="createWishList(product.id)" ></ion-icon>
     </div>
-    <img [src]="AppConsts.appBaseUrl + '/' + product.mainImagePath" class="product-img" height="100"/>
+    <img [src]="AppConsts.appBaseUrl + '/' + product.mainImagePath" class="product-img" height="100" [routerLink]="['/product', product.id]"/>
 </div>
 <div class="container-middle">
   <ion-label class="item-id">{{ product.name }}</ion-label>
@@ -127,8 +127,8 @@
   <div  class="container-price">
     <ion-label color="secondry" class="item-price">{{AppConsts.currency}} {{ product.price }} </ion-label> 
   </div>
-  <div  class="container-note" *ngIf="product.varient.length === 0">
-    <ion-icon name=""> </ion-icon> <ion-icon name="create-outline" (click)="addNote(product.id,0)"></ion-icon>
+  <div  class="container-note" *ngIf="product.varient.length === 0 && cart.getCountOfItem(product.id)  > 0">
+    <ion-icon name="create-outline" (click)="addNote(product.id,0)"></ion-icon>
   </div>
   <div class="container-order">
  <ion-button size="small" fill="outline" shape="round" *ngIf="product.varient.length > 0" [disabled]="isClosed"
@@ -165,7 +165,11 @@
                <ion-col><ion-icon name="add-circle-outline" color="primary" (click)="incItemWithVarient(product.id,varient.id)"></ion-icon></ion-col>
                <ion-col>  {{  cart.getCountOfItemWithVarient(product.id,varient.id)  }}</ion-col>
                <ion-col>  <ion-icon name="remove-circle-outline" color="primary" (click)="decItem(product.id,varient.id)"></ion-icon></ion-col>
-               <ion-col class="varient-row ion-text-center"> <ion-icon name="create-outline" (click)="addNote(product.id,varient.id)"></ion-icon></ion-col>
+               <ion-col class="varient-row ion-text-center">
+                <ion-icon 
+                *ngIf="cart.getCountOfItemWithVarient(product.id,varient.id)  > 0"
+                 name="create-outline" (click)="addNote(product.id,varient.id)"></ion-icon>
+              </ion-col>
                
                <!--   <ion-col size="2"class="varient-row ion-text-center ion-no-padding" text-center >  
                 <button class="varient-btn ion-text-wrap" (click)="addToCart(product.id,varient.id)">أضف </button>

@@ -64,6 +64,7 @@ export class RestaurantNewPage implements OnInit {
   AppConsts = AppConsts;
   Review: ReviewUserResponse[]=[];
   dictionary= new Map<number, number>();
+  myWishList : number[]=[];
    indexedArray: {[key: number]: boolean};
   constructor(
     private _session: AppSessionService,
@@ -113,8 +114,6 @@ export class RestaurantNewPage implements OnInit {
           var end = res.endTime.split(":");
           this.startTime = moment({ hour:+start[0], minute:+start[1] }).format('HH:mm');
           this.endTime = moment({ hour:+end[0], minute:+end[1] }).format('HH:mm');
-          console.log(res?.endTime);
-          console.log(res?.startTime);
           if((this.startTime > this.now) || ( this.endTime < this.now)){
                 this.isClosed = true;
           }
@@ -122,56 +121,27 @@ export class RestaurantNewPage implements OnInit {
         this._productsService.list(productFilter)
         .subscribe((res: ProductResponseModel) => {
           this.featuredProducts = res.products;
-          this._productsWishList.getwishlist(this._session.userId).subscribe((res:WishListModel[])=>{ this.productslist = res;
-            this.productslist.forEach(element=>{
-            //this.indexedArray[element.productId] = true;
-            this.dictionary.set(element.productId,element.id);
-            console.log("hiii "+       this.dictionary.get(element.productId))
-           });
-     
-          });
+       
         });
+     
         this.getReview(this.vendorId);
         return this._vendorService.vendorbyid(this.vendorId);
       })
     );
 
     this.categories$ = this._homeService.menu();
-    this.isFavVendor();
+
 
   }
 ionViewWillEnter(){
-  this.dictionary.clear();
-  this.now = new  Date().toString().split(' ')[4];
-  this.vendor$ = this.route.paramMap.pipe(
-    switchMap(params => {
-      this.vendorId = params.get('vendorId');
-     
-      const productFilter = new ProductFilterModel();
-      productFilter.init({ 
-        creatorId: this.vendorId,
-        currentPage: 1,
-        take: 20
-      });
-      this._vendorService.vendorbyid(this.vendorId).subscribe((res)=>{
-        var start = res.startTime.split(":");
-        var end = res.endTime.split(":");
-        this.startTime = moment({ hour:+start[0], minute:+start[1] }).format('HH:mm');
-        this.endTime = moment({ hour:+end[0], minute:+end[1] }).format('HH:mm');
-        console.log(res?.endTime);
-        console.log(res?.startTime);
-        if((this.startTime > this.now) || ( this.endTime < this.now)){
-              this.isClosed = true;
-        }
-      });
- 
-      this.getReview(this.vendorId);
-      return this._vendorService.vendorbyid(this.vendorId);
-    })
-  );
+  this.isFavVendor();
+  this._productsWishList.getwishlist(this._session.userId).subscribe((res:WishListModel[])=>{ this.productslist = res;
+    this.productslist.forEach(element=>{
+    this.myWishList.push(element.productId);
+   });
 
-  this.categories$ = this._homeService.menu();
-  this.isFavVendor(); 
+  });
+
 }
  getItemCountInCart(id : number){ 
   var quantity = this.cart.getItemById(id);
@@ -405,7 +375,8 @@ createWishList(productId){
   this._productsWishList.createwish(whishlist).subscribe(
     (res) => {
       this.showAlert('تمت إضافة المنتج إلى المفضلة بنجاح!'); 
-    this.ionViewWillEnter();
+   // this.createWishListDictionary();
+   this.myWishList.push(productId);
     },
     async (error) => {
       // Unexpected result!
@@ -413,24 +384,43 @@ createWishList(productId){
       console.log('error ', error);
     });
 }
-deleteWishList(wishListId){
-  this._productsWishList.deletewish(wishListId).subscribe((res:boolean)=>{ 
+deleteWishList(productId){
+
+  this._productsWishList.deletewishbyproductid(productId).subscribe((res:boolean)=>{ 
    if(res==true)
    {
     this.showAlert('تمت إزالة المنتج من المفضلة بنجاح!' );
-    this.ionViewWillEnter();
+    const index =this.myWishList.indexOf(productId);
+    if (index !== -1) {
+      this.myWishList.splice(index, 1);
+    }
    }
    else
    this.showAlert('لم تتم إزالة المنتج من المفضلة !');
 
   });
 }
-isFavProduct(){
+/* deleteWishList(wishListId){
+
+  this._productsWishList.deletewish(wishListId).subscribe((res:boolean)=>{ 
+   if(res==true)
+   {
+    this.showAlert('تمت إزالة المنتج من المفضلة بنجاح!' );
+    
+   }
+   else
+   this.showAlert('لم تتم إزالة المنتج من المفضلة !');
+
+  });
+} */
+createWishListDictionary(){
+  this.dictionary.clear();
   this._productsWishList.getwishlist(this._session.userId).subscribe((res:WishListModel[])=>{ this.productslist = res;
-  this.productslist.forEach(element=>{
-  this.indexedArray[element.productId] = true;
- });
-});
+    this.productslist.forEach(element=>{
+    this.dictionary.set(element.productId,element.id);
+   });
+
+  });
 }
 
 handleRefresh(event) {

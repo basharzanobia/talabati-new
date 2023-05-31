@@ -164,6 +164,7 @@ export class Tab3Page {
   }
 
   async ionViewWillEnter() {
+    this.hideTabBar();
     this.items=[];
     this.autocomplete.query="";
    
@@ -172,7 +173,9 @@ export class Tab3Page {
       this.currentLon = position.coords.longitude
              });  
   } 
-
+ionViewWillLeave(){
+  this.showTabBar();
+}
   updateSearch() {
     console.log('modal > updateSearch '+this.autocomplete.query);
     if (this.autocomplete.query == '') {
@@ -284,8 +287,10 @@ this.loading.present();
     this.cart.removeFromCart(i);
   }
   ionViewDidEnter(){
+    console.log('did enter');
     this.hideTabBar();
   }
+
   ionViewDidLeave(){
     this.showTabBar();
   }
@@ -298,6 +303,7 @@ this.loading.present();
    hideTabBar () {
     const tabBar = document.getElementById('app-tab-bar');
     if (tabBar !== null) {
+      console.log('did ente 11r');
       tabBar.style.display = 'none';
     }
   };
@@ -444,7 +450,7 @@ else{
       this.loading.dismiss();
         console.log('res is ', res);
         this.cart.clearCart();
-        this._router.navigate(['/invoice',res]);
+        this._router.navigate(['/invoice',res],{replaceUrl:true});
     },
     async (error) => {
       // Unexpected result!

@@ -38,7 +38,7 @@ export class AppAuthService {
 
     authenticate(finallyCallback?: () => void): void {
         finallyCallback = finallyCallback || (() => { });
-
+console.log("in");
         this._userService
             .login(this.authenticateModel)
             .subscribe((result: LoginResponseModel) => {

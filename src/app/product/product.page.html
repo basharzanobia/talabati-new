@@ -100,7 +100,7 @@
       </ion-col>  
       <ion-col size="12">
         <ion-item>
-          <ion-input type="text" placeholder="اضف توصية خاصة ..."></ion-input>
+          <ion-input type="text"  [(ngModel)]="note" placeholder="اضف توصية خاصة ..."></ion-input>
         </ion-item>
       </ion-col> 
 
@@ -133,7 +133,7 @@
           </ng-template> 
             
       </ion-col>
-      <ion-col size="6" class="item-order" routerLink="/resturant/{{restId}}">
+      <ion-col size="6" class="item-order" routerLink="/restaurant-new/{{restId}}">
         <a ion-button button icon-start full  
           class="order-button"
           (click)="addToCart()">
@@ -146,10 +146,10 @@
 
     </section>
 
-    <ion-fab vertical="bottom" horizontal="center" slot="fixed" routerLink="/resturant/{{restId}}" routerDirection="root" class="fa-boton">
+ <!--    <ion-fab vertical="bottom" horizontal="center" slot="fixed" routerLink="/resturant/{{restId}}" routerDirection="root" class="fa-boton">
       <ion-fab-button>
         <ion-icon class="fa-ico" name="arrow-back"></ion-icon>
       </ion-fab-button>
-    </ion-fab>
+    </ion-fab> -->
 
 </ion-content>

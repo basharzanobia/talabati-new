@@ -5,12 +5,12 @@ export class CartStoreService {
   private items = [];
   private readonly storageKey = 'TalabakCart';
   constructor() {
-    this.items = JSON.parse(sessionStorage.getItem(this.storageKey)) || [];
+    this.items = JSON.parse(localStorage.getItem(this.storageKey)) || [];
   }
 
   addToCart(product) {
     this.items.push(product);
-    sessionStorage.setItem(this.storageKey, JSON.stringify(this.items));
+    localStorage.setItem(this.storageKey, JSON.stringify(this.items));
   }
 
   get Items() {
@@ -18,7 +18,7 @@ export class CartStoreService {
   }
   clearCart() {
     this.items = [];
-    sessionStorage.setItem(this.storageKey, JSON.stringify(this.items));
+    localStorage.setItem(this.storageKey, JSON.stringify(this.items));
     return this.items;
   }
 
@@ -37,7 +37,13 @@ export class CartStoreService {
     const i = this.items.findIndex(e => e.productId === productId && e.varientId === varientId);
     if (i > -1) {
       const item = this.Items[i];
-      item.quantity = item.quantity > 1 ? item.quantity - 1 : 1;
+      if(item.quantity > 1)
+      item.quantity =  item.quantity - 1 ;
+      else if(item.quantity === 1)
+      {
+        this.items.splice(i, 1);
+        localStorage.setItem(this.storageKey, JSON.stringify(this.items));
+      }
     } 
   }
 
@@ -57,7 +63,7 @@ addNote(note,productId,varientId){
   if (i > -1) {
     console.log("hi")
    this.Items[i].note =   note;
-   sessionStorage.setItem(this.storageKey, JSON.stringify(this.items));
+   localStorage.setItem(this.storageKey, JSON.stringify(this.items));
   }  
 }
   getCountOfItem(productId: number) : number{
@@ -78,7 +84,7 @@ addNote(note,productId,varientId){
   
   removeFromCart(index: number) {
     this.items.splice(index, 1);
-    sessionStorage.setItem(this.storageKey, JSON.stringify(this.items));
+    localStorage.setItem(this.storageKey, JSON.stringify(this.items));
   }
   getItemById(id: number) : number {
     var q = 0;

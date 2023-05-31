@@ -28,6 +28,7 @@ export class ProductPage implements OnInit {
   quantity = 1;
   productId = 1;
   restId = "0";
+  note;
   varientId = 0;
   varientNumber = 0;
   product: Product = new Product();
@@ -94,6 +95,7 @@ ionViewDidEnter(){
 
   addToCart() {   
     this.cart.addToCart({
+      note:this.note,
       productId: this.productId,
       quantity: this.quantity,
       product: this.product,
