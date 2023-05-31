@@ -30,7 +30,9 @@ ion-img{
   }
 }
 
-
+.rest-id{
+  height: 25px !important;
+}
 
 ion-scroll{
   height: 50px;
@@ -158,14 +160,16 @@ ion-scroll{
 
 
 ion-scroll{
-  height: 70px;
+/*   height: 70px; */
   
   .scroll-zoom-wrapper{
     display: inline-flex;
   }
 }
 
-
+.scroll-click.active{
+  border : 7px solid  #292562 !important;
+}
 .scroll-click {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   margin: 15px 2px;
@@ -184,9 +188,7 @@ ion-scroll{
   font-size: 20px;
 }
 
-.slide-element{
-  height: 126px !important;
-}
+
 .swiper-slide {
   margin-left: 10px;
   display: flex;

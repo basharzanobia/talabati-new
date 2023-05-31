@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppOrderStatusType } from 'src/shared/AppEnums';
-import { Order, SuborderapiServiceProxy,SubOrder,UserReview,ReviewuserapiServiceProxy, OrderapiServiceProxy,SubOrderModel ,UserlocationapiServiceProxy ,Location, OrderStatusType} from 'src/shared/service-proxies/service-proxies';
+import { Order, SuborderapiServiceProxy,SubOrder,UserReview,ReviewuserapiServiceProxy, OrderapiServiceProxy ,UserlocationapiServiceProxy ,Location, OrderStatusType} from 'src/shared/service-proxies/service-proxies';
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { AppConsts } from 'src/shared/AppConsts';
 import { ActivatedRoute, Router } from '@angular/router';

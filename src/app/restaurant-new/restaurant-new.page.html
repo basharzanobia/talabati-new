@@ -25,8 +25,12 @@
     <ion-slides [options]="catSlideOptsR">
       <ion-slide *ngFor="let category of categories$ | async as list">
           <button ion-button round color="light" class="scroll-click" (click)="selectedCategory = category.id">
-            <ion-img [src]="AppConsts.appBaseUrl + '/' + category.imagePath" class="scroll-item selectable-icon"></ion-img>
-            <ion-label class="rest-id">{{ category.name }}</ion-label>
+            <ion-img [src]="AppConsts.appBaseUrl + '/' + category.imagePath" class="scroll-item selectable-icon slide-img"></ion-img>
+         <br/>
+            <div  class="rest-id">
+            <ion-label>{{ category.name }}</ion-label>
+           </div>
+          
           </button>
       </ion-slide>
     </ion-slides>

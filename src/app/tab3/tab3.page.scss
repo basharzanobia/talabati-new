@@ -26,8 +26,11 @@ width:  270 !important;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 10px;  
   }
-
+.bold{
+  font-weight: bold;
+}
   .table-head  {
+    color:  rgb(0, 7, 71);
       padding: 15px;
       border-bottom: solid 1px;
      text-align: center;

@@ -26,14 +26,13 @@
      </div>
     </ion-col>
     <ion-col size="12">
-      <div class = "list add-tex">
-        <ion-item>
+      <div class = "list">
           <ion-textarea
             [(ngModel)]="reqModel.orderDetails"
-            class="serve-order-disc-text"
+            [autoGrow]="true"
+            class = "item-input buy-order-receipt-address-text"
             placeholder="التفاصيل">
           </ion-textarea>
-        </ion-item>
       </div>
     </ion-col>
 
@@ -45,11 +44,12 @@
     </ion-col>
     <ion-col size="12">
       <div class = "list">
-        <input
+        <ion-textarea
           [(ngModel)]="reqModel.recieverAddress"
-          type = "text"
+          [autoGrow]="true"
           class = "item-input serve-order-receipt-address-text"
-          placeholder = "عنوان الاستلام" />
+          placeholder = "عنوان الاستلام" >
+        </ion-textarea>
       </div>
     </ion-col>
 
@@ -76,11 +76,11 @@
     </ion-col>
     <ion-col size="12">
       <div class = "list">
-        <input
+        <ion-textarea
           [(ngModel)]="reqModel.senderAddress"
-          type = "text"
-          class = "item-input serve-order-delever-address-text"
-          placeholder = "عنوان التسليم" />
+          [autoGrow]="true"
+          class = "item-input serve-order-receipt-address-text"
+          placeholder = "عنوان التسليم" ></ion-textarea>
      </div>
     </ion-col>
     <ion-col size="12">

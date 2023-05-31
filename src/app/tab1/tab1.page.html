@@ -28,14 +28,19 @@
       <ion-slide class="slide-element">
         <button ion-button round color="light" [ngClass]="{'active': subCatId === 0}" class="scroll-click" (click)="filterVendorsBySlider(0)">
           <ion-img alt="logo" src="assets/img/logo.png" class="scroll-item selectable-icon"></ion-img>
-          <ion-label class="rest-id">الكل</ion-label>
+         <br/>
+          <div class="rest-id">
+            <ion-label class="rest-id">الكل</ion-label>
+          </div>
         </button>
       </ion-slide>
 
       <ion-slide class="slide-element" *ngFor="let subcat of subcats$">
           <button ion-button round color="light" [ngClass]="{'active': subcat.id === subCatId}" class="scroll-click" (click)="filterVendorsBySlider(subcat.id)">
             <ion-img [src]="AppConsts.appBaseUrl + '/' + subcat.imagePath" class="scroll-item selectable-icon"></ion-img>
-            <ion-label class="rest-id">{{ subcat.name }}</ion-label>
+            <br/>
+            <div  class="rest-id"> <ion-label>{{ subcat.name }}</ion-label></div>
+           
           </button>
       </ion-slide>
 

@@ -36,10 +36,12 @@
   .baner {
       border-radius: 20px;
   }
-  
-  ion-slides{
-    height: 100px;
-  }
+.slide-img{
+  height: 50px !important;
+}
+.rest-id{
+  height: 20px !important;
+}
   ion-scroll{
       height: 50px;
       
