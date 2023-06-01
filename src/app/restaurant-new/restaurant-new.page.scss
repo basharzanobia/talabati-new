@@ -251,15 +251,17 @@ ion-modal::part(backdrop) {
  position: absolute;
  padding:5px;
  left:    2px;
- bottom:   0;
+ bottom:   0px;
+
  }
  .container-number{
 /*   border: 1px solid rgb(41,37,98); */
   font-size:20px;
-  border-radius: 18px;
-  height: 27px !important;
+  border-radius: 18px;  
   width:107px !important;
   right:0;
+  border: 1px solid rgb(41,37,98);
+  border-radius : 20px;
 
  }
     .feu-pro {
@@ -297,9 +299,21 @@ justify-content: center !important;
   display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
+  text-align: center !important;
+
+}
+.addremovecol{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+text-align: center !important;
+padding-bottom:2px !important;
+padding-top:2px !important; 
 }
 .closed-now{
   background-color: rgb(41,37,98);
   color:white;
+}
+.addicon{
+  font-size: 22px;
 }

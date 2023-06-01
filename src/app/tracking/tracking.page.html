@@ -64,6 +64,12 @@
               {{order?.order?.createdDate.toDate() |date:'MM/dd/yyyy'}}
          </ion-col>   
      
+         <ion-col size="4" >
+          ملاحظات الطلب :
+          </ion-col>
+           <ion-col size="8" >
+                {{order?.order?.orderNotes}}
+           </ion-col>   
     <br>
 
     <ion-col *ngIf="order.order?.pincode !== null" size="4" >
@@ -100,7 +106,7 @@
 
                
     <ion-row  *ngIf="order.order?.orderNotes !== null" class="order-action" >  
-      <ion-col size="6">ملاحظات الشحن :</ion-col> 
+      <ion-col size="6">ملاحظات  :</ion-col> 
       <ion-col size="6" > 
         {{ orderDetail.notes  }}
         </ion-col>

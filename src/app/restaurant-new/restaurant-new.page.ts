@@ -42,7 +42,7 @@ export class RestaurantNewPage implements OnInit {
   featuredProducts: Product[] = [];
   varients: Varient[] = [];
   vendorId: string;
-  vendor$: Observable<UserResponseModel>;
+  vendor = new  UserResponseModel();
   categories$: Observable<Category[]>;
   catSlideOptsR = {
     slidesPerView: 5.7,
@@ -99,10 +99,9 @@ export class RestaurantNewPage implements OnInit {
   ngOnInit() {
     this.now = new  Date().toString().split(' ')[4];
     this.currentUserId = this._session.userId;
-    this.vendor$ = this.route.paramMap.pipe(
-      switchMap(params => {
-        this.vendorId = params.get('vendorId');
-       
+   
+        this.vendorId = this.route.snapshot.paramMap.get('vendorId');
+       console.log("vendor Id "+ this.vendorId);
         const productFilter = new ProductFilterModel();
         productFilter.init({ 
           creatorId: this.vendorId,
@@ -110,6 +109,7 @@ export class RestaurantNewPage implements OnInit {
           take: 20
         });
         this._vendorService.vendorbyid(this.vendorId).subscribe((res)=>{
+          this.vendor = res;
           var start = res.startTime.split(":");
           var end = res.endTime.split(":");
           this.startTime = moment({ hour:+start[0], minute:+start[1] }).format('HH:mm');
@@ -117,17 +117,16 @@ export class RestaurantNewPage implements OnInit {
           if((this.startTime > this.now) || ( this.endTime < this.now)){
                 this.isClosed = true;
           }
+          this._productsService.list(productFilter)
+          .subscribe((res: ProductResponseModel) => {
+            this.featuredProducts = res.products;
+         
+          });
         });
-        this._productsService.list(productFilter)
-        .subscribe((res: ProductResponseModel) => {
-          this.featuredProducts = res.products;
-       
-        });
+  
      
         this.getReview(this.vendorId);
-        return this._vendorService.vendorbyid(this.vendorId);
-      })
-    );
+    
 
     this.categories$ = this._homeService.menu();
 

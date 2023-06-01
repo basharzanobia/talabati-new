@@ -49,8 +49,24 @@ export class SavedAddressPage implements OnInit {
         },
         async (error) => {
           console.log('error ', error);
+          this.withAlert("عذرا لم يتم حذف العنوان،لأنه مرتبط بطلبات سابقة، حاول تعديله", () =>{
+          })
         });
     }  
+    async withAlert(message: string, action: () => void) {
+      const alert = await this.alertController.create({
+        message: message,
+        mode:'ios',
+        buttons: [
+          {
+            text: "موافق",
+            handler: action
+          }]
+      });
+  
+      await alert.present();
+    }
+ 
     async alertDeleteAddress(id) {
       const alert = await this.alertController.create({
         header: 'تأكيد ',

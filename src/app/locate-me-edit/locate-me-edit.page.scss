@@ -1,0 +1,51 @@
+.action-buttons {
+    display: block;
+    width: calc(100% - 16px) !important;
+    position: absolute;
+    bottom: 50px;
+    text-align: center;
+    z-index: 999;
+  
+    button {
+        display: inline-block;
+        margin: 4px;
+    }
+  
+  }
+  .user-bar {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    
+    }
+    
+    
+    .page-head {
+      font-size: 20px;
+      font-weight: 700;
+      text-align: center;
+    }
+  
+  
+  .Address-info {
+      text-align: center;
+      border-radius: 20px;
+      border-style: solid;
+      border-color: #eeeeee;
+      border-top-left-radius: 0px;
+  }
+  
+  h1 {
+      color: #00025e;
+      font-size: 22px;
+      font-weight: 600;
+  
+  }
+  
+  .add-new {
+      color: white;
+      font-size: 18px;
+      font-weight: 600;
+  }

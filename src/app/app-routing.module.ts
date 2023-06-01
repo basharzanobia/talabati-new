@@ -122,6 +122,15 @@ const routes: Routes = [
     canActivate: [AppRouteGuard]
   },
   {
+    path: 'edit-addres/:id/:lat/:lang/:addr',
+    resolve: {
+      address: EditAddressResolverService
+    },
+    loadChildren: () => import('./edit-address/edit-addres.module').then( m => m.EditAddresPageModule),
+    canActivate: [AppRouteGuard]
+  },
+
+  {
     path: 'commingsoon',
     loadChildren: () => import('./commingsoon/commingsoon.module').then( m => m.CommingsoonPageModule),
     canActivate: [AppRouteGuard]
@@ -207,6 +216,7 @@ const routes: Routes = [
     loadChildren: () => import('./addres/addres.module').then( m => m.AddresPageModule),
     canActivate: [AppRouteGuard]
   },
+ 
   {
     path: 'reset-password',
     loadChildren: () => import('./reset-password/reset-password.module').then( m => m.ResetPasswordPageModule)
@@ -219,7 +229,12 @@ const routes: Routes = [
     path: 'restaurant-new/:vendorId',
     loadChildren: () => import('./restaurant-new/restaurant-new.module').then( m => m.RestaurantNewPageModule),
     canActivate: [AppRouteGuard]
+  },
+  {
+    path: 'locate-me-edit/:id',
+    loadChildren: () => import('./locate-me-edit/locate-me-edit.module').then( m => m.LocateMeEditPageModule)
   }
+
 
 
 

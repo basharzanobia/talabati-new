@@ -204,23 +204,10 @@ this.myPosition = true;
       return;
     } 
     this.loading.present();
-    console.log ("google addr b "+ this.googleAddress);
-     // const address = new UserAddress();
       if(!Boolean(this.googleAddress)){
-this.googleAddress = this.addr;
-console.log ("google addr"+ this.googleAddress);
+      this.googleAddress = this.addr;
 
       }
-  /*     address.init({
-        userId:this._session.userId,
-        addressTitle: this.addressTitle,
-        address :this.googleAddress,
-        latitude:this.latitude ?? 0,
-        longitude : this.longitude ?? 0,
-        area:this.area,
-        city: this.city,
-        houseNo: this.houseNo, 
-      }); */
 
      this.Myaddress = this.addrInfoForm.value;
      this.Myaddress.userId =this._session.userId;
@@ -228,14 +215,6 @@ console.log ("google addr"+ this.googleAddress);
      this.Myaddress.latitude =this.latitude ?? 0;
      this.Myaddress.longitude =  this.longitude ?? 0;
      this.Myaddress.type = this.addressType.value;
- /*     console.log( this.Myaddress.latitude);
-     console.log( this.Myaddress.longitude);
-     console.log( this.googleAddress);
-     console.log( this.Myaddress.addressTitle);
-     console.log( this.Myaddress.area);
-     console.log( this.Myaddress.city);
-     console.log( this.Myaddress.houseNo);
-     console.log( this.addressType.value); */
       this._addressService.createaddress(this.Myaddress).subscribe(
         (res) => {
 
@@ -245,8 +224,6 @@ console.log ("google addr"+ this.googleAddress);
           this.loading.dismiss();
         },
         async (error) => {
-          // Unexpected result!
-          // await this.presentAlert('فشل', 'حدث خطأ حاول مرة أخرى', null);
           console.log('error ', error);
           this.loading.dismiss();
         }); 

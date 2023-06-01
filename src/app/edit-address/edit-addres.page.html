@@ -23,92 +23,41 @@
       <ion-col >
         <ion-list lines="none">
           <ion-item class="prod-top">
-            <ion-col size="6">
-              <ion-label class="booking-date" > اسم العنوان</ion-label>
-            </ion-col>
-            <ion-col size="6">
               <ion-input type="txt"
               formControlName="addressTitle"
-               placeholder="مثلا مكتبي أو منزلي"></ion-input>
-            </ion-col>
-          
-         
-       
+               placeholder="اسم العنوان مثلا منزلي أو المكتب .."></ion-input>
           </ion-item>
    
           <ion-item class="prod-top">
-            <ion-col size="6">
-            <ion-label class="booking-date" > المدينة</ion-label>
-            </ion-col>
-            <ion-col size="6">
             <ion-input type="txt" 
             formControlName="city"
             placeholder="المدينة"></ion-input>
-       </ion-col>
           </ion-item>
   
           <ion-item class="prod-top">
-            <ion-col size="6">
-            <ion-label  class="booking-date" > المنطقة </ion-label>
-            </ion-col>
-            <ion-col size="6">
             <ion-input type="text"
             formControlName="area"
                 placeholder="المنطقة"></ion-input>
-         </ion-col>
           </ion-item>
-    <!--   <ion-col size="6">
-        <ion-list lines="none">
-          <ion-item >
-            <ion-label class="booking-date"> العنوان</ion-label>
-          </ion-item>
-          <ion-item >
-            <ion-text>{{address}}</ion-text>
-          </ion-item>
-        </ion-list>
-      </ion-col> -->
           <ion-item class="prod-top">
-            <ion-col size="6">
-            <ion-label  class="booking-date" >  رقم البناء </ion-label>
-           </ion-col>
-            <ion-col size="6">
             <ion-input type="text" 
             formControlName="houseNo"
-             placeholder="000"></ion-input>
-          </ion-col>
+             placeholder="رقم البناء"></ion-input>
           </ion-item>
-          <ion-item class="prod-top">
-            <ion-col size="6">
-            <ion-label  class="booking-date" >  علامات استدلال  </ion-label>
-            </ion-col>
-            </ion-item>
             <ion-item class="prod-top">
-             <ion-col size="12">
             <ion-textarea type="text"
             [autoGrow]="true" 
             formControlName="landmark"
              placeholder="اكتب وصف ودلائل عن المكان"></ion-textarea>
-          </ion-col>
+          </ion-item>
+          <ion-item>
+            <ion-col  [routerLink]="['/locate-me-edit',id]">
+              <ion-icon name="locate-outline"></ion-icon>   تحديد موقع جديد    
+           
+            </ion-col>
           </ion-item>
         </ion-list>
       </ion-col>
-       <!-- End Address Info-->
- <!--       <ion-row class="prod-mid">
-        <ion-col size="6">
-          نوع العنوان
-        </ion-col>
-        <ion-col size="6">
-          <ion-list>     
-            <ion-item>
-              <ion-select placeholder="حدد احد الخيارات">
-                <ion-select-option value="1">منزل</ion-select-option>
-                <ion-select-option value="2">عمل</ion-select-option>
-              </ion-select>
-            </ion-item>
-          </ion-list>
-        </ion-col>
-    
-      </ion-row > -->
 
 
       <!-- save Address -->
