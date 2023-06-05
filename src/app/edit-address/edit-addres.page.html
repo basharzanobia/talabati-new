@@ -50,9 +50,17 @@
             formControlName="landmark"
              placeholder="اكتب وصف ودلائل عن المكان"></ion-textarea>
           </ion-item>
+          <ion-item >
+            <select placeholder="نوع العنوان" class="form-select"
+            formControlName="addressType"
+            >
+              <option value="0" [selected]="Myaddress.type === 0">منزل</option>
+              <option value="1"  [selected]="Myaddress.type === 1">عمل</option>
+            </select>
+          </ion-item>
           <ion-item>
             <ion-col  [routerLink]="['/locate-me-edit',id]">
-              <ion-icon name="locate-outline"></ion-icon>   تحديد موقع جديد    
+              <ion-icon name="locate-outline"></ion-icon>   تعديل الموقع الحالي    
            
             </ion-col>
           </ion-item>

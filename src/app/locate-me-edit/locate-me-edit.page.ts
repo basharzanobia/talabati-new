@@ -8,6 +8,7 @@ import {
 import { ActivatedRoute, Router} from '@angular/router';
 import { AlertController } from '@ionic/angular'; 
 import { LoadingService } from '../services/loading.service';
+import { AddressapiServiceProxy } from 'src/shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-locate-me-edit',
@@ -29,6 +30,8 @@ export class LocateMeEditPage implements OnInit {
   zoom = 18;
   maxZoom = 18;
   minZoom = 8;
+  oldLat;
+  oldLang;
   center!: google.maps.LatLngLiteral;
   options: google.maps.MapOptions = {
     zoomControl: true,
@@ -46,46 +49,12 @@ export class LocateMeEditPage implements OnInit {
     private _router: Router,
     private route : ActivatedRoute,
     private loading :LoadingService,
+    private _addressService: AddressapiServiceProxy,
    // private bgGeolocation:BackgroundGeolocationService,
     public alertController: AlertController) {
    /* this.height = (document.documentElement.clientHeight-100)+"px";*/
   }
 
- /* ngAfterViewInit(): void {
-    // Binding autocomplete to search input control
-    let autocomplete = new google.maps.places.Autocomplete(
-      this.searchElementRef.nativeElement
-    );
-    // Align search box to center
-    this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(
-      this.searchElementRef.nativeElement
-    );
-    autocomplete.addListener('place_changed', () => {
-      this.ngZone.run(() => {
-        //get the place result
-        let place: google.maps.places.PlaceResult = autocomplete.getPlace();
-
-        //verify result
-        if (place.geometry === undefined || place.geometry === null) {
-          return;
-        }
-
-        console.log({ place }, place.geometry.location?.lat());
-
-        //set latitude, longitude and zoom
-        this.latitude = place.geometry.location?.lat();
-        this.longitude = place.geometry.location?.lng();
-
-        // Set marker position
-        this.setMarkerPosition(this.latitude, this.longitude);
-
-        this.center = {
-          lat: this.latitude,
-          lng: this.longitude,
-        };
-      });
-    });
-  }*/
   async presentAlert(header: string, msg: string, subHeader: string) {
     const alert = await this.alertController.create({
       cssClass: 'app-alert',
@@ -101,22 +70,34 @@ export class LocateMeEditPage implements OnInit {
   }
 async ionViewWillEnter(){
   await this.presentAlert('تأكيد', 'لتحديد العنوان بشكل الأفضل يرجى تفعيل خاصية المواقع من الجوال', null);
+  await this.presentAlert('معلومات','لتحديد موقع عنوان جديد على الخريطة يتم تحريك الدبوس الأحمر نحو الموقع المطلوب', null);
 }
   async ngOnInit() {
     this.addressId = this.route.snapshot.paramMap.get('id');
+ 
+ 
     try{
      // const turnOnGPS = await this.bgGeolocation.askToTurnOnGPS();
      // if(turnOnGPS){
+      this._addressService.getbyid(this.addressId).subscribe((res)=>{
+        this.oldLang =res.longitude;
+        this.oldLat = res.latitude;
         navigator.geolocation.getCurrentPosition((position) => {
-          this.latitude = position.coords.latitude;
-          this.longitude = position.coords.longitude;
+        
+       /*    this.latitude = position.coords.latitude;
+          this.longitude = position.coords.longitude; */
+          this.latitude = this.oldLat;
+          this.longitude = this.oldLang;
+          console.log("original"+position.coords.latitude);
+          console.log("saved"+this.oldLat);
           this.center = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
+            lat: this.oldLat,
+            lng: this.oldLang,
           };
           // Set marker position
           this.setMarkerPosition(this.latitude, this.longitude);
           this.getAddress(this.latitude, this.longitude);
+          
         },async (error)=>{
           const alert = await this.alertController.create({
             header: 'تأكيد ',
@@ -136,6 +117,8 @@ async ionViewWillEnter(){
      
             await alert.present();
         });
+       });
+  
     
      // }
 /*   else{
@@ -229,6 +212,8 @@ async ionViewWillEnter(){
             console.log(addr);
             console.log(addr.results[0].formatted_address);
             console.log(latitude,longitude);
+            this.latitude = latitude;
+            this.longitude = longitude;
           } else {
             this.address = null;
             window.alert('No results found');

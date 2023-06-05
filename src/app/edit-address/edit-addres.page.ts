@@ -23,6 +23,7 @@ export class EditAddresPage implements OnInit {
   newlatitude ;
   addressId;
   newAddress;
+  addrType;
 constructor(  
   private _session: AppSessionService,
   private _router: Router,
@@ -35,7 +36,6 @@ constructor(
 
   ngOnInit() {
     if (this.route.snapshot.data['address']) {
-  
       this.id = this.route.snapshot.data['address'].id;
       this.newlatitude = this.route.snapshot.paramMap.get('lat');
       this.newlongitude = this.route.snapshot.paramMap.get('lang');
@@ -43,17 +43,19 @@ constructor(
       this.addressId = this.route.snapshot.paramMap.get('id');
       this._addressService.getbyid(this.id).subscribe((res)=>{
         this.Myaddress = res;
+        console.log(res.type)
         this.addr = res.address;
         this.lat = res.latitude;
         this.lang = res.longitude;
+        this.addrType = res.type;
         console.log(this.lat);
         console.log(this.lang);
-
         this.addrInfoForm.patchValue({ addressTitle: res.addressTitle });
         this.addrInfoForm.patchValue({ area: res.area });
         this.addrInfoForm.patchValue({ city: res.city });
         this.addrInfoForm.patchValue({ houseNo: res.houseNo });
         this.addrInfoForm.patchValue({ landmark: res.landmark });
+        this.addressType.patchValue({ addressType: res.type });
       })
   
       this.addrInfoForm = new FormGroup({
@@ -70,7 +72,10 @@ constructor(
         ]),
         landmark: new FormControl(this.Myaddress.landmark,[
           Validators.required,
-        ])
+        ]),
+        addressType: new FormControl(this.Myaddress.type,[
+          Validators.required,
+        ]),
       });
       this.userId = this.route.snapshot.data['address'].userId;    
     }
@@ -90,6 +95,14 @@ constructor(
   get landmark() {
     return this.addrInfoForm.get('landmark')!;
   }
+  get addressType() {
+    return this.addrInfoForm.get('addressType')!;
+  }
+  compareWith(o1, o2) {
+    console.log(o1);
+    console.log(o2);
+    return o1 === this.addrType ;
+  }
   saveAddress()
   { 
     if (this.addrInfoForm.invalid) {
@@ -108,6 +121,7 @@ constructor(
     this.Myaddress.address =  this.newAddress === null ? this.addr : this.newAddress;
     this.Myaddress.latitude =  this.newlatitude === null ? this.lat : this.newlatitude;
     this.Myaddress.longitude =  this.newlongitude === null ? this.lang : this.newlongitude; 
+    console.log(this.addressType.value);
  /*    this.Myaddress.address =   this.addr ;
     this.Myaddress.latitude = this.lat ;
     this.Myaddress.longitude =  this.lang; */

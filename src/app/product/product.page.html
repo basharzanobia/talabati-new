@@ -133,12 +133,18 @@
           </ng-template> 
             
       </ion-col>
-      <ion-col size="6" class="item-order" routerLink="/restaurant-new/{{restId}}">
+      <ion-col size="6" class="item-order" routerLink="/restaurant-new/{{restId}}" *ngIf="!isClosed">
         <a ion-button button icon-start full  
           class="order-button"
           (click)="addToCart()">
           <ion-icon name="basket"></ion-icon>
           <ion-label class="add-item">طلب  </ion-label>
+      </a>
+      </ion-col>
+      <ion-col size="6" class="item-order" routerLink="/restaurant-new/{{restId}}" *ngIf="isClosed">
+        <a ion-button button icon-start full  
+          class="order-button">
+          <ion-label class="add-item">مغلق الآن  </ion-label>
       </a>
       </ion-col>
     

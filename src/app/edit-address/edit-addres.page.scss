@@ -13,7 +13,7 @@
   .page-head {
     font-size: 20px;
     font-weight: 700;
-  
+   text-align: center;
   }
 
   /** Body / section Style **/
@@ -54,4 +54,8 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+select {
+  border:0px;
+  outline:0px;
 }

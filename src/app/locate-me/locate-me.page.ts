@@ -100,6 +100,7 @@ export class LocateMePage implements OnInit {
   }
 async ionViewWillEnter(){
   await this.presentAlert('تأكيد', 'لتحديد العنوان بشكل الأفضل يرجى تفعيل خاصية المواقع من الجوال', null);
+  await this.presentAlert('معلومات','لتحديد موقع عنوان جديد على الخريطة يتم تحريك الدبوس الأحمر نحو الموقع المطلوب', null);
 }
   async ngOnInit() {
     try{
@@ -227,6 +228,8 @@ async ionViewWillEnter(){
             console.log(addr);
             console.log(addr.results[0].formatted_address);
             console.log(latitude,longitude);
+            this.latitude = latitude;
+            this.longitude = longitude;
           } else {
             this.address = null;
             window.alert('No results found');

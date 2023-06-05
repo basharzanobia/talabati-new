@@ -10,6 +10,7 @@ import {
 from 'src/shared/service-proxies/service-proxies';
 import { ModalController } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-tab1',
@@ -59,6 +60,17 @@ export class Tab1Page implements OnInit {
     this.catId =  Number(this.route.snapshot.paramMap.get('catId'));
     console.log(this.catId);
  
+  }
+  isClosed(startT,endT):boolean{
+    let now = new  Date().toString().split(' ')[4];
+    var start = startT.split(":");
+          var end = endT.split(":");
+          let startTime = moment({ hour:+start[0], minute:+start[1] }).format('HH:mm');
+          let endTime = moment({ hour:+end[0], minute:+end[1] }).format('HH:mm');
+          if((startTime > now) || ( endTime < now)){
+                return true;
+          }
+          return false;
   }
   filterVendorsBySlider(id){
     this.subCatId = id;
