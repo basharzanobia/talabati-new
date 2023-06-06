@@ -24,3 +24,11 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+textarea.alert-input.sc-ion-alert-md {
+    min-height: 150px !important;
+    min-width: 300px !important;
+}
+.alert-wrapper.sc-ion-alert-md{
+    min-width: 300px !important;
+}

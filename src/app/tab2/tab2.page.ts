@@ -44,18 +44,19 @@ export class Tab2Page implements OnInit {
           this.orderList[or.id]=res2;
           if(or?.userId !=null){
             console.log(or?.userId)
-            this.getDriverReview(or?.userId);
+           // this.getDriverReview(or?.userId);
           }
          
           console.log(or?.vendorId);
           if(or?.vendorId !== null){
-          this.getVendorReview(or?.vendorId);}
+        //  this.getVendorReview(or?.vendorId);
+      }
         });
       });
     });
 
   }
-  ionViewWillEnter(){
+/*   ionViewWillEnter(){
     this._subOrderService.getbycreatorid(this._session.userId).subscribe((res: SubOrder[]) => {
       this.orders = res;
       this.orders.forEach(or => {
@@ -65,16 +66,17 @@ export class Tab2Page implements OnInit {
           this.orderList[or.id]=res2;
           if(or?.userId !== null){
             console.log(or?.userId)
-            this.getDriverReview(or?.userId);
+         //   this.getDriverReview(or?.userId);
           }
          
           console.log(or?.vendorId);
           if(or?.vendorId !== null){
-          this.getVendorReview(or?.vendorId);}
+         // this.getVendorReview(or?.vendorId);
+        }
         });
       });
     });
-  }
+  } */
 ionViewWillLeave(){
 
 }

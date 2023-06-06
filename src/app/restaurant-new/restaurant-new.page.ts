@@ -178,6 +178,7 @@ ionViewWillEnter(){
     const alert = await this.alertCtrl.create({
       header: 'معلومات اضافية',
       message: '',
+      cssClass:'custom-alert',
       buttons: [
         {
           text: 'ارسال',
@@ -199,6 +200,7 @@ ionViewWillEnter(){
       inputs: [     
         {
           name:'refuseMsg',
+          cssClass:'textarea-alert',
           type: 'textarea',
           placeholder: "ادخال ملاحظاتك حول الطلب" ,
         },

@@ -29,7 +29,16 @@ export class AppAuthService {
 
     logout(reload?: boolean): void {
         console.log("from log out")
-        localStorage.clear();
+        //localStorage.clear();
+        localStorage.removeItem("token");
+        localStorage.removeItem("talabati-username");
+    
+        localStorage.removeItem("talabati-role");
+        localStorage.removeItem("talabati-id");
+        if(!this.rememberMe){
+            localStorage.removeItem("talabati-email");
+            localStorage.removeItem("talabati-password");
+        }
         console.log(this.usersession.user)
        /*  if (reload) {
             this._router.navigate(['/log-in']);
@@ -43,7 +52,7 @@ console.log("in");
             .login(this.authenticateModel)
             .subscribe((result: LoginResponseModel) => {
                 console.log('result ', result);
-                
+                console.log("222");
                 this.processAuthenticateResult(result);
             });
     }
@@ -55,6 +64,7 @@ console.log("in");
 
         if (authenticateResult.success) {
             // Successfully logged in
+            console.log("333");
             this.login(
                 authenticateResult,
                 this.rememberMe
@@ -74,22 +84,17 @@ console.log("in");
         // const tokenExpireDate = rememberMe
         //     ? new Date(new Date().getTime() + 1000 * expireInSeconds)
         //     : undefined;
+        console.log("444");
         localStorage.setItem("rememberMe", String(rememberMe));
         console.log(rememberMe);
-      if(rememberMe){
+    
         localStorage.setItem("token", authenticateResult.token);
         localStorage.setItem("talabati-username", authenticateResult.name);
         localStorage.setItem("talabati-email", authenticateResult.email);
         localStorage.setItem("talabati-role", authenticateResult.role);
         localStorage.setItem("talabati-id", authenticateResult.id);
-      }
-      else{
-        localStorage.setItem("token", authenticateResult.token);
-        sessionStorage.setItem("talabati-username", authenticateResult.name);
-        sessionStorage.setItem("talabati-email", authenticateResult.email);
-        sessionStorage.setItem("talabati-role", authenticateResult.role);
-        sessionStorage.setItem("talabati-id", authenticateResult.id);
-      }
+     
+    
     
 
         this._router.navigate(['/intro']);

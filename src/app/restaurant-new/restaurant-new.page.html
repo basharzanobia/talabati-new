@@ -128,7 +128,7 @@
     <ion-label color="secondry" class="item-price">{{AppConsts.currency}} {{ product.price }} </ion-label> 
   </div>
   <div  class="container-note" *ngIf="product.varient.length === 0 && cart.getCountOfItem(product.id)  > 0">
-    <ion-icon name="create-outline" (click)="addNote(product.id,0)"></ion-icon>
+    <ion-icon name="create-outline" class="addicon" (click)="addNote(product.id,0)"></ion-icon>
   </div>
   <div class="container-order">
  <ion-button size="small" fill="outline" shape="round" *ngIf="product.varient.length > 0" [disabled]="isClosed"

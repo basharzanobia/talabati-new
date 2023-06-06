@@ -129,7 +129,7 @@
     .item-id {
       color: rgb(255, 145, 0);
       font-size: 15px;
-      font-weight: 600;
+      font-weight:900;
     }
   
     .item-detile {
@@ -153,6 +153,7 @@
     .item-price {
       color: rgb(255, 145, 0);
       padding: 0px 5px;
+      font-weight: 900;
     }
   
     .item-order {
@@ -245,7 +246,7 @@ ion-modal::part(backdrop) {
   position: absolute;
   padding:5px;
   left:    2px;
-  top:   30px;
+  top:   25px;
  }
  .container-order{
  position: absolute;
@@ -256,11 +257,11 @@ ion-modal::part(backdrop) {
  }
  .container-number{
 /*   border: 1px solid rgb(41,37,98); */
-  font-size:20px;
+  font-size:25px;
   border-radius: 18px;  
   width:107px !important;
   right:0;
-  border: 1px solid rgb(41,37,98);
+/*   border: 1px solid rgb(41,37,98); */
   border-radius : 20px;
 
  }
@@ -315,5 +316,8 @@ padding-top:2px !important;
   color:white;
 }
 .addicon{
-  font-size: 22px;
+  font-size: 30px;
+}
+textarea.alert-input.sc-ion-alert-md {
+  min-height: 50px !important;
 }

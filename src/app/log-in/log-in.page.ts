@@ -13,23 +13,32 @@ export class LogInPage implements OnInit {
   show: boolean = false;
   loginForm: FormGroup;
   model : LoginApiModel = new LoginApiModel();
+  rememberMe: boolean =  JSON.parse(localStorage.getItem("rememberMe")) ? JSON.parse(localStorage.getItem("rememberMe")) : true;
+  pass="";email="";
   constructor(public authService: AppAuthService) { 
   }
 
   ngOnInit() {
+    if(this.rememberMe)
+    {
+  this.email = localStorage.getItem("talabati-email");
+  this.pass = localStorage.getItem("talabati-password");
+    }
     this.loginForm = new FormGroup({
-      email: new FormControl(this.authService.authenticateModel.email, [
+      email: new FormControl( this.email, [
         Validators.required
       ]),
-      password: new FormControl(this.authService.authenticateModel.password, [
+      password: new FormControl(  this.pass, [
         Validators.required
       ]),
       rememberMe: new FormControl(this.authService.rememberMe),
     });
+
   }
 
 
   login(): void {
+    console.log("111");
     if (this.loginForm.invalid) {
       for (const control of Object.keys(this.loginForm.controls)) {
         this.loginForm.controls[control].markAsTouched();
@@ -40,6 +49,13 @@ export class LogInPage implements OnInit {
     console.log(this.loginForm.value['email']);
     this.authService.authenticateModel.email = this.loginForm.value['email'];
     this.authService.authenticateModel.password = this.loginForm.value['password'];
+    if(this.rememberMe)
+    {
+       console.log("remember me");
+       console.log( this.loginForm.value['password']);
+        localStorage.setItem("talabati-password",  this.loginForm.value['password']);
+       }
+  
     this.authService.rememberMe = this.loginForm.value['rememberMe'];
     this.authService.authenticate(() => (this.submitting = false));
   }
