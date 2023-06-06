@@ -52,41 +52,41 @@
  <ion-label class="label-offer">
   أفضل العروض
  </ion-label>
-  <ion-slides [options]="catSlideOpts" class="offers-slide" >
+  <ion-slides [options]="catSlideOpts" class="preview-slides" >
 
     <ion-slide class="slide-element-2" >
-        <div class="offer" (click)="showImage('assets/img/coupon4.jpg')" >
-          <img src="assets/img/coupon4.jpg" class="offer-img" alt="" />
+        <div class="offer"  >
+          <img src="assets/img/coupon4.jpg" class="offer-img" alt="" tappable (click)="openPreview('assets/img/coupon4.jpg')"/>
         
         </div>
     </ion-slide>
     <ion-slide class="slide-element-2" >
       <div class="offer">
-        <img src="assets/img/coupon5.jfif" class="offer-img" alt="" />
+        <img src="assets/img/coupon5.jfif" class="offer-img" alt="" tappable (click)="openPreview('assets/img/coupon5.jfif')"/>
       
       </div>
   </ion-slide>
   <ion-slide class="slide-element-2" >
     <div class="offer">
-      <img src="assets/img/coupon6.jfif" class="offer-img" alt="" />
+      <img src="assets/img/coupon6.jfif" class="offer-img" alt="" tappable (click)="openPreview('assets/img/coupon6.jfif')" />
     
     </div>
 </ion-slide>
 <ion-slide class="slide-element-2" >
-  <div class="offer" (click)="showImage('assets/img/coupon4.jpg')" >
-    <img src="assets/img/coupon4.jpg" class="offer-img" alt="" />
+  <div class="offer"  >
+    <img src="assets/img/coupon4.jpg" class="offer-img" alt="" tappable (click)="openPreview('assets/img/coupon4.jpg')"/>
   
   </div>
 </ion-slide>
 <ion-slide class="slide-element-2" >
 <div class="offer">
-  <img src="assets/img/coupon5.jfif" class="offer-img" alt="" />
+  <img src="assets/img/coupon5.jfif" class="offer-img" alt="" tappable (click)="openPreview('assets/img/coupon5.jfif')"/>
 
 </div>
 </ion-slide>
 <ion-slide class="slide-element-2" >
 <div class="offer">
-<img src="assets/img/coupon6.jfif" class="offer-img" alt="" />
+<img src="assets/img/coupon6.jfif" class="offer-img" alt="" tappable (click)="openPreview('assets/img/coupon6.jfif')"/>
 
 </div>
 </ion-slide>

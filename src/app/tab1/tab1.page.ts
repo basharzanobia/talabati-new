@@ -12,6 +12,7 @@ import { ModalController } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import * as moment from 'moment';
 import { CartStoreService } from 'src/shared/cart/cart-store.service';
+import { ImageModalPage } from '../image-modal/image-modal.page';
 
 @Component({
   selector: 'app-tab1',
@@ -63,8 +64,18 @@ export class Tab1Page implements OnInit {
     console.log(this.catId);
  
   }
-  showImage(imgurl){
-    console.log(imgurl);
+  async openPreview(img){
+    console.log(img);
+   const modal = await  this.modalCtrl.create({
+component: ImageModalPage,
+cssClass:'transparent-modal',
+componentProps:{
+  img:img
+},
+backdropDismiss:false
+    });
+    modal.present();
+  //  let n = setTimeout(function () { modal.dismiss() }, 1000);
   }
   isClosed(startT,endT):boolean{
     let now = new  Date().toString().split(' ')[4];

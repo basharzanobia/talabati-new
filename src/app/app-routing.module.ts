@@ -233,7 +233,11 @@ const routes: Routes = [
   {
     path: 'locate-me-edit/:id',
     loadChildren: () => import('./locate-me-edit/locate-me-edit.module').then( m => m.LocateMeEditPageModule)
+  },  {
+    path: 'image-modal',
+    loadChildren: () => import('./image-modal/image-modal.module').then( m => m.ImageModalPageModule)
   }
+
 
 
 
