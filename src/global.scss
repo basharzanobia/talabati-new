@@ -27,8 +27,14 @@
 
 textarea.alert-input.sc-ion-alert-md {
     min-height: 150px !important;
-    min-width: 300px !important;
+    min-width: 250px !important;
+    font-size: 18px !important;
 }
 .alert-wrapper.sc-ion-alert-md{
     min-width: 300px !important;
+}
+.alert-message.sc-ion-alert-ios {
+    color:#7F080A !important;
+    font-size: 20px;
+    font-weight: bold;
 }

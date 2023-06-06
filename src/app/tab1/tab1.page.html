@@ -48,7 +48,51 @@
 
 </div>
 
+<div class="row gate-bar offers">
+ <ion-label class="label-offer">
+  أفضل العروض
+ </ion-label>
+  <ion-slides [options]="catSlideOpts" class="offers-slide" >
 
+    <ion-slide class="slide-element-2" >
+        <div class="offer" (click)="showImage('assets/img/coupon4.jpg')" >
+          <img src="assets/img/coupon4.jpg" class="offer-img" alt="" />
+        
+        </div>
+    </ion-slide>
+    <ion-slide class="slide-element-2" >
+      <div class="offer">
+        <img src="assets/img/coupon5.jfif" class="offer-img" alt="" />
+      
+      </div>
+  </ion-slide>
+  <ion-slide class="slide-element-2" >
+    <div class="offer">
+      <img src="assets/img/coupon6.jfif" class="offer-img" alt="" />
+    
+    </div>
+</ion-slide>
+<ion-slide class="slide-element-2" >
+  <div class="offer" (click)="showImage('assets/img/coupon4.jpg')" >
+    <img src="assets/img/coupon4.jpg" class="offer-img" alt="" />
+  
+  </div>
+</ion-slide>
+<ion-slide class="slide-element-2" >
+<div class="offer">
+  <img src="assets/img/coupon5.jfif" class="offer-img" alt="" />
+
+</div>
+</ion-slide>
+<ion-slide class="slide-element-2" >
+<div class="offer">
+<img src="assets/img/coupon6.jfif" class="offer-img" alt="" />
+
+</div>
+</ion-slide>
+  </ion-slides>
+
+</div>
   <ion-grid class="main">
     <ion-row class="tool-bar">
       <ion-col size="10" class="search-item">
@@ -121,3 +165,12 @@
     </ion-row>
   </ion-grid>
 </ion-content>
+<ion-footer class="footer">
+  <ion-toolbar routerLink="/tabs/tab3" routerDirection="forward">
+    <ion-title> مجموع السلة {{ this.cart.Total }} {{AppConsts.currency}}
+      <ion-icon name="cart-outline"></ion-icon> 
+
+    </ion-title>
+
+  </ion-toolbar>
+</ion-footer>

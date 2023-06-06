@@ -320,12 +320,13 @@ this.loading.present();
     const alert = await this.alertController.create({
       message: message,
       mode:'ios',
+      cssClass:'apply-order-alert',
       buttons: [{
-        text: "إلغاء",
+        text: "غير موافق",
         role: "cancel"
       },
       {
-        text: "متأكد",
+        text: "موافق",
         handler: action
       }]
     });
@@ -404,7 +405,7 @@ if(this.orderRequest.paymentMode == null){
 else{
   if(this.hasAddress || this.showDetailes)
   {
- this.withAlert("هل أنت متأكد من تثبيت الطلب؟", () =>{
+ this.withAlert("هل أنت موافق على القيام بتنفيذ الطلب لأنه بالموافقة سيتم الشراء؟", () =>{
   this.loading.present();
   var totalQty=0;
   this.cart.Items.forEach(element => {

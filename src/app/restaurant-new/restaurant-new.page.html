@@ -114,22 +114,24 @@
 <div *ngFor="let product of featuredProducts" class="container-row">
   <div class="container-box" >
 <div  class="container-right">
-  <div  class="container-like">
-   <ion-icon name="heart" class="isfavprod" style="color:red"  *ngIf="myWishList.includes(product.id)" class="like-icon"  (click)="deleteWishList(product.id)" ></ion-icon>
-   <ion-icon name="heart" class="notfavprod"style="color:black" *ngIf="!myWishList.includes(product.id)"  class="like-icon" (click)="createWishList(product.id)" ></ion-icon>
-    </div>
     <img [src]="AppConsts.appBaseUrl + '/' + product.mainImagePath" class="product-img" height="100" [routerLink]="['/product', product.id]"/>
 </div>
 <div class="container-middle">
   <ion-label class="item-id">{{ product.name }}</ion-label>
+ 
+    <ion-icon name="heart" class="isfavprod" style="color:red"  *ngIf="myWishList.includes(product.id)" class="like-icon"  (click)="deleteWishList(product.id)" ></ion-icon>
+    <ion-icon name="heart" class="notfavprod"style="color:black" *ngIf="!myWishList.includes(product.id)"  class="like-icon" (click)="createWishList(product.id)" ></ion-icon>
+    <div  *ngIf="product.varient.length === 0 && cart.getCountOfItem(product.id)  > 0">
+      <ion-icon name="create-outline" class="addicon"  (click)="addNote(product.id,0)"></ion-icon>
+    </div>
 </div>
 <div  class="container-left">
   <div  class="container-price">
     <ion-label color="secondry" class="item-price">{{AppConsts.currency}} {{ product.price }} </ion-label> 
   </div>
-  <div  class="container-note" *ngIf="product.varient.length === 0 && cart.getCountOfItem(product.id)  > 0">
-    <ion-icon name="create-outline" class="addicon" (click)="addNote(product.id,0)"></ion-icon>
-  </div>
+<!--   <div  class="container-note" *ngIf="product.varient.length === 0 && cart.getCountOfItem(product.id)  > 0">
+    <ion-icon name="create-outline" class="addicon"  (click)="addNote(product.id,0)"></ion-icon>
+  </div> -->
   <div class="container-order">
  <ion-button size="small" fill="outline" shape="round" *ngIf="product.varient.length > 0" [disabled]="isClosed"
   id="{{product.id}}" >عرض الخيارات</ion-button> 

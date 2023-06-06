@@ -41,8 +41,31 @@ ion-scroll{
     display: inline-flex;
   }
 }
-
-
+.offers{
+  margin-bottom:20px !important;
+  margin-top: 10px;
+}
+.label-offer{
+  margin: 10px !important;
+  font-weight: 900;
+}
+.offers-slide{
+  margin:10px !important;
+}
+.offer{
+ 
+  height:150px !important;
+  width: 75px !important;
+}
+.offer-img{
+  height:150px !important;
+  width: 75px !important;
+  border-radius:8px ;
+}
+.slide-element-2{
+  height:150px !important;
+  width: 75px !important;
+}
 .scroll-click {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   margin-top: 30px;
@@ -221,7 +244,9 @@ ion-modal ion-toolbar {
   color:red;
 }
 
-
+.footer{
+  text-align: center !important;
+}
 
 
 

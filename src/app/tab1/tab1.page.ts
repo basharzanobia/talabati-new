@@ -11,6 +11,7 @@ from 'src/shared/service-proxies/service-proxies';
 import { ModalController } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import * as moment from 'moment';
+import { CartStoreService } from 'src/shared/cart/cart-store.service';
 
 @Component({
   selector: 'app-tab1',
@@ -31,6 +32,7 @@ export class Tab1Page implements OnInit {
   AppConsts = AppConsts;
  SubCatsOpts = [];
   constructor(private route: ActivatedRoute,
+    public cart: CartStoreService,
     private _vendorService: VendorapiServiceProxy,
     private modalCtrl: ModalController) {}
   
@@ -60,6 +62,9 @@ export class Tab1Page implements OnInit {
     this.catId =  Number(this.route.snapshot.paramMap.get('catId'));
     console.log(this.catId);
  
+  }
+  showImage(imgurl){
+    console.log(imgurl);
   }
   isClosed(startT,endT):boolean{
     let now = new  Date().toString().split(' ')[4];

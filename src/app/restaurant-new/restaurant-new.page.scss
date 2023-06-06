@@ -193,13 +193,15 @@
   border-radius: 10px;
   flex: 25%;
  }
- .container-like{
+ /* .container-like{
   position: absolute;
-/*   background-color: white; */
   border-top-right-radius: 10px;
   border-bottom-left-radius: 5px;
   right:    0;
   top:   0;
+ } */
+ .container-like{
+  position: absolute;
  }
  .container-middle{
   flex: 50%;
