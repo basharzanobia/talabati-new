@@ -1,12 +1,24 @@
 
-<ion-content>
-  <ion-button (click)="dissmis()" fill="clear" shape="round">x</ion-button>
+<ion-content overflow-scroll="false"><!-- 
+  <ion-button (click)="dissmis()" fill="clear" shape="round">x</ion-button> -->
   <ion-slides [options]="catSlideOpts"  >
-
+   
     <ion-slide >
+      <button ion-button round color="light" class="scroll-click" >
+        <ion-button (click)="dissmis()" fill="clear" shape="round">x</ion-button>
         <div class="swiper-zoom-container" >
           <img src="{{img}}"  class="offer-img" alt="" />
-        
         </div>
+       <br/>
+        <div class="shop-label" (click)="openOffers()">
+          <ion-label> تصفح العروض</ion-label>
+        </div>
+      </button>
+      
     </ion-slide>
+    
     </ion-slides>
+<!--     <div >
+      <ion-icon name="cart-outline"(click)="openOffers()"></ion-icon>
+    </div> -->
+    </ion-content>

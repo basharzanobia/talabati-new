@@ -35,94 +35,23 @@
     </ion-segment>
   </ion-item>
 
-  <ion-grid class="ion-margin track" *ngIf="segment === 'going'">
-
-    <ng-container *ngFor="let order of orders">
-    <ng-container *ngIf="order.orderStatus !== 15">
-
-      <ion-row class="track-head">
-        <ion-label class="track-title"></ion-label>
-        <ion-col size="6">رقم الطلب :</ion-col>
-        <ion-col size="6">{{ order.id }} </ion-col>
-      </ion-row>
-      
-      
-
- <!--        <ion-row class="order-cutomer" >
-          <ion-col size="6" class="total item-photo" >
-            الإجمالي   : 
-            <ion-row >  
-                <ion-col size="12" >
-                   {{order.totalAmount }}
-                </ion-col>
-              </ion-row>
-          </ion-col>
-
-          <ion-col size="6" class=" date item-photo" >
-            تاريخ الطلب: 
-            <ion-row >
-                <ion-col size="12" >
-                  {{orderList[order.id]?.createdDate?.toDate() | date:'MM/dd/yyyy'}}
-                </ion-col>
-              </ion-row>
-          </ion-col>
-          </ion-row> -->
-
- <!--          <br>
-      <ion-row class="order-cutomer" *ngFor="let orderDetail of order.orderDetail">
-          <ion-col size="4" class="item-photo" routerLink="/product">
-            <ion-img [src]="AppConsts.appBaseUrl+ '/' +orderDetail.product.mainImagePath" ></ion-img>
-          </ion-col>
-          <ion-col size="8" class="item-detile" >
-            <ion-label class="item-id" >{{ orderDetail.product.name }}  </ion-label>
-            <ion-label class="item-descrip" >{{ orderDetail.product.shortDescription }}  </ion-label>
-            
-
-            <br><br>
-            
-            
-            <ion-row class="order-action" >  
-              <ion-col size="6">العدد  :</ion-col> 
-              <ion-col size="6" > 
-                {{ orderDetail.qty }}
-                </ion-col>
-            </ion-row>
-
-              <ion-row class="order-action" >  
-                <ion-col size="6">السعر  :</ion-col> 
-                <ion-col size="6" > 
-                  {{ orderDetail.price }}
-                  </ion-col>
-              </ion-row>
-
-             
-          </ion-col>
-      </ion-row> -->
-      <ion-row class="table-head" >
-        <ion-col size="12" class="item-statu">
-<!--           <ion-range style = "pointer-events:none" min="0" max="100" step="20" snaps="true" [pinFormatter]="customFormatter" [pin]="true" color="tertiary" [value]="order.orderStatus * 10"></ion-range> -->
-          <p class="item-hint">{{ AppOrderStatusType.getName(order.orderStatus) }} </p>
-        </ion-col>
-        
-      </ion-row>
-      <ion-row class="order-action" >
-        <ion-col size="12" class="order-cancel" [routerLink]="['/tracking', order.id]" routerDirection="forward"> 
-          <a button icon-start ion-button full class="order-track">
-            <ion-label class="cancel-item" > التفاصيل</ion-label>
-          </a>
-           </ion-col>
-  <!--          <ion-col size="6" class="call-button" routerLink="/tabs/tab1"> 
-            <a button icon-start ion-button full>
-              <ion-label class="add-call" > الاتصال  </ion-label>
-            </a>
-         </ion-col> -->
-      </ion-row>
-      <ion-item-divider>
-      </ion-item-divider>
-    </ng-container>
-   </ng-container>
-  </ion-grid>
-
+<ion-list *ngIf="segment === 'going'">
+  <ion-item *ngFor="let order of orders" >
+    
+    <ion-row class="track-head" *ngIf="order.orderStatus !== 15">
+      <ion-col size="6">رقم الطلب :</ion-col>
+      <ion-col size="3">{{ order.id }} </ion-col>
+      <ion-col size="3" (click)="navigateToOrder(order.id)">
+        <ion-button >
+          التفاصيل
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col></ion-col>
+    </ion-row>
+  </ion-item>
+</ion-list>
 
   <ion-grid class="ion-margin track" *ngIf="segment === 'done'">
 

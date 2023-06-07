@@ -29,7 +29,10 @@ export class Tab1Page implements OnInit {
     slidesPerView: 4.5,
     spaceBetween: 7,
   };
-
+  offersSlideOpts = {
+    slidesPerView: 1.5,
+    spaceBetween: 5,
+  };
   AppConsts = AppConsts;
  SubCatsOpts = [];
   constructor(private route: ActivatedRoute,

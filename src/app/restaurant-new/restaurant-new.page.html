@@ -23,8 +23,17 @@
 
 <div class="row gate-bar">
     <ion-slides [options]="catSlideOptsR">
-      <ion-slide *ngFor="let category of categories$ | async as list">
-          <button ion-button round color="light" class="scroll-click" (click)="selectedCategory = category.id">
+      <ion-slide class="subcatSlide" >
+        <button ion-button round color="light" [ngClass]="{'active': selectedCategory === 0}" class="scroll-click" (click)="filterBySubcat(0)">
+          <ion-img alt="logo" src="assets/img/logo.png" class="scroll-item selectable-icon slide-img"></ion-img>
+         <br/>
+          <div class="rest-id">
+            <ion-label class="rest-id">الكل</ion-label>
+          </div>
+        </button>
+      </ion-slide>
+      <ion-slide *ngFor="let category of categories$ | async as list" class="subcatSlide">
+          <button ion-button round color="light"  [ngClass]="{'active': category.id === selectedCategory}" class="scroll-click" (click)="filterBySubcat(category.id)">
             <ion-img [src]="AppConsts.appBaseUrl + '/' + category.imagePath" class="scroll-item selectable-icon slide-img"></ion-img>
          <br/>
             <div  class="rest-id">
@@ -192,10 +201,13 @@
 </ion-content>
 <ion-footer class="footer">
   <ion-toolbar routerLink="/tabs/tab3" routerDirection="forward">
-    <ion-title> مجموع السلة {{ this.cart.Total }} {{AppConsts.currency}}
+   <!--  <ion-title> مجموع السلة {{ this.cart.Total }} {{AppConsts.currency}}
       <ion-icon name="cart-outline"></ion-icon> 
 
-    </ion-title>
-
+    </ion-title> -->
+    <ion-row>
+      <ion-col size="9"> الذهاب إلى السلة لاستكمال الشراء</ion-col>
+      <ion-col  size="3">{{ this.cart.Total }} {{AppConsts.currency}}</ion-col>
+    </ion-row>
   </ion-toolbar>
 </ion-footer>

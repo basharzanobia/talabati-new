@@ -56,6 +56,9 @@ export class Tab2Page implements OnInit {
     });
 
   }
+  navigateToOrder(orderId){
+    this.router.navigate(['/tracking',orderId]);
+  }
 /*   ionViewWillEnter(){
     this._subOrderService.getbycreatorid(this._session.userId).subscribe((res: SubOrder[]) => {
       this.orders = res;

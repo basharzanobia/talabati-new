@@ -50,7 +50,7 @@ export class RestaurantNewPage implements OnInit {
   };
   rating;
   currentUserId = "";
-  selectedCategory;
+  selectedCategory=0;
   now;
   startTime;
   endTime;
@@ -130,6 +130,38 @@ export class RestaurantNewPage implements OnInit {
 
     this.categories$ = this._homeService.menu();
 
+
+  }
+  filterBySubcat(subcat){
+    if(subcat === 0){
+      this.selectedCategory = subcat;
+      const productFilter = new ProductFilterModel();
+      productFilter.init({ 
+        creatorId: this.vendorId,
+        currentPage: 1,
+        take: 20
+      });
+      this._productsService.list(productFilter)
+      .subscribe((res: ProductResponseModel) => {
+        this.featuredProducts = res.products;
+     
+      });
+    }
+    else{
+      this.selectedCategory = subcat;
+      const productFilter = new ProductFilterModel();
+      productFilter.init({ 
+        creatorId: this.vendorId,
+        category : subcat,
+        currentPage: 1,
+        take: 20
+      });
+      this._productsService.list(productFilter)
+      .subscribe((res: ProductResponseModel) => {
+        this.featuredProducts = res.products;
+     
+      });
+    }
 
   }
 ionViewWillEnter(){

@@ -35,7 +35,7 @@ export class LocateMePage implements OnInit {
     zoomControl: true,
     scrollwheel: false,
     disableDoubleClickZoom: true,
-    disableDefaultUI: true,
+   // disableDefaultUI: true,
     mapTypeId: 'roadmap',
   };
 

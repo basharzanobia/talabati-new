@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { IonSlides, ModalController } from '@ionic/angular';
 
 @Component({
@@ -12,7 +13,8 @@ export class ImageModalPage implements OnInit {
 sliderOpts={
 zoom:true
 }
-  constructor(private modalController: ModalController) { console.log(this.img)}
+  constructor(private modalController: ModalController,
+    private router: Router) { console.log(this.img)}
 ionViewDidEnter(){
   this.slides.update();
 }
@@ -20,5 +22,9 @@ ionViewDidEnter(){
   }
   dissmis(){
     this.modalController.dismiss();
+  }
+  openOffers(){
+    this.modalController.dismiss();
+    this.router.navigate(['/offers'])
   }
 }
