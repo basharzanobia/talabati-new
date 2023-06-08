@@ -18,6 +18,9 @@ import { CartStoreService } from 'src/shared/cart/cart-store.service';
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { SuborderapiServiceProxy,UserlocationapiServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { BackgroundGeolocationService } from './services/background-geolocation.service';
+import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
+import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -37,7 +40,10 @@ import { BackgroundGeolocationService } from './services/background-geolocation.
     AppSessionService,
     SuborderapiServiceProxy,
     UserlocationapiServiceProxy,
-    BackgroundGeolocationService
+    BackgroundGeolocationService,
+    AndroidPermissions,
+    LocationAccuracy,
+    Geolocation,
   ],
   bootstrap: [AppComponent],
 })

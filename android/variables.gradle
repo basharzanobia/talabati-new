@@ -12,4 +12,5 @@ ext {
     androidxEspressoCoreVersion = '3.4.0'
     cordovaAndroidVersion = '10.1.1'
     coreSplashScreenVersion='1.0.0'
+    playServicesLocationVersion = '17.1.0'
 }

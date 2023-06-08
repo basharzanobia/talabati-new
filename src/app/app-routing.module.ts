@@ -240,6 +240,14 @@ const routes: Routes = [
   {
     path: 'offers',
     loadChildren: () => import('./offers/offers.module').then( m => m.OffersPageModule)
+  },
+  {
+    path: 'test-map',
+    loadChildren: () => import('./test-map/test-map.module').then( m => m.TestMapPageModule)
+  },
+  {
+    path: 'test-map2',
+    loadChildren: () => import('./test-map2/test-map2.module').then( m => m.TestMap2PageModule)
   }
 
 
