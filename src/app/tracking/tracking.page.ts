@@ -5,8 +5,6 @@ import { AppSessionService } from 'src/shared/session/app-session.service';
 import { AppConsts } from 'src/shared/AppConsts';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ViewChild, ElementRef } from '@angular/core';
-import { faCab } from "@fortawesome/free-solid-svg-icons";
-import { interval } from 'rxjs';
 import { AlertController } from '@ionic/angular';
 declare var google:any;
 @Component({
