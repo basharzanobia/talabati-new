@@ -3,6 +3,7 @@ import { DynamicPageModel, DynamicpagesServiceProxy,PopularQuestions,Popularques
 import { AppConsts } from 'src/shared/AppConsts';
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { Router } from '@angular/router';
+import { MenuController } from '@ionic/angular';
 @Component({
   selector: 'app-support',
   templateUrl: './support.page.html',
@@ -18,11 +19,16 @@ export class SupportPage implements OnInit {
   constructor(private _dynamicpagesService: DynamicpagesServiceProxy,
     private _popularQestionsService: PopularquestionsapiServiceProxy,
     private router: Router,
-    private _session: AppSessionService) { }
+    private _session: AppSessionService,
+    private menuCtrl : MenuController) { }
 
   ngOnInit() {
     this._dynamicpagesService.getbyslug("support").subscribe((res: DynamicPageModel) => this.page = res);
     this._popularQestionsService.listbycategory(2).subscribe((res: PopularQuestions[]) => this.Questions = res);
+  }
+  goToMenu(){
+    this.router.navigate(['/tabs/tab1/1'],{replaceUrl:true});
+    this.menuCtrl.toggle();
   }
   openChat(){
     this.adminId = AppConsts.adminId; 

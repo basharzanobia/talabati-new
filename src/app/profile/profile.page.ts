@@ -3,7 +3,8 @@ import { LoginResponseModel } from 'src/shared/service-proxies/service-proxies';
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { AppAuthService } from 'src/shared/auth/app-auth.service';
 import { App } from '@capacitor/app';
-import { AlertController } from '@ionic/angular';
+import { AlertController, MenuController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -15,12 +16,17 @@ export class ProfilePage implements OnInit {
 
   constructor(private _session: AppSessionService,
     private _auth: AppAuthService,
-    public alertController: AlertController) { }
+    public alertController: AlertController,
+    private router: Router,
+    public menuCtrl: MenuController) { }
 
   ngOnInit() {
     this.userInfo = this._session.user;
   }
-
+  goToMenu(){
+    this.router.navigate(['/tabs/tab1/1'],{replaceUrl:true});
+    this.menuCtrl.toggle();
+  }
   handleRefresh(event) {
     setTimeout(() => {
       this.ngOnInit();

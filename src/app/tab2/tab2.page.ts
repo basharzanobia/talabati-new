@@ -5,7 +5,7 @@ import { AppSessionService } from 'src/shared/session/app-session.service';
 import { AppConsts } from 'src/shared/AppConsts';
 import { App } from '@capacitor/app';
 import { Router } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { MenuController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab2',
@@ -29,7 +29,7 @@ export class Tab2Page implements OnInit {
     private _reviewUserapiService:ReviewuserapiServiceProxy,
     private _orderService: OrderapiServiceProxy,
     private router: Router,
-    private navController: NavController) {
+    private menuCtrl: MenuController) {
 
   }
 
@@ -58,6 +58,10 @@ export class Tab2Page implements OnInit {
   }
   navigateToOrder(orderId){
     this.router.navigate(['/tracking',orderId]);
+  }
+  goToMenu(){
+    this.router.navigate(['/tabs/tab1/1'],{replaceUrl:true});
+    this.menuCtrl.toggle();
   }
 /*   ionViewWillEnter(){
     this._subOrderService.getbycreatorid(this._session.userId).subscribe((res: SubOrder[]) => {

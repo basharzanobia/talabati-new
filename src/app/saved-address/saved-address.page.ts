@@ -4,7 +4,7 @@ import { AppSessionService } from 'src/shared/session/app-session.service';
 import { AppConsts } from 'src/shared/AppConsts';
 import { ActivatedRoute ,Router} from '@angular/router';
 import { AddressDataService } from '../services/address-data.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-saved-address',
@@ -22,11 +22,16 @@ export class SavedAddressPage implements OnInit {
     private _router: Router,
     private _addressService: AddressapiServiceProxy,
     public addressDataService: AddressDataService,
-     private alertController: AlertController,) {
+     private alertController: AlertController,
+     public menuCtrl: MenuController) {
 
   }
   locateMe(){
     this._router.navigate(['/locate-me']);
+  }
+  goToMenu(){
+    this._router.navigate(['/tabs/tab1/1'],{replaceUrl:true});
+    this.menuCtrl.toggle();
   }
   ngOnInit(): void {
     this._addressService.getrequestsbyuserid(this._session.userId).subscribe((res: UserAddress[]) => this.addressDataService.initAddresses(res));

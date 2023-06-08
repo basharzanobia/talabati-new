@@ -21,6 +21,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    configurations.all {
+  resolutionStrategy {
+    force "com.google.android.gms:play-services-basement:17.0.0"
+    force "com.google.android.gms:play-services-base:17.1.0"
+    force "com.google.android.gms:play-services-stats:17.0.0"
+    force "com.google.android.gms:play-services-gcm:17.0.0"
+    force "com.google.android.gms:play-services-ads:19.7.0"
+ }
+}
 }
 
 repositories {

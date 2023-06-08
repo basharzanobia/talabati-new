@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { EwalletServiceProxy ,EWallet} from 'src/shared/service-proxies/service-proxies';
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { AppConsts } from 'src/shared/AppConsts';
-import { AlertController } from '@ionic/angular';  
+import { AlertController, MenuController } from '@ionic/angular';  
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-wallet',
@@ -17,6 +18,8 @@ export class WalletPage implements OnInit {
   constructor(private _session: AppSessionService,
     private _ewalletService: EwalletServiceProxy,
     public alertCtrl: AlertController,
+    private menuCtrl : MenuController,
+    private router : Router
     ) {
 
   }
@@ -31,7 +34,10 @@ export class WalletPage implements OnInit {
     const result = await alert.onDidDismiss();  
     console.log(result);  
   }  
-
+  goToMenu(){
+    this.router.navigate(['/tabs/tab1/1'],{replaceUrl:true});
+    this.menuCtrl.toggle();
+  }
   handleRefresh(event) {
     setTimeout(() => {
       this.ngOnInit();

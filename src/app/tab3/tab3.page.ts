@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartStoreService } from 'src/shared/cart/cart-store.service';
 import { OrderapiServiceProxy,UserAddress,AddressType,AddressapiServiceProxy,Order, OrderDetail, OrderDetailRequest, OrderRequestModel, PaymentCompany,PaymentcompanyapiServiceProxy, EwalletServiceProxy } from 'src/shared/service-proxies/service-proxies';
-import { AlertController } from '@ionic/angular';  
+import { AlertController, MenuController } from '@ionic/angular';  
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { Geolocation} from '@capacitor/geolocation';
 import { AppConsts } from 'src/shared/AppConsts';
@@ -59,7 +59,8 @@ export class Tab3Page {
     public alertController: AlertController,
     private actionSheetCtrl: ActionSheetController,
     private bgGeolocation:BackgroundGeolocationService,
-    private _ewalletService: EwalletServiceProxy
+    private _ewalletService: EwalletServiceProxy,
+    private menuCtrl : MenuController
   ) { this.initPage();}
   async presentActionSheet() {
     let radio_options = [];
@@ -333,7 +334,10 @@ this.loading.present();
 
     await alert.present();
   }
-
+  goToMenu(){
+    this._router.navigate(['/tabs/tab1/1'],{replaceUrl:true});
+    this.menuCtrl.toggle();
+  }
   async selectAddress(id:any){
   
     this.hasAddress = false;

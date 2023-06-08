@@ -12,6 +12,8 @@ import {
 import { Observable } from 'rxjs';
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { AppConsts } from 'src/shared/AppConsts';
+import { MenuController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-favorite',
@@ -36,11 +38,17 @@ export class FavoritePage implements OnInit {
     private _vendorwishlistService: VendorwishlistapiServiceProxy,
     private _vendorService: VendorapiServiceProxy,
     private _wishListService: WishlistapiServiceProxy,
-    private _productService: ProductapiServiceProxy
+    private _productService: ProductapiServiceProxy,
+    private menuCtrl : MenuController,
+    private router : Router
     ) {
 
   }
-  
+  goToMenu(){
+    this.router.navigate(['/tabs/tab1/1'],{replaceUrl:true});
+    this.menuCtrl.toggle();
+  }
+
   handleRefresh(event) {
     setTimeout(() => {
       this.ngOnInit();

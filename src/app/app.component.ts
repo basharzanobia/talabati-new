@@ -62,19 +62,7 @@ export class AppComponent {
           App.exitApp();
     });
   }
-  else if(currentUrl === "/tab2"){
-    this.router.navigate(['/intro']);
-  }
-  else if(currentUrl === "/tab3"){
-    this.router.navigate(['/intro']);
-  }
-  else if(currentUrl === "/tab1/1"){
-    this.router.navigate(['/intro']);
-  }
-  else 
-  {
-    this.navController.back();
-  }
+ 
 }
   ); 
 }
