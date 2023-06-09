@@ -30,6 +30,7 @@ export class TrackingPage implements OnInit {
    driverLocation = new Location();
     directionsRenderer = new google.maps.DirectionsRenderer();
     orderInTransit = false;
+    _appOrderStatusType = AppOrderStatusType.getName;
   @ViewChild('map',{read: ElementRef,static:false}) mapRef:ElementRef;
   constructor(private _session: AppSessionService,
     private route: ActivatedRoute,

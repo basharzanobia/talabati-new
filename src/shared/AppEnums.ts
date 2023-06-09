@@ -25,10 +25,30 @@ export class AppOrderStatusType {
         switch (val) {
             case OrderStatusType.Pending:
                 return 'بالانتظار';
+                case OrderStatusType.TransmittedToVendor:
+                    return 'بالانتظار';
+                    case OrderStatusType.AcceptedByVendor:
+                        return 'بالانتظار';
+                        case OrderStatusType.InProcess:
+                            return 'يتم التحضير';
+                case OrderStatusType.TransmittedToDriver:
+                    return 'في النقل';
+                    case OrderStatusType.AcceptedByDriver:
+                        return 'في النقل';
+                        case OrderStatusType.RejectedByDriver:
+                            return 'في النقل';
+                            case OrderStatusType.ReTransmittedToDriver:
+                                return 'في النقل';
+                                case OrderStatusType.WaitingForDriver:
+                                    return 'في النقل';
+                                    case OrderStatusType.HandeledToDriver:
+                                        return 'في النقل';
             case OrderStatusType.InTransit:
                 return 'في النقل';
             case OrderStatusType.Failed:
                 return 'فشل';
+                case OrderStatusType.UnDelivered:
+                    return 'لم يتم التسليم';
             case OrderStatusType.Delivered:
                 return 'تم التسليم';
             case OrderStatusType.Returned:

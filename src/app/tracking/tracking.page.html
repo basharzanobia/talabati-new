@@ -154,7 +154,7 @@
     <ion-row class="table-head" >
       <ion-col size="12" class="item-statu">
         <ion-range style = "pointer-events:none" min="0" max="100" step="20" snaps="true" [pinFormatter]="customFormatter" [pin]="true" color="tertiary"></ion-range>
-        <p class="item-hint"> جاري تحضير الطلب </p>
+        <p class="item-hint">{{_appOrderStatusType(order?.orderStatus)}}  </p>
       </ion-col>
       
     </ion-row>
@@ -173,7 +173,7 @@
            </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-row>
+  <ion-row *ngIf="order?.orderStatus === 7">
     <ion-col size="12">
       <div #map id="map">
       </div>
