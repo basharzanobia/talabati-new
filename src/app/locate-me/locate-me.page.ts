@@ -8,6 +8,8 @@ import {
 import { Router} from '@angular/router';
 import { AlertController } from '@ionic/angular'; 
 import { LoadingService } from '../services/loading.service';
+import { LocationServiceService } from '../services/location-service.service';
+import { Capacitor } from '@capacitor/core';
 
 //import { BackgroundGeolocationService } from '../services/background-geolocation.service';
 @Component({
@@ -45,46 +47,11 @@ export class LocateMePage implements OnInit {
     private geoCoder: MapGeocoder,
     private _router: Router,
     private loading :LoadingService,
-   // private bgGeolocation:BackgroundGeolocationService,
+    private locationService : LocationServiceService,
     public alertController: AlertController) {
-   /* this.height = (document.documentElement.clientHeight-100)+"px";*/
   }
 
- /* ngAfterViewInit(): void {
-    // Binding autocomplete to search input control
-    let autocomplete = new google.maps.places.Autocomplete(
-      this.searchElementRef.nativeElement
-    );
-    // Align search box to center
-    this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(
-      this.searchElementRef.nativeElement
-    );
-    autocomplete.addListener('place_changed', () => {
-      this.ngZone.run(() => {
-        //get the place result
-        let place: google.maps.places.PlaceResult = autocomplete.getPlace();
 
-        //verify result
-        if (place.geometry === undefined || place.geometry === null) {
-          return;
-        }
-
-        console.log({ place }, place.geometry.location?.lat());
-
-        //set latitude, longitude and zoom
-        this.latitude = place.geometry.location?.lat();
-        this.longitude = place.geometry.location?.lng();
-
-        // Set marker position
-        this.setMarkerPosition(this.latitude, this.longitude);
-
-        this.center = {
-          lat: this.latitude,
-          lng: this.longitude,
-        };
-      });
-    });
-  }*/
   async presentAlert(header: string, msg: string, subHeader: string) {
     const alert = await this.alertController.create({
       cssClass: 'app-alert',
@@ -98,14 +65,51 @@ export class LocateMePage implements OnInit {
 
     const { role } = await alert.onDidDismiss();
   }
-async ionViewWillEnter(){
-  await this.presentAlert('تأكيد', 'لتحديد العنوان بشكل الأفضل يرجى تفعيل خاصية المواقع من الجوال', null);
-  await this.presentAlert('معلومات','لتحديد موقع عنوان جديد على الخريطة يتم تحريك الدبوس الأحمر نحو الموقع المطلوب', null);
-}
-  async ngOnInit() {
+  async checkPermissions ()  {
+    const hasPermission = await this.locationService.checkGPSPermission();
+    if (hasPermission) {
+        if (Capacitor.isNative) {
+            const canUseGPS = await this.locationService.askToTurnOnGPS();
+            this.postGPSPermission(canUseGPS);
+        }
+        else {
+            this.postGPSPermission(true);
+        }
+    }
+    else {
+        console.log('14');
+        const permission = await this.locationService.requestGPSPermission();
+        if (permission === 'CAN_REQUEST' || permission === 'GOT_PERMISSION') {
+            if (Capacitor.isNative) {
+                const canUseGPS = await this.locationService.askToTurnOnGPS();
+                this.postGPSPermission(canUseGPS);
+            }
+            else {
+                this.postGPSPermission(true);
+            }
+        }
+        else {
+            this.presentAlert("",'User denied location permission', null);
+        }
+    }
+  }
+  
+  async postGPSPermission  (canUseGPS: boolean)  {
+    if (canUseGPS) {
+        await this.getLocation();
+    }
+    else {
+  
+      await this.presentAlert('تأكيد', 'لتحديد العنوان بشكل الأفضل يرجى تفعيل خاصية المواقع من الجوال', null);
+      }
+    }
+    async ngOnInit(){
+      await  this.checkPermissions();
+     }
+
+  async getLocation() {
     try{
-     // const turnOnGPS = await this.bgGeolocation.askToTurnOnGPS();
-     // if(turnOnGPS){
+      await this.presentAlert('معلومات','لتحديد موقع عنوان جديد على الخريطة يتم تحريك الدبوس الأحمر نحو الموقع المطلوب', null);
         navigator.geolocation.getCurrentPosition((position) => {
           this.latitude = position.coords.latitude;
           this.longitude = position.coords.longitude;

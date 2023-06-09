@@ -9,6 +9,8 @@ import { ActivatedRoute, Router} from '@angular/router';
 import { AlertController } from '@ionic/angular'; 
 import { LoadingService } from '../services/loading.service';
 import { AddressapiServiceProxy } from 'src/shared/service-proxies/service-proxies';
+import { LocationServiceService } from '../services/location-service.service';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-locate-me-edit',
@@ -50,9 +52,8 @@ export class LocateMeEditPage implements OnInit {
     private route : ActivatedRoute,
     private loading :LoadingService,
     private _addressService: AddressapiServiceProxy,
-   // private bgGeolocation:BackgroundGeolocationService,
+    private locationService : LocationServiceService,
     public alertController: AlertController) {
-   /* this.height = (document.documentElement.clientHeight-100)+"px";*/
   }
 
   async presentAlert(header: string, msg: string, subHeader: string) {
@@ -68,24 +69,58 @@ export class LocateMeEditPage implements OnInit {
 
     const { role } = await alert.onDidDismiss();
   }
-async ionViewWillEnter(){
-  await this.presentAlert('تأكيد', 'لتحديد العنوان بشكل الأفضل يرجى تفعيل خاصية المواقع من الجوال', null);
-  await this.presentAlert('معلومات','لتحديد موقع عنوان جديد على الخريطة يتم تحريك الدبوس الأحمر نحو الموقع المطلوب', null);
-}
-  async ngOnInit() {
+  async checkPermissions ()  {
+    const hasPermission = await this.locationService.checkGPSPermission();
+    if (hasPermission) {
+        if (Capacitor.isNative) {
+            const canUseGPS = await this.locationService.askToTurnOnGPS();
+            this.postGPSPermission(canUseGPS);
+        }
+        else {
+            this.postGPSPermission(true);
+        }
+    }
+    else {
+        console.log('14');
+        const permission = await this.locationService.requestGPSPermission();
+        if (permission === 'CAN_REQUEST' || permission === 'GOT_PERMISSION') {
+            if (Capacitor.isNative) {
+                const canUseGPS = await this.locationService.askToTurnOnGPS();
+                this.postGPSPermission(canUseGPS);
+            }
+            else {
+                this.postGPSPermission(true);
+            }
+        }
+        else {
+            this.presentAlert("",'User denied location permission', null);
+        }
+    }
+  }
+  
+  async postGPSPermission  (canUseGPS: boolean)  {
+    if (canUseGPS) {
+        await this.getLocation();
+    }
+    else {
+  
+      await this.presentAlert('تأكيد', 'لتحديد العنوان بشكل الأفضل يرجى تفعيل خاصية المواقع من الجوال', null);
+      }
+    }
+    async ngOnInit(){
+      await  this.checkPermissions();
+     }
+
+  async getLocation() {
     this.addressId = this.route.snapshot.paramMap.get('id');
  
  
     try{
-     // const turnOnGPS = await this.bgGeolocation.askToTurnOnGPS();
-     // if(turnOnGPS){
+      await this.presentAlert('معلومات','لتحديد موقع عنوان جديد على الخريطة يتم تحريك الدبوس الأحمر نحو الموقع المطلوب', null);
       this._addressService.getbyid(this.addressId).subscribe((res)=>{
         this.oldLang =res.longitude;
         this.oldLat = res.latitude;
         navigator.geolocation.getCurrentPosition((position) => {
-        
-       /*    this.latitude = position.coords.latitude;
-          this.longitude = position.coords.longitude; */
           this.latitude = this.oldLat;
           this.longitude = this.oldLang;
           console.log("original"+position.coords.latitude);
