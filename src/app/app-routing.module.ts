@@ -252,6 +252,10 @@ const routes: Routes = [
   {
     path: 'test-map3',
     loadChildren: () => import('./test-map3/test-map3.module').then( m => m.TestMap3PageModule)
+  },
+  {
+    path: 'test-map4',
+    loadChildren: () => import('./test-map4/test-map4.module').then( m => m.TestMap4PageModule)
   }
 
 
