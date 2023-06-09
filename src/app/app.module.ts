@@ -21,6 +21,7 @@ import { BackgroundGeolocationService } from './services/background-geolocation.
 import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { LocationServiceService } from './services/location-service.service';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -44,6 +45,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
     AndroidPermissions,
     LocationAccuracy,
     Geolocation,
+    LocationServiceService
   ],
   bootstrap: [AppComponent],
 })
