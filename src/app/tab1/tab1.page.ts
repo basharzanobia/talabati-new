@@ -34,23 +34,25 @@ export class Tab1Page implements OnInit {
     spaceBetween: 5,
   };
   AppConsts = AppConsts;
- SubCatsOpts = [];
+ SubCatsOpts = [];categoryName;
   constructor(private route: ActivatedRoute,
     public cart: CartStoreService,
     private _vendorService: VendorapiServiceProxy,
     private modalCtrl: ModalController) {}
   
   ngOnInit(): void {
-
+  
     this.catId =  Number(this.route.snapshot.paramMap.get('catId'));
-    console.log(this.catId);
+    this._vendorService.getcategory(this.catId).subscribe((res)=>{
+      this.categoryName = res.name;
+    })
     this._vendorService.subcategories(this.catId).subscribe(
       (res: VendorSubCategory[]) => {
         this.subcats$ = res;
         this._vendorService.vendorsbycatid(this.catId).subscribe(
           (res1: UserResponseModel[])=>{
             this.vendors$ = res1;
-            this.filterVendorsBySlider(this.subCatId);
+            this.filterVendorsBySlider(res[0].id);
           }
         );
       }

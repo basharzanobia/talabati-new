@@ -110,13 +110,16 @@ export class RestaurantNewPage implements OnInit {
         });
         this._vendorService.vendorbyid(this.vendorId).subscribe((res)=>{
           this.vendor = res;
-          var start = res.startTime.split(":");
-          var end = res.endTime.split(":");
-          this.startTime = moment({ hour:+start[0], minute:+start[1] }).format('HH:mm');
-          this.endTime = moment({ hour:+end[0], minute:+end[1] }).format('HH:mm');
-          if((this.startTime > this.now) || ( this.endTime < this.now)){
-                this.isClosed = true;
+          if(res.startTime !== null && res.endTime !== null){
+            var start = res.startTime.split(":");
+            var end = res.endTime.split(":");
+            this.startTime = moment({ hour:+start[0], minute:+start[1] }).format('HH:mm');
+            this.endTime = moment({ hour:+end[0], minute:+end[1] }).format('HH:mm');
+            if((this.startTime > this.now) || ( this.endTime < this.now)){
+                  this.isClosed = true;
+            }
           }
+      
           this._productsService.list(productFilter)
           .subscribe((res: ProductResponseModel) => {
             this.featuredProducts = res.products;
@@ -128,7 +131,7 @@ export class RestaurantNewPage implements OnInit {
         this.getReview(this.vendorId);
     
 
-    this.categories$ = this._homeService.menu();
+    this.categories$ = this._homeService.menurelatedtovendor(this.vendorId);
 
 
   }

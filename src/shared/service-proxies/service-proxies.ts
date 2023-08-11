@@ -1929,6 +1929,69 @@ export class HomeapiServiceProxy {
     }
 
     /**
+     * @param vendorId (optional) 
+     * @return Success
+     */
+    menurelatedtovendor(vendorId: string | undefined): Observable<Category[]> {
+        let url_ = this.baseUrl + "/api/homeapi/menurelatedtovendor?";
+        if (vendorId === null)
+            throw new Error("The parameter 'vendorId' cannot be null.");
+        else if (vendorId !== undefined)
+            url_ += "vendorId=" + encodeURIComponent("" + vendorId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processMenurelatedtovendor(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processMenurelatedtovendor(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<Category[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<Category[]>;
+        }));
+    }
+
+    protected processMenurelatedtovendor(response: HttpResponseBase): Observable<Category[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(Category.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Category[]>(null as any);
+    }
+
+    /**
      * Get Sliders of Home Page.
      * @return return list of Slider objects
      */
@@ -8009,6 +8072,62 @@ export class VendorapiServiceProxy {
     }
 
     /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getcategory(id: number | undefined): Observable<VendorCategory> {
+        let url_ = this.baseUrl + "/api/vendorapi/getcategory?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetcategory(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetcategory(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<VendorCategory>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<VendorCategory>;
+        }));
+    }
+
+    protected processGetcategory(response: HttpResponseBase): Observable<VendorCategory> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = VendorCategory.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<VendorCategory>(null as any);
+    }
+
+    /**
      * Get Categories of Vendors.
      * @return return List of VendorCategory
      */
@@ -10289,13 +10408,6 @@ export interface IDriverLocation {
     updatedDate: moment.Moment | undefined;
 }
 
-export enum DriverPaperType {
-    IdentityCard = 1,
-    SelfPortrait = 2,
-    DriverLicense = 3,
-    VehiclePicture = 4,
-}
-
 export enum DriverTaskStatusType {
     OnTheWayToStore = 1,
     ArrivedAtStore = 2,
@@ -11470,6 +11582,15 @@ export enum OrderStatusType {
     Failed = 16,
     Returned = 17,
     Temp = 18,
+}
+
+export enum PaperType {
+    IdentityCard = 1,
+    SelfPortrait = 2,
+    DriverLicense = 3,
+    VehiclePicture = 4,
+    CommercialRegister = 5,
+    VendorLicense = 6,
 }
 
 export class PaymentCompany implements IPaymentCompany {
@@ -13913,7 +14034,7 @@ export class UserFile implements IUserFile {
     createdBy: string | undefined;
     updatedDate: moment.Moment;
     updatedBy: string | undefined;
-    type: DriverPaperType;
+    type: PaperType;
 
     constructor(data?: IUserFile) {
         if (data) {
@@ -13985,7 +14106,7 @@ export interface IUserFile {
     createdBy: string | undefined;
     updatedDate: moment.Moment;
     updatedBy: string | undefined;
-    type: DriverPaperType;
+    type: PaperType;
 }
 
 export enum UserJobType {
