@@ -5048,6 +5048,68 @@ export class SuborderapiServiceProxy {
     }
 
     /**
+     * @param subOrderId (optional) 
+     * @param duration (optional) 
+     * @return Success
+     */
+    updategoogleduration(subOrderId: number | undefined, duration: number | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/suborderapi/updategoogleduration?";
+        if (subOrderId === null)
+            throw new Error("The parameter 'subOrderId' cannot be null.");
+        else if (subOrderId !== undefined)
+            url_ += "subOrderId=" + encodeURIComponent("" + subOrderId) + "&";
+        if (duration === null)
+            throw new Error("The parameter 'duration' cannot be null.");
+        else if (duration !== undefined)
+            url_ += "duration=" + encodeURIComponent("" + duration) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdategoogleduration(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdategoogleduration(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<boolean>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<boolean>;
+        }));
+    }
+
+    protected processUpdategoogleduration(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(null as any);
+    }
+
+    /**
      * Get List of SubOrders.
      * @return return List of SubOrderModel
      */
@@ -10345,8 +10407,8 @@ export class DriverLocation implements IDriverLocation {
     id: number;
     driverId: string | undefined;
     driver: ApplicationUser;
-    latitude: number;
-    longitude: number;
+    latitude: number | undefined;
+    longitude: number | undefined;
     createdDate: moment.Moment;
     updatedDate: moment.Moment | undefined;
 
@@ -10402,8 +10464,8 @@ export interface IDriverLocation {
     id: number;
     driverId: string | undefined;
     driver: ApplicationUser;
-    latitude: number;
-    longitude: number;
+    latitude: number | undefined;
+    longitude: number | undefined;
     createdDate: moment.Moment;
     updatedDate: moment.Moment | undefined;
 }
@@ -11006,8 +11068,8 @@ export class Order implements IOrder {
     createdBy: string | undefined;
     updatedDate: moment.Moment;
     updatedBy: string | undefined;
-    deliverLatitude: number;
-    deliverLongitude: number;
+    deliverLatitude: number | undefined;
+    deliverLongitude: number | undefined;
     addressId: number | undefined;
     userAddress: UserAddress;
     orderDetail: OrderDetail[] | undefined;
@@ -11193,8 +11255,8 @@ export interface IOrder {
     createdBy: string | undefined;
     updatedDate: moment.Moment;
     updatedBy: string | undefined;
-    deliverLatitude: number;
-    deliverLongitude: number;
+    deliverLatitude: number | undefined;
+    deliverLongitude: number | undefined;
     addressId: number | undefined;
     userAddress: UserAddress;
     orderDetail: OrderDetail[] | undefined;
@@ -11863,6 +11925,11 @@ export interface IPopularQuestions {
     createdBy: string | undefined;
 }
 
+export enum PrepareTimeUnitType {
+    Min = 1,
+    Day = 2,
+}
+
 export class Product implements IProduct {
     id: number;
     categoryId: number;
@@ -11893,6 +11960,8 @@ export class Product implements IProduct {
     status: boolean;
     isFeatured: boolean;
     purchaseCount: number;
+    prepareTime: number;
+    prepareTimeUnit: PrepareTimeUnitType;
     createdDate: moment.Moment;
     createdBy: string | undefined;
     updatedDate: moment.Moment;
@@ -11945,6 +12014,8 @@ export class Product implements IProduct {
             this.status = _data["status"];
             this.isFeatured = _data["isFeatured"];
             this.purchaseCount = _data["purchaseCount"];
+            this.prepareTime = _data["prepareTime"];
+            this.prepareTimeUnit = _data["prepareTimeUnit"];
             this.createdDate = _data["createdDate"] ? moment(_data["createdDate"].toString()) : <any>undefined;
             this.createdBy = _data["createdBy"];
             this.updatedDate = _data["updatedDate"] ? moment(_data["updatedDate"].toString()) : <any>undefined;
@@ -12021,6 +12092,8 @@ export class Product implements IProduct {
         data["status"] = this.status;
         data["isFeatured"] = this.isFeatured;
         data["purchaseCount"] = this.purchaseCount;
+        data["prepareTime"] = this.prepareTime;
+        data["prepareTimeUnit"] = this.prepareTimeUnit;
         data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
         data["createdBy"] = this.createdBy;
         data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
@@ -12097,6 +12170,8 @@ export interface IProduct {
     status: boolean;
     isFeatured: boolean;
     purchaseCount: number;
+    prepareTime: number;
+    prepareTimeUnit: PrepareTimeUnitType;
     createdDate: moment.Moment;
     createdBy: string | undefined;
     updatedDate: moment.Moment;
@@ -13337,6 +13412,8 @@ export class SubOrder implements ISubOrder {
     vendor: ApplicationUser;
     userId: string | undefined;
     user: ApplicationUser;
+    opEmployerId: string | undefined;
+    opEmployer: ApplicationUser;
     totalQty: number;
     totalAmount: number;
     taxPercent: number;
@@ -13344,6 +13421,7 @@ export class SubOrder implements ISubOrder {
     grandTotal: number;
     orderStatus: OrderStatusType;
     driverTaskStatus: DriverTaskStatusType;
+    googleDuration: number | undefined;
     orderDetail: OrderDetail[] | undefined;
     tracking: Tracking[] | undefined;
 
@@ -13366,6 +13444,8 @@ export class SubOrder implements ISubOrder {
             this.vendor = _data["vendor"] ? ApplicationUser.fromJS(_data["vendor"]) : <any>undefined;
             this.userId = _data["userId"];
             this.user = _data["user"] ? ApplicationUser.fromJS(_data["user"]) : <any>undefined;
+            this.opEmployerId = _data["opEmployerId"];
+            this.opEmployer = _data["opEmployer"] ? ApplicationUser.fromJS(_data["opEmployer"]) : <any>undefined;
             this.totalQty = _data["totalQty"];
             this.totalAmount = _data["totalAmount"];
             this.taxPercent = _data["taxPercent"];
@@ -13373,6 +13453,7 @@ export class SubOrder implements ISubOrder {
             this.grandTotal = _data["grandTotal"];
             this.orderStatus = _data["orderStatus"];
             this.driverTaskStatus = _data["driverTaskStatus"];
+            this.googleDuration = _data["googleDuration"];
             if (Array.isArray(_data["orderDetail"])) {
                 this.orderDetail = [] as any;
                 for (let item of _data["orderDetail"])
@@ -13403,6 +13484,8 @@ export class SubOrder implements ISubOrder {
         data["vendor"] = this.vendor ? this.vendor.toJSON() : <any>undefined;
         data["userId"] = this.userId;
         data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        data["opEmployerId"] = this.opEmployerId;
+        data["opEmployer"] = this.opEmployer ? this.opEmployer.toJSON() : <any>undefined;
         data["totalQty"] = this.totalQty;
         data["totalAmount"] = this.totalAmount;
         data["taxPercent"] = this.taxPercent;
@@ -13410,6 +13493,7 @@ export class SubOrder implements ISubOrder {
         data["grandTotal"] = this.grandTotal;
         data["orderStatus"] = this.orderStatus;
         data["driverTaskStatus"] = this.driverTaskStatus;
+        data["googleDuration"] = this.googleDuration;
         if (Array.isArray(this.orderDetail)) {
             data["orderDetail"] = [];
             for (let item of this.orderDetail)
@@ -13440,6 +13524,8 @@ export interface ISubOrder {
     vendor: ApplicationUser;
     userId: string | undefined;
     user: ApplicationUser;
+    opEmployerId: string | undefined;
+    opEmployer: ApplicationUser;
     totalQty: number;
     totalAmount: number;
     taxPercent: number;
@@ -13447,6 +13533,7 @@ export interface ISubOrder {
     grandTotal: number;
     orderStatus: OrderStatusType;
     driverTaskStatus: DriverTaskStatusType;
+    googleDuration: number | undefined;
     orderDetail: OrderDetail[] | undefined;
     tracking: Tracking[] | undefined;
 }
@@ -13656,6 +13743,7 @@ export class Tracking implements ITracking {
     message: string;
     createdDate: moment.Moment;
     createdBy: string | undefined;
+    creator: ApplicationUser;
     updatedDate: moment.Moment;
     updatedBy: string | undefined;
     endDate: moment.Moment;
@@ -13682,6 +13770,7 @@ export class Tracking implements ITracking {
             this.message = _data["message"];
             this.createdDate = _data["createdDate"] ? moment(_data["createdDate"].toString()) : <any>undefined;
             this.createdBy = _data["createdBy"];
+            this.creator = _data["creator"] ? ApplicationUser.fromJS(_data["creator"]) : <any>undefined;
             this.updatedDate = _data["updatedDate"] ? moment(_data["updatedDate"].toString()) : <any>undefined;
             this.updatedBy = _data["updatedBy"];
             this.endDate = _data["endDate"] ? moment(_data["endDate"].toString()) : <any>undefined;
@@ -13708,6 +13797,7 @@ export class Tracking implements ITracking {
         data["message"] = this.message;
         data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
         data["createdBy"] = this.createdBy;
+        data["creator"] = this.creator ? this.creator.toJSON() : <any>undefined;
         data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
         data["updatedBy"] = this.updatedBy;
         data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
@@ -13734,6 +13824,7 @@ export interface ITracking {
     message: string;
     createdDate: moment.Moment;
     createdBy: string | undefined;
+    creator: ApplicationUser;
     updatedDate: moment.Moment;
     updatedBy: string | undefined;
     endDate: moment.Moment;
@@ -13757,8 +13848,8 @@ export class UserAddress implements IUserAddress {
     houseNo: string | undefined;
     type: AddressType;
     status: boolean;
-    latitude: number;
-    longitude: number;
+    latitude: number | undefined;
+    longitude: number | undefined;
     landmark: string | undefined;
 
     constructor(data?: IUserAddress) {
@@ -13835,8 +13926,8 @@ export interface IUserAddress {
     houseNo: string | undefined;
     type: AddressType;
     status: boolean;
-    latitude: number;
-    longitude: number;
+    latitude: number | undefined;
+    longitude: number | undefined;
     landmark: string | undefined;
 }
 
@@ -14479,6 +14570,7 @@ export enum UserType {
     User = 2,
     Vendor = 3,
     Driver = 4,
+    OperatingEmp = 5,
 }
 
 export class UserVendorSubCategory implements IUserVendorSubCategory {

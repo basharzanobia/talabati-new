@@ -69,8 +69,12 @@
     </ion-row>
     <ion-row class="order-cutomer" >
       <ion-col size="6">العنوان:</ion-col>
-      <ion-col size="6">{{order?.userAddress?.addressTitle}}</ion-col>
-
+      <ion-col size="6" *ngIf="order?.addressId">{{order?.userAddress?.addressTitle}}</ion-col>
+      <ion-col size="6" *ngIf="!order?.addressId">{{order?.city }} - {{order?.area }}  - {{order?.address }}  - {{order?.houseNo }}  </ion-col>
+    </ion-row> 
+    <ion-row class="order-cutomer" >
+      <ion-col size="6">الاسم:</ion-col>
+      <ion-col size="6" *ngIf="!order?.addressId">{{order?.name }}  </ion-col>
     </ion-row> 
     <br>    
 

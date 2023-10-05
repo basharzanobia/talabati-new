@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartStoreService } from 'src/shared/cart/cart-store.service';
-import { OrderapiServiceProxy,UserAddress,AddressType,AddressapiServiceProxy,Order, OrderDetail, OrderDetailRequest, OrderRequestModel, PaymentCompany,PaymentcompanyapiServiceProxy, EwalletServiceProxy } from 'src/shared/service-proxies/service-proxies';
+import { OrderapiServiceProxy,UserAddress,AddressType,AddressapiServiceProxy,Order, OrderDetail, OrderDetailRequest, OrderRequestModel, PaymentCompany,PaymentcompanyapiServiceProxy, EwalletServiceProxy, VendorapiServiceProxy, SuborderapiServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { AlertController, MenuController } from '@ionic/angular';  
 import { AppSessionService } from 'src/shared/session/app-session.service';
 import { Geolocation} from '@capacitor/geolocation';
@@ -48,19 +48,26 @@ export class Tab3Page {
   deliverAddress;
   AppConsts = AppConsts;
   anotherAddressForm: FormGroup;
+  durations =[];
+  destinations =[];
+  currentSuborderId;
+  tmpDurration = 0;
+  subOrderIds = [];
+  resultOrder:any;
   constructor(
     private _session: AppSessionService,
     public cart: CartStoreService,
     private loading :LoadingService,
     private _router: Router,
     private _orderService: OrderapiServiceProxy,
+    private subOrderService : SuborderapiServiceProxy,
     private _paymentCompanyService: PaymentcompanyapiServiceProxy,
     private _addressApiService : AddressapiServiceProxy,
     public alertController: AlertController,
     private actionSheetCtrl: ActionSheetController,
     private bgGeolocation:BackgroundGeolocationService,
     private _ewalletService: EwalletServiceProxy,
-    private menuCtrl : MenuController
+    private menuCtrl : MenuController,
   ) { this.initPage();}
   async presentActionSheet() {
     let radio_options = [];
@@ -173,6 +180,30 @@ export class Tab3Page {
       this.currentLat = position.coords.latitude
       this.currentLon = position.coords.longitude
              });  
+    this.items_len=this.cart.Items.length;
+    this._addressApiService.getrequestsbyuserid(this._session.userId).subscribe((res: UserAddress[]) => this.userAddresses = res);
+    this._paymentCompanyService.getallcompanies().subscribe((res: PaymentCompany[]) => this.PaymentCompanies = res);
+    this.anotherAddressForm = new FormGroup({
+      name: new FormControl(this.orderRequest.firstName, [
+        Validators.required
+      ]),
+      mobile: new FormControl(this.orderRequest.mobile,[
+        Validators.required,
+      ]),
+      city: new FormControl(this.orderRequest.city,[
+        Validators.required,
+      ]),
+      area: new FormControl(this.orderRequest.area,[
+        Validators.required,
+      ]),
+      houseNo: new FormControl(this.orderRequest.houseNo,[
+        Validators.required,
+      ]),
+      address: new FormControl(this.orderRequest.address,[
+        Validators.required,
+      ])
+    },
+    );
   } 
 ionViewWillLeave(){
   this.showTabBar();
@@ -334,6 +365,20 @@ this.loading.present();
 
     await alert.present();
   }
+  async withAlertOk(message: string, action: () => void) {
+    const alert = await this.alertController.create({
+      message: message,
+      mode:'ios',
+      cssClass:'apply-order-alert',
+      buttons: [
+      {
+        text: "موافق",
+        handler: action
+      }]
+    });
+
+    await alert.present();
+  }
   goToMenu(){
     this._router.navigate(['/tabs/tab1/1'],{replaceUrl:true});
     this.menuCtrl.toggle();
@@ -377,6 +422,7 @@ this.loading.present();
     }
   }
   async sendOrder() {
+    console.log(this.userAddress.latitude)
     if(this.showDetailes){
       if (this.anotherAddressForm.invalid) {
         for (const control of Object.keys(this.anotherAddressForm.controls)) {
@@ -420,6 +466,7 @@ else{
   this.orderRequest.city=this.anotherAddressForm.value['city'];
   this.orderRequest.houseNo=this.anotherAddressForm.value['houseNo'];
   this.orderRequest.address=this.anotherAddressForm.value['address'];
+  this.orderRequest.firstName=this.anotherAddressForm.value['name'];
  }
  if(this.hasAddress){
   this.orderRequest.area=this.userAddress.area;
@@ -450,16 +497,58 @@ else{
     });
     this.orderRequest.orderDetail.push(orderDetail);
   });
+  console.log(this.orderRequest.deliverLatitude)
   this._orderService.create(this.orderRequest).subscribe(
     (res) => {
       this.loading.dismiss();
+      this.resultOrder =res;
         console.log('res is ', res);
         this.cart.clearCart();
-        this._router.navigate(['/invoice',res],{replaceUrl:true});
+        if(!this.showDetailes){
+        //
+        // get client destination coords
+        // get suborders
+        var source =  new google.maps.LatLng(this.orderRequest.deliverLatitude, this.orderRequest.deliverLongitude);
+        console.log("calculat duration : client coords ",this.orderRequest.deliverLatitude , " ", this.orderRequest.deliverLongitude);
+        this.subOrderService.getbyorderid(res).subscribe((orderdetails)=>{
+          for (let i = 0; i < orderdetails.length; i++) {
+            var element = orderdetails[i];
+            this.subOrderIds.push(element.id);
+            this.currentSuborderId = element.id;
+            console.log("calculat duration : currentSuborderId ", this.currentSuborderId)
+            
+            // get vendor coords
+            console.log("calculat duration : vendor Id ",element.vendorId);
+            this._addressApiService.getrequestsbyuserid(element.vendorId).subscribe((res: UserAddress[]) =>{
+           
+              var dest =  { lat: res[0].latitude, lng: res[0].longitude };
+              this.destinations.push(dest);
+              console.log("calculat duration : source coords ",res[0].latitude ,  " ", res[0].longitude);
+                // run getDistance and save duration
+          var service = new google.maps.DistanceMatrixService();
+          service.getDistanceMatrix(
+             {
+               origins: [source],
+               destinations: this.destinations,
+               travelMode: 'DRIVING',
+               unitSystem: google.maps.UnitSystem.METRIC,
+               avoidHighways: false,
+               avoidTolls: false,
+               language:'ar',
+             }, this.callback.bind(this));
+             });
+          }
+        })
+      }
+      else{
+           this._router.navigate(['/invoice',res],{replaceUrl:true});
+      }
+        //
+          
+  
+      
     },
     async (error) => {
-      // Unexpected result!
-      // await this.presentAlert('فشل', 'حدث خطأ حاول مرة أخرى', null);
       this.loading.dismiss();
       console.log('error ', error);
     });
@@ -474,8 +563,6 @@ else{
         {
           text: 'حسنا',
               handler: () => { //takes the data 
-         
-              
               }   
       },
      
@@ -489,5 +576,39 @@ else{
  
  
   }
-
+  async callback(response, status) {
+   // console.log("calculat duration : currentSuborderId inside callback ", this.currentSuborderId);
+   console.log("inside callback");
+   if (status == 'OK') {
+    console.log("distance Ok");
+     var origins = response.originAddresses;
+     var destinations = response.destinationAddresses;
+     for (var i = 0; i < origins.length; i++) {
+       var results = response.rows[i].elements;
+       for (var j = 0; j < results.length; j++) {
+         var element = results[j];
+         this.durations.push(element.duration.value);
+         console.log("calculat duration : duration ",  element.duration.value);
+       }
+     }
+    if(this.durations.length === this.subOrderIds.length){
+        for(let i=0;i< this.subOrderIds.length;i++){
+            this.subOrderService.updategoogleduration(this.subOrderIds[i],this.durations[i]).subscribe((res)=>{
+                console.log(res)
+     }) 
+        }
+        let max = this.durations[0];
+        for(let j= 1;j< this.durations.length;++j){
+        if(this.durations[j] > max){
+          max = this.durations[j];
+        }
+        }
+        let maxInMinute = Math.ceil(max/60);
+        this.withAlertOk( `زمن الوصول المتوقع  للطلب هو بعد ${maxInMinute} دقيقة `, () =>{
+          this._router.navigate(['/invoice',this.resultOrder],{replaceUrl:true});
+        });
+    }
+    
+   }
+ }
 }
