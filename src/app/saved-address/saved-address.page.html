@@ -22,13 +22,13 @@
 
 <section>
   <ion-list lines="full">
-    <ion-item  *ngFor="let userAddress of this.addressDataService.getAddresses()"  class="addres-compo"  routerLink="/edit-addres/{{userAddress?.id}}">
+    <ion-item  *ngFor="let userAddress of this.addressDataService.getAddresses()"  class="addres-compo" >
       <ion-grid>
         <ion-row *ngIf=" userAddress !== null " >
           <ion-col size="2" class="icons">
             <ion-icon name="location-outline" size="large" class="edite-location" color="primary"  ></ion-icon>
           </ion-col>
-          <ion-col size="8">
+          <ion-col size="8"  routerLink="/edit-addres/{{userAddress?.id}}">
             <ion-row><ion-col>
               <ion-label  class="location-titlle">{{userAddress?.addressTitle}} 
               </ion-label>
