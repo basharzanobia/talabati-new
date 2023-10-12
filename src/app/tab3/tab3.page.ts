@@ -472,7 +472,7 @@ else{
   this.orderRequest.area=this.userAddress.area;
   this.orderRequest.city=this.userAddress.city;
   this.orderRequest.houseNo=this.userAddress.houseNo;
-  this.orderRequest.address=this.userAddress.address;
+  this.orderRequest.address=this.userAddress.landmark;
   this.orderRequest.deliverLatitude=this.userAddress.latitude;
   this.orderRequest.deliverLongitude=this.userAddress.longitude;
   this.orderRequest.addressId = this.addressId;

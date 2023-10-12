@@ -51,8 +51,13 @@
       <ion-col size="4"  >
         العنوان  :
        </ion-col>
-        <ion-col size="8" class="focus" >
-          {{ order?.order?.addressMarge }}
+        <ion-col size="8" class="focus" *ngIf="order?.order?.addressId">
+          {{ order?.order?.userAddress?.addressTitle }}
+          
+        </ion-col>
+        <ion-col size="8" class="focus" *ngIf="!order?.order?.addressId">
+          {{ order?.order?.address}} -   {{ order?.order?.city}} -    {{ order?.order?.area}} -   {{ order?.order?.houseNo}}
+          
         </ion-col>
       
      <br>

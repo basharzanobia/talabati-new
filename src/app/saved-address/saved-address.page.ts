@@ -54,7 +54,7 @@ export class SavedAddressPage implements OnInit {
         },
         async (error) => {
           console.log('error ', error);
-          this.withAlert("عذرا لم يتم حذف العنوان،لأنه مرتبط بطلبات سابقة، حاول تعديله", () =>{
+          this.withAlert("عذرا لم يتم حذف العنوان", () =>{
           })
         });
     }  
