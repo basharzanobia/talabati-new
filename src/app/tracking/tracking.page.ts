@@ -6,6 +6,7 @@ import { AppConsts } from 'src/shared/AppConsts';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ViewChild, ElementRef } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import {AppPaymentModeType} from 'src/shared/AppEnums';
 declare var google:any;
 @Component({
   selector: 'app-tracking',
@@ -31,6 +32,7 @@ export class TrackingPage implements OnInit {
     directionsRenderer = new google.maps.DirectionsRenderer();
     orderInTransit = false;
     _appOrderStatusType = AppOrderStatusType.getName;
+    _appPaymentModeType = AppPaymentModeType.getName;
   @ViewChild('map',{read: ElementRef,static:false}) mapRef:ElementRef;
   constructor(private _session: AppSessionService,
     private route: ActivatedRoute,
