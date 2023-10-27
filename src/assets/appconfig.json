@@ -1,8 +1,8 @@
 {
-  "//remoteServiceBaseUrl": "https://localhost:44384",
-  "//appBaseUrl": "https://localhost:44384",
-  "remoteServiceBaseUrl": "https://talabak-b-y.com",
-  "appBaseUrl": "https://talabak-b-y.com",
+  "remoteServiceBaseUrl": "https://localhost:44384",
+  "appBaseUrl": "https://localhost:44384",
+  "//remoteServiceBaseUrl": "https://talabak-b-y.com",
+  "//appBaseUrl": "https://talabak-b-y.com",
   "logoAssetBaseUrl": "https://talabak-b-y.com/uploads/logos/",
   "localeMappings": [
     {
