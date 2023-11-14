@@ -93,14 +93,9 @@ export class TrackingPage implements OnInit {
     const { role } = await alert.onDidDismiss();
   }
    async cancelOrder(){
-    if(this.order.orderStatus == OrderStatusType.Pending){
-     this.order.orderStatus = OrderStatusType.Canceled;
-     this._subOrderService.update(this.order).subscribe((res)=> console.log("updated"));
-     this.router.navigate(['/order-canceled']);
-    }
-    else{
+ 
       await this.presentAlert('عذرا', 'لا يمكن الغاء الطلب بعد البدء بتحضيره', null);
-    }
+    
   }
   addDriverReview(rate){
     

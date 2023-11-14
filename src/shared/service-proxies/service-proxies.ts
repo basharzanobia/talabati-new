@@ -9710,6 +9710,8 @@ export class BuyMe implements IBuyMe {
     orderDetails: string | undefined;
     senderAddress: string | undefined;
     senderDate: moment.Moment;
+    opEmployerId: string | undefined;
+    opEmployer: ApplicationUser;
     recieverAddress: string | undefined;
     recieverDate: moment.Moment;
     createdBy: string | undefined;
@@ -9735,6 +9737,8 @@ export class BuyMe implements IBuyMe {
             this.orderDetails = _data["orderDetails"];
             this.senderAddress = _data["senderAddress"];
             this.senderDate = _data["senderDate"] ? moment(_data["senderDate"].toString()) : <any>undefined;
+            this.opEmployerId = _data["opEmployerId"];
+            this.opEmployer = _data["opEmployer"] ? ApplicationUser.fromJS(_data["opEmployer"]) : <any>undefined;
             this.recieverAddress = _data["recieverAddress"];
             this.recieverDate = _data["recieverDate"] ? moment(_data["recieverDate"].toString()) : <any>undefined;
             this.createdBy = _data["createdBy"];
@@ -9760,6 +9764,8 @@ export class BuyMe implements IBuyMe {
         data["orderDetails"] = this.orderDetails;
         data["senderAddress"] = this.senderAddress;
         data["senderDate"] = this.senderDate ? this.senderDate.toISOString() : <any>undefined;
+        data["opEmployerId"] = this.opEmployerId;
+        data["opEmployer"] = this.opEmployer ? this.opEmployer.toJSON() : <any>undefined;
         data["recieverAddress"] = this.recieverAddress;
         data["recieverDate"] = this.recieverDate ? this.recieverDate.toISOString() : <any>undefined;
         data["createdBy"] = this.createdBy;
@@ -9785,6 +9791,8 @@ export interface IBuyMe {
     orderDetails: string | undefined;
     senderAddress: string | undefined;
     senderDate: moment.Moment;
+    opEmployerId: string | undefined;
+    opEmployer: ApplicationUser;
     recieverAddress: string | undefined;
     recieverDate: moment.Moment;
     createdBy: string | undefined;
@@ -11027,6 +11035,7 @@ export enum NotificationType {
     NewBuyMeForDriver = 6,
     NewServeMeForAdmin = 7,
     NewBuyMeForAdmin = 8,
+    NewOrderForAdmin = 9,
 }
 
 export class Order implements IOrder {
@@ -11628,22 +11637,23 @@ export interface IOrderRequestModel {
 export enum OrderStatusType {
     Pending = 1,
     Accepted = 2,
-    Canceled = 3,
+    RejectedByAdmins = 3,
     TransmittedToVendor = 4,
     AcceptedByVendor = 5,
-    InProcess = 6,
-    TransmittedToDriver = 7,
-    AcceptedByDriver = 8,
-    RejectedByDriver = 9,
-    ReTransmittedToDriver = 10,
-    WaitingForDriver = 11,
-    HandeledToDriver = 12,
-    InTransit = 13,
-    UnDelivered = 14,
-    Delivered = 15,
-    Failed = 16,
-    Returned = 17,
-    Temp = 18,
+    RejectedByVendor = 6,
+    InProcess = 7,
+    TransmittedToDriver = 8,
+    AcceptedByDriver = 9,
+    RejectedByDriver = 10,
+    ReTransmittedToDriver = 11,
+    WaitingForDriver = 12,
+    HandeledToDriver = 13,
+    InTransit = 14,
+    UnDelivered = 15,
+    Delivered = 16,
+    Failed = 17,
+    Returned = 18,
+    Temp = 19,
 }
 
 export enum PaperType {
@@ -12607,14 +12617,14 @@ export interface IProductResponseModel {
 
 export enum RequestStatusType {
     Pending = 1,
-    AcceptedByDriver = 2,
-    RejectedByDriver = 3,
-    InTransit = 4,
-    Delivered = 5,
-    UnDelivered = 6,
-    Failed = 7,
-    Returned = 8,
-    Temp = 9,
+    Accepted = 2,
+    TransmittedToDriver = 3,
+    AcceptedByDriver = 4,
+    RejectedByDriver = 5,
+    InTransit = 6,
+    Delivered = 7,
+    UnDelivered = 8,
+    Failed = 9,
 }
 
 export class ResetPasswordViewModel implements IResetPasswordViewModel {
@@ -12988,6 +12998,8 @@ export class ServeMe implements IServeMe {
     orderDetails: string | undefined;
     senderAddress: string | undefined;
     senderDate: moment.Moment;
+    opEmployerId: string | undefined;
+    opEmployer: ApplicationUser;
     recieverAddress: string | undefined;
     recieverDate: moment.Moment;
     createdBy: string | undefined;
@@ -13013,6 +13025,8 @@ export class ServeMe implements IServeMe {
             this.orderDetails = _data["orderDetails"];
             this.senderAddress = _data["senderAddress"];
             this.senderDate = _data["senderDate"] ? moment(_data["senderDate"].toString()) : <any>undefined;
+            this.opEmployerId = _data["opEmployerId"];
+            this.opEmployer = _data["opEmployer"] ? ApplicationUser.fromJS(_data["opEmployer"]) : <any>undefined;
             this.recieverAddress = _data["recieverAddress"];
             this.recieverDate = _data["recieverDate"] ? moment(_data["recieverDate"].toString()) : <any>undefined;
             this.createdBy = _data["createdBy"];
@@ -13038,6 +13052,8 @@ export class ServeMe implements IServeMe {
         data["orderDetails"] = this.orderDetails;
         data["senderAddress"] = this.senderAddress;
         data["senderDate"] = this.senderDate ? this.senderDate.toISOString() : <any>undefined;
+        data["opEmployerId"] = this.opEmployerId;
+        data["opEmployer"] = this.opEmployer ? this.opEmployer.toJSON() : <any>undefined;
         data["recieverAddress"] = this.recieverAddress;
         data["recieverDate"] = this.recieverDate ? this.recieverDate.toISOString() : <any>undefined;
         data["createdBy"] = this.createdBy;
@@ -13063,6 +13079,8 @@ export interface IServeMe {
     orderDetails: string | undefined;
     senderAddress: string | undefined;
     senderDate: moment.Moment;
+    opEmployerId: string | undefined;
+    opEmployer: ApplicationUser;
     recieverAddress: string | undefined;
     recieverDate: moment.Moment;
     createdBy: string | undefined;
@@ -13421,7 +13439,8 @@ export class SubOrder implements ISubOrder {
     grandTotal: number;
     orderStatus: OrderStatusType;
     driverTaskStatus: DriverTaskStatusType;
-    googleDuration: number | undefined;
+    googleDurationInMinUnit: number | undefined;
+    rejectionMsg: string | undefined;
     orderDetail: OrderDetail[] | undefined;
     tracking: Tracking[] | undefined;
 
@@ -13453,7 +13472,8 @@ export class SubOrder implements ISubOrder {
             this.grandTotal = _data["grandTotal"];
             this.orderStatus = _data["orderStatus"];
             this.driverTaskStatus = _data["driverTaskStatus"];
-            this.googleDuration = _data["googleDuration"];
+            this.googleDurationInMinUnit = _data["googleDurationInMinUnit"];
+            this.rejectionMsg = _data["rejectionMsg"];
             if (Array.isArray(_data["orderDetail"])) {
                 this.orderDetail = [] as any;
                 for (let item of _data["orderDetail"])
@@ -13493,7 +13513,8 @@ export class SubOrder implements ISubOrder {
         data["grandTotal"] = this.grandTotal;
         data["orderStatus"] = this.orderStatus;
         data["driverTaskStatus"] = this.driverTaskStatus;
-        data["googleDuration"] = this.googleDuration;
+        data["googleDurationInMinUnit"] = this.googleDurationInMinUnit;
+        data["rejectionMsg"] = this.rejectionMsg;
         if (Array.isArray(this.orderDetail)) {
             data["orderDetail"] = [];
             for (let item of this.orderDetail)
@@ -13533,7 +13554,8 @@ export interface ISubOrder {
     grandTotal: number;
     orderStatus: OrderStatusType;
     driverTaskStatus: DriverTaskStatusType;
-    googleDuration: number | undefined;
+    googleDurationInMinUnit: number | undefined;
+    rejectionMsg: string | undefined;
     orderDetail: OrderDetail[] | undefined;
     tracking: Tracking[] | undefined;
 }
@@ -13851,6 +13873,7 @@ export class UserAddress implements IUserAddress {
     latitude: number | undefined;
     longitude: number | undefined;
     landmark: string | undefined;
+    orders: Order[] | undefined;
 
     constructor(data?: IUserAddress) {
         if (data) {
@@ -13877,6 +13900,11 @@ export class UserAddress implements IUserAddress {
             this.latitude = _data["latitude"];
             this.longitude = _data["longitude"];
             this.landmark = _data["landmark"];
+            if (Array.isArray(_data["orders"])) {
+                this.orders = [] as any;
+                for (let item of _data["orders"])
+                    this.orders.push(Order.fromJS(item));
+            }
         }
     }
 
@@ -13903,6 +13931,11 @@ export class UserAddress implements IUserAddress {
         data["latitude"] = this.latitude;
         data["longitude"] = this.longitude;
         data["landmark"] = this.landmark;
+        if (Array.isArray(this.orders)) {
+            data["orders"] = [];
+            for (let item of this.orders)
+                data["orders"].push(item.toJSON());
+        }
         return data;
     }
 
@@ -13929,6 +13962,7 @@ export interface IUserAddress {
     latitude: number | undefined;
     longitude: number | undefined;
     landmark: string | undefined;
+    orders: Order[] | undefined;
 }
 
 export class UserCart implements IUserCart {
