@@ -166,11 +166,19 @@
   
     <br>
     <ion-row class="order-action" >
-      <ion-col size="6" class="order-cancel" (click)="cancelOrder()"> 
+      <!-- <ion-col size="6" class="order-cancel" (click)="cancelOrder()"> 
         <a button icon-start ion-button full class="order-track">
           <ion-label class="cancel-item" > الغاء الطلب </ion-label>
         </a>
-         </ion-col>
+         </ion-col> -->
+         <ion-col size="6" class="order-cancel"
+         *ngIf="order.userId"
+          routerLink="/driver/{{order.userId}}" routerDirection="forward"> 
+          <a button icon-start ion-button full class="order-track">
+            <ion-label class="cancel-item" >  الطيار </ion-label>
+          </a>
+           </ion-col> 
+         
          <ion-col size="6" class="call-button" routerLink="/tabs/tab1"> 
           <a button icon-start ion-button full>
             <ion-label class="add-call" > الاتصال  </ion-label>

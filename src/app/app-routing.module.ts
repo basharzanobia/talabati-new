@@ -233,7 +233,8 @@ const routes: Routes = [
   {
     path: 'locate-me-edit/:id',
     loadChildren: () => import('./locate-me-edit/locate-me-edit.module').then( m => m.LocateMeEditPageModule)
-  },  {
+  },
+  {
     path: 'image-modal',
     loadChildren: () => import('./image-modal/image-modal.module').then( m => m.ImageModalPageModule)
   },
@@ -256,6 +257,10 @@ const routes: Routes = [
   {
     path: 'test-map4',
     loadChildren: () => import('./test-map4/test-map4.module').then( m => m.TestMap4PageModule)
+  },
+  {
+    path: 'driver/:id',
+    loadChildren: () => import('./driver/driver.module').then( m => m.DriverPageModule)
   }
 
 

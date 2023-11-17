@@ -1,0 +1,40 @@
+<ion-content [fullscreen]="true">
+  <ion-row class="user-bar">
+    <ion-col size="2" class="logo-head" routerLink="/tabs/tab1/1" routerDirection="root">       
+      <img src="assets/img/logo.png">
+</ion-col>
+    <ion-col size="8" class="page-head">
+      <ion-label class="rest-title"></ion-label>   
+    </ion-col>
+
+    <ion-col size="2" class="page-head">
+      <ion-buttons>  
+        <ion-menu-button></ion-menu-button>   
+      </ion-buttons>  
+    </ion-col>
+  </ion-row>
+
+ <!--Address Info-->
+
+<section  >
+  <ion-grid >
+   <ion-row>
+    <ion-col class="page-user">
+      <img [src]="AppConsts.appBaseUrl + '/' + driver?.storeLogo" alt="photo" class="img-fluid"/>
+    </ion-col>
+   </ion-row>
+   <ion-row>
+    <ion-col class="page-user">
+      <ion-label class="name-driver">{{driver?.name}}</ion-label>
+    </ion-col>
+   </ion-row>
+  <ion-row>
+    <ion-col >
+        <app-star-rating *ngIf="driver" [ratingVal]="driver.rating" [id]="driverId" > </app-star-rating>
+    </ion-col>
+  </ion-row>
+  </ion-grid>
+</section>
+
+</ion-content>
+

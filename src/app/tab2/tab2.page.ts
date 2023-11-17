@@ -91,7 +91,7 @@ ionViewWillLeave(){
     this._reviewUserapiService.getratingofuser(userId).subscribe(
       (res) => {    
         console.log(res);
-        this.driverRating[userId] = res;
+       // this.driverRating[userId] = res;
       },
       async (error) => {
         console.log('error ', error);
@@ -102,7 +102,7 @@ ionViewWillLeave(){
     this._reviewUserapiService.getratingofuser(vendorId).subscribe(
       (res) => {    
         console.log(res);
-        this.vendorRating[vendorId] = res;
+       // this.vendorRating[vendorId] = res;
       },
       async (error) => {
         console.log('error ', error);

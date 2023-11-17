@@ -4441,7 +4441,7 @@ export class ReviewuserapiServiceProxy {
      * @param userId (optional) vendor Id
      * @return return double value as rating
      */
-    getratingofuser(userId: string | undefined): Observable<number> {
+    getratingofuser(userId: string | undefined): Observable<ReviewUserResponse[]> {
         let url_ = this.baseUrl + "/api/reviewuserapi/getratingofuser?";
         if (userId === null)
             throw new Error("The parameter 'userId' cannot be null.");
@@ -4464,14 +4464,14 @@ export class ReviewuserapiServiceProxy {
                 try {
                     return this.processGetratingofuser(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<number>;
+                    return _observableThrow(e) as any as Observable<ReviewUserResponse[]>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<number>;
+                return _observableThrow(response_) as any as Observable<ReviewUserResponse[]>;
         }));
     }
 
-    protected processGetratingofuser(response: HttpResponseBase): Observable<number> {
+    protected processGetratingofuser(response: HttpResponseBase): Observable<ReviewUserResponse[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4482,8 +4482,14 @@ export class ReviewuserapiServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-    
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(ReviewUserResponse.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -4491,7 +4497,7 @@ export class ReviewuserapiServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<number>(null as any);
+        return _observableOf<ReviewUserResponse[]>(null as any);
     }
 }
 
@@ -6464,6 +6470,58 @@ export class UserapiServiceProxy {
     }
 
     /**
+     * @param body (optional) 
+     * @return Success
+     */
+    updateuser(body: UserInfoModel | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/userapi/updateuser";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateuser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateuser(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUpdateuser(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
+
+    /**
      * Save User Photo in server.
      * @param userId (optional) user Id
      * @param file (optional) 
@@ -7085,6 +7143,57 @@ export class UserapiServiceProxy {
             }));
         }
         return _observableOf<void>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    uploadphoto(): Observable<StringBaseResponse> {
+        let url_ = this.baseUrl + "/api/userapi/uploadphoto";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUploadphoto(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUploadphoto(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<StringBaseResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<StringBaseResponse>;
+        }));
+    }
+
+    protected processUploadphoto(response: HttpResponseBase): Observable<StringBaseResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StringBaseResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StringBaseResponse>(null as any);
     }
 
     /**
@@ -14232,6 +14341,73 @@ export interface IUserFile {
     updatedDate: moment.Moment;
     updatedBy: string | undefined;
     type: PaperType;
+}
+
+export class UserInfoModel implements IUserInfoModel {
+    id: string | undefined;
+    name: string | undefined;
+    gender: Gender;
+    email: string | undefined;
+    phone1: string | undefined;
+    phone2: string | undefined;
+    storeLogo: string | undefined;
+
+    constructor(data?: IUserInfoModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.gender = _data["gender"];
+            this.email = _data["email"];
+            this.phone1 = _data["phone1"];
+            this.phone2 = _data["phone2"];
+            this.storeLogo = _data["storeLogo"];
+        }
+    }
+
+    static fromJS(data: any): UserInfoModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserInfoModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["gender"] = this.gender;
+        data["email"] = this.email;
+        data["phone1"] = this.phone1;
+        data["phone2"] = this.phone2;
+        data["storeLogo"] = this.storeLogo;
+        return data;
+    }
+
+    clone(): UserInfoModel {
+        const json = this.toJSON();
+        let result = new UserInfoModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUserInfoModel {
+    id: string | undefined;
+    name: string | undefined;
+    gender: Gender;
+    email: string | undefined;
+    phone1: string | undefined;
+    phone2: string | undefined;
+    storeLogo: string | undefined;
 }
 
 export enum UserJobType {

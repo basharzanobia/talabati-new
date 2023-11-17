@@ -1,0 +1,26 @@
+.img-fluid{
+    width: 200px !important;
+    height: 200px !important;
+    border-radius: 50%;
+  }
+  .page-user {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  
+  }
+  .name-driver{
+    font-size: large;
+    font-weight: bold;
+  }
+  .first-row{
+    margin:20px;
+  }
+  ion-icon {
+    color: orange;
+  }
+  ion-col {
+    text-align: center;
+  }
+  //
+  
